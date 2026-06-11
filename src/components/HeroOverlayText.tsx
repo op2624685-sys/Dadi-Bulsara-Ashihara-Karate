@@ -10,10 +10,10 @@ interface Message {
 }
 
 const MESSAGES: Message[] = [
-  { text: "The Way Begins", fromFrame: 1, toFrame: 25 },
-  { text: "Discipline", fromFrame: 26, toFrame: 60 },
-  { text: "Strength", fromFrame: 61, toFrame: 90 },
-  { text: "Become Unstoppable", fromFrame: 91, toFrame: 121 },
+  { text: "Focus", fromFrame: 1, toFrame: 50 },
+  { text: "Discipline", fromFrame: 51, toFrame: 110 },
+  { text: "Strength", fromFrame: 111, toFrame: 180 },
+  { text: "Become Unstoppable", fromFrame: 181, toFrame: 245 },
 ];
 
 function getMessageIndex(frameIndex: number): number {

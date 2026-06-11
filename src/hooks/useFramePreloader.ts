@@ -1,50 +1,57 @@
 "use client";
 
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useRef, useState } from "react";
 
-const TOTAL_FRAMES = 121;
+const TOTAL_FRAMES = 245;
 
 export function getFrameUrl(index: number): string {
-  // index is 0-based; files are frame_001.png … frame_121.png
-  return `/frames/frame_${String(index + 1).padStart(3, "0")}.png`;
+  return `/frames/frame_${String(index + 1).padStart(3, "0")}.webp`;
 }
 
 interface FramePreloaderResult {
   frames: HTMLImageElement[];
   isLoaded: boolean;
-  progress: number; // 0–1
+  progress: number;
 }
 
 export function useFramePreloader(): FramePreloaderResult {
-  const framesRef = useRef<HTMLImageElement[]>([]);
+  const [frames, setFrames] = useState<HTMLImageElement[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const [progress, setProgress] = useState(0);
   const loadedCountRef = useRef(0);
 
   useEffect(() => {
     let cancelled = false;
+
     loadedCountRef.current = 0;
-    framesRef.current = new Array(TOTAL_FRAMES);
+
+    const loadedFrames = new Array<HTMLImageElement>(TOTAL_FRAMES);
 
     const onLoad = () => {
       if (cancelled) return;
+
       loadedCountRef.current++;
-      const p = loadedCountRef.current / TOTAL_FRAMES;
-      setProgress(p);
+
+      setProgress(loadedCountRef.current / TOTAL_FRAMES);
+
       if (loadedCountRef.current >= TOTAL_FRAMES) {
+        setFrames([...loadedFrames]);
         setIsLoaded(true);
       }
     };
 
     for (let i = 0; i < TOTAL_FRAMES; i++) {
       const img = new Image();
-      // Decode asynchronously to avoid blocking the main thread
+
       img.onload = () => {
         img.decode?.().catch(() => {}).finally(onLoad);
       };
-      img.onerror = onLoad; // Count failures so we don't hang
+
+      img.onerror = onLoad;
+
       img.src = getFrameUrl(i);
-      framesRef.current[i] = img;
+
+      loadedFrames[i] = img;
     }
 
     return () => {
@@ -53,7 +60,7 @@ export function useFramePreloader(): FramePreloaderResult {
   }, []);
 
   return {
-    frames: framesRef.current,
+    frames,
     isLoaded,
     progress,
   };

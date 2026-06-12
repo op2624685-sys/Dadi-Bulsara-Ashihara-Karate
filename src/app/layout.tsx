@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Cinzel, Cormorant_Garamond } from "next/font/google";
+import { Cinzel, Cormorant_Garamond, Montserrat, Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 
@@ -18,6 +18,20 @@ const cormorant = Cormorant_Garamond({
   style: ["normal", "italic"],
 });
 
+const montserrat = Montserrat({
+  subsets: ["latin"],
+  variable: "--font-montserrat",
+  display: "swap",
+  weight: ["400", "700", "800"],
+});
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap",
+  weight: ["400", "600"],
+});
+
 export const metadata: Metadata = {
   title: "Dadi Bulsara Ashihara Karate",
   description:
@@ -25,8 +39,7 @@ export const metadata: Metadata = {
   keywords: ["Ashihara Karate", "Dadi Bulsara", "martial arts", "Sabaki"],
   openGraph: {
     title: "Dadi Bulsara Ashihara Karate",
-    description:
-      "Discipline. Strength. Become Unstoppable.",
+    description: "Discipline. Strength. Become Unstoppable.",
     type: "website",
   },
 };
@@ -37,10 +50,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${cinzel.variable} ${cormorant.variable}`}>
+    <html
+      lang="en"
+      className={`${cinzel.variable} ${cormorant.variable} ${montserrat.variable} ${inter.variable}`}
+    >
       <body>
         <Navbar />
-        {children}</body>
+        {children}
+      </body>
     </html>
   );
 }

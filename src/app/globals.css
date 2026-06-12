@@ -2,8 +2,28 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
+/* ── dadi bulsara tokens ───────────────────────────────── */
+@theme {
+  --color-bushido-primary: #BE0027;
+  --color-bushido-primary-dark: #91001b;
+  --color-bushido-charcoal: #121212;
+  --color-bushido-surface: #fbf9f8;
+  --color-bushido-dojo-grey: #F4F4F4;
+  --color-bushido-outline: #E0E0E0;
+  --color-bushido-on-surface: #1b1c1c;
+  --color-bushido-on-surface-variant: #5c3f3f;
+
+  --font-montserrat: "Montserrat", sans-serif;
+  --font-inter: "Inter", sans-serif;
+
+  --radius-brand: 4px;
+  --radius-chip: 9999px;
+}
+
 /* ── Reset ── */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -27,15 +47,26 @@ body {
   color: #fff;
   font-family: var(--font-cormorant), "Cormorant Garamond", serif;
   overflow-x: hidden;
-  /* Prevent layout shift from scrollbar */
   scrollbar-gutter: stable;
 }
 
 /* ── Custom scrollbar ── */
-::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-track { background: #000; }
-::-webkit-scrollbar-thumb { background: rgba(200, 16, 46, 0.4); border-radius: 2px; }
-::-webkit-scrollbar-thumb:hover { background: rgba(200, 16, 46, 0.7); }
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: #000;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(200, 16, 46, 0.4);
+  border-radius: 2px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(200, 16, 46, 0.7);
+}
 
 /* ── Focus ── */
 :focus-visible {
@@ -45,7 +76,9 @@ body {
 
 /* ── Reduced motion ── */
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
+  *,
+  *::before,
+  *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
@@ -53,12 +86,19 @@ body {
 }
 
 /* ── Typography baseline ── */
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-weight: 400;
   line-height: 1.1;
 }
 
-p { line-height: 1.8; }
+p {
+  line-height: 1.8;
+}
 
 em {
   font-style: italic;
@@ -82,4 +122,29 @@ em {
 ::selection {
   background: rgba(200, 16, 46, 0.35);
   color: #fff;
+}
+
+/* ── Washi texture overlay ──────────────────────────────── */
+.washi-overlay {
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  opacity: 0.025;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Form components ────────────────────────────────────── */
+.bd-label {
+  @apply block font-inter text-sm font-semibold tracking-wider uppercase text-bushido-on-surface mb-1.5;
+}
+
+.bd-input {
+  @apply w-full bg-white text-bushido-on-surface font-inter text-base border border-bushido-charcoal rounded-brand px-3.5 py-3 outline-none placeholder:text-gray-400;
+  transition: none;
+}
+
+.bd-input:focus {
+  box-shadow: inset 0 0 0 1px #BE0027;
+  border-color: #BE0027;
 }

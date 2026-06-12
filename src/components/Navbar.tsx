@@ -269,36 +269,50 @@ export default function Navbar() {
 
       <style jsx>{`
         /* ═══════════════════════════════════════
-           NAVBAR BASE
+           NAVBAR BASE (Floating Glassmorphism)
         ═══════════════════════════════════════ */
         .navbar {
           position: fixed;
-          top: 0;
+          top: 16px;
           left: 0;
           right: 0;
-          z-index: 900;
-          padding: 0 2.5rem;
-          transition: background 0.4s ease, backdrop-filter 0.4s ease,
-            border-color 0.4s ease, padding 0.4s ease;
-          border-bottom: 1px solid transparent;
+          margin: 0 auto;
+          width: calc(100% - 2rem);
+          max-width: 1240px;
+          z-index: 1200;
+          background: rgba(15, 15, 15, 0.65);
+          backdrop-filter: blur(16px) saturate(120%);
+          -webkit-backdrop-filter: blur(16px) saturate(120%);
+          border: 1px solid rgba(255, 255, 255, 0.07);
+          border-radius: 12px;
+          padding: 0 1.5rem;
+          transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
         }
 
-        /* Scrolled state — frosted glass */
+        /* Scrolled state — shifts slightly and shrinks width margin */
         .navbar--scrolled {
-          background: rgba(0, 0, 0, 0.82);
-          backdrop-filter: blur(20px) saturate(180%);
-          -webkit-backdrop-filter: blur(20px) saturate(180%);
-          border-bottom-color: rgba(255, 255, 255, 0.06);
-          padding: 0 2.5rem;
+          top: 8px;
+          width: calc(100% - 1rem);
+          background: rgba(8, 8, 8, 0.88);
+          backdrop-filter: blur(24px) saturate(150%);
+          -webkit-backdrop-filter: blur(24px) saturate(150%);
+          border-color: rgba(255, 255, 255, 0.12);
+          box-shadow: 0 20px 40px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.02);
         }
 
         .navbar__inner {
-          max-width: 1280px;
+          max-width: 1200px;
           margin: 0 auto;
-          height: 72px;
+          height: 64px;
           display: flex;
           align-items: center;
           gap: 2rem;
+          transition: height 0.4s ease;
+        }
+
+        .navbar--scrolled .navbar__inner {
+          height: 58px;
         }
 
         /* ═══════════════════════════════════════
@@ -315,44 +329,44 @@ export default function Navbar() {
 
         .logo-mark {
           flex-shrink: 0;
-          transition: transform 0.3s ease;
+          transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .navbar__logo:hover .logo-mark {
-          transform: rotate(15deg);
+          transform: rotate(15deg) scale(1.05);
         }
 
         .logo-text {
           display: flex;
           flex-direction: column;
-          line-height: 1.1;
+          line-height: 1.15;
         }
 
         .logo-name {
           font-family: var(--font-cinzel), "Cinzel", serif;
-          font-size: 0.9rem;
+          font-size: 0.95rem;
           font-weight: 700;
-          letter-spacing: 0.12em;
+          letter-spacing: 0.14em;
           color: #fff;
           text-transform: uppercase;
         }
 
         .logo-sub {
           font-family: var(--font-cormorant), "Cormorant Garamond", serif;
-          font-size: 0.65rem;
-          letter-spacing: 0.4em;
-          color: rgba(200, 16, 46, 0.85);
+          font-size: 0.68rem;
+          letter-spacing: 0.38em;
+          color: #BE0027;
           text-transform: uppercase;
-          font-weight: 300;
+          font-weight: 400;
         }
 
         /* ═══════════════════════════════════════
-           NAV LINKS
+           NAV LINKS (Modern Sans-Serif)
         ═══════════════════════════════════════ */
         .navbar__links {
           display: flex;
           align-items: center;
-          gap: 0.25rem;
+          gap: 0.5rem;
           list-style: none;
           margin: 0 auto;
           padding: 0;
@@ -363,12 +377,12 @@ export default function Navbar() {
           display: inline-flex;
           flex-direction: column;
           align-items: center;
-          padding: 0.4rem 0.75rem;
-          font-family: var(--font-cinzel), "Cinzel", serif;
-          font-size: 0.68rem;
-          font-weight: 400;
-          letter-spacing: 0.22em;
-          color: rgba(255, 255, 255, 0.6);
+          padding: 0.5rem 0.85rem;
+          font-family: var(--font-inter), "Inter", sans-serif;
+          font-size: 0.72rem;
+          font-weight: 600;
+          letter-spacing: 0.15em;
+          color: rgba(255, 255, 255, 0.55);
           text-decoration: none;
           text-transform: uppercase;
           transition: color 0.25s ease;
@@ -376,24 +390,25 @@ export default function Navbar() {
         }
 
         .nav-link:hover {
-          color: rgba(255, 255, 255, 0.95);
-        }
-
-        .nav-link--active {
           color: #fff;
         }
 
-        /* Animated underline */
+        .nav-link--active {
+          color: #BE0027;
+        }
+
+        /* Subtle modern underline */
         .nav-link__underline {
           position: absolute;
-          bottom: 0;
+          bottom: 0px;
           left: 50%;
           transform: translateX(-50%) scaleX(0);
-          width: calc(100% - 1.5rem);
-          height: 1px;
-          background: #c8102e;
-          transition: transform 0.3s ease;
+          width: 16px;
+          height: 2px;
+          background: #BE0027;
+          transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
           transform-origin: center;
+          border-radius: 1px;
         }
 
         .nav-link:hover .nav-link__underline,
@@ -407,7 +422,7 @@ export default function Navbar() {
         .navbar__actions {
           display: flex;
           align-items: center;
-          gap: 0.75rem;
+          gap: 0.85rem;
           flex-shrink: 0;
         }
 
@@ -421,54 +436,56 @@ export default function Navbar() {
           display: flex;
           align-items: center;
           justify-content: center;
-          width: 40px;
-          height: 40px;
-          background: rgba(255, 255, 255, 0.05);
-          border: 1px solid rgba(255, 255, 255, 0.1);
+          width: 36px;
+          height: 36px;
+          background: rgba(255, 255, 255, 0.04);
+          border: 1px solid rgba(255, 255, 255, 0.08);
           border-radius: 50%;
-          color: rgba(255, 255, 255, 0.7);
+          color: rgba(255, 255, 255, 0.65);
           cursor: pointer;
-          transition: background 0.25s ease, color 0.25s ease,
-            border-color 0.25s ease, transform 0.2s ease;
+          transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .notif-btn:hover {
-          background: rgba(200, 16, 46, 0.12);
-          border-color: rgba(200, 16, 46, 0.4);
+          background: rgba(190, 0, 39, 0.1);
+          border-color: rgba(190, 0, 39, 0.3);
           color: #fff;
           transform: scale(1.05);
         }
 
         .notif-badge {
           position: absolute;
-          top: 6px;
-          right: 6px;
-          width: 16px;
-          height: 16px;
-          background: #c8102e;
-          border-radius: 50%;
-          font-family: var(--font-cinzel), "Cinzel", serif;
-          font-size: 0.55rem;
+          top: -2px;
+          right: -2px;
+          min-width: 15px;
+          height: 15px;
+          padding: 0 4px;
+          background: #BE0027;
+          border-radius: 999px;
+          font-family: var(--font-inter), "Inter", sans-serif;
+          font-size: 0.58rem;
           font-weight: 700;
           color: #fff;
           display: flex;
           align-items: center;
           justify-content: center;
-          border: 1.5px solid #000;
+          border: 1.5px solid #0f0f0f;
           animation: badgePulse 2s ease-in-out infinite;
         }
 
         /* ── Notification Dropdown ── */
         .notif-dropdown {
           position: absolute;
-          top: calc(100% + 12px);
+          top: calc(100% + 14px);
           right: 0;
           width: 320px;
-          background: #0d0d0d;
+          background: rgba(15, 15, 15, 0.95);
+          backdrop-filter: blur(20px);
+          -webkit-backdrop-filter: blur(20px);
           border: 1px solid rgba(255, 255, 255, 0.08);
-          box-shadow: 0 24px 60px rgba(0, 0, 0, 0.7),
-            0 0 0 1px rgba(200, 16, 46, 0.08);
-          animation: dropdownIn 0.22s ease;
+          border-radius: 8px;
+          box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+          animation: dropdownIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
           overflow: hidden;
         }
 
@@ -481,18 +498,19 @@ export default function Navbar() {
         }
 
         .notif-title {
-          font-family: var(--font-cinzel), "Cinzel", serif;
-          font-size: 0.7rem;
-          letter-spacing: 0.35em;
+          font-family: var(--font-inter), "Inter", sans-serif;
+          font-size: 0.68rem;
+          font-weight: 700;
+          letter-spacing: 0.1em;
           color: #fff;
           text-transform: uppercase;
         }
 
         .notif-clear {
-          font-family: var(--font-cormorant), "Cormorant Garamond", serif;
-          font-size: 0.8rem;
-          letter-spacing: 0.1em;
-          color: #c8102e;
+          font-family: var(--font-inter), "Inter", sans-serif;
+          font-size: 0.68rem;
+          font-weight: 600;
+          color: #BE0027;
           background: none;
           border: none;
           cursor: pointer;
@@ -500,7 +518,7 @@ export default function Navbar() {
         }
 
         .notif-clear:hover {
-          opacity: 0.75;
+          opacity: 0.8;
         }
 
         .notif-list {
@@ -510,7 +528,7 @@ export default function Navbar() {
           max-height: 280px;
           overflow-y: auto;
           scrollbar-width: thin;
-          scrollbar-color: rgba(200, 16, 46, 0.3) transparent;
+          scrollbar-color: rgba(190, 0, 39, 0.3) transparent;
         }
 
         .notif-item {
@@ -523,7 +541,7 @@ export default function Navbar() {
         }
 
         .notif-item:hover {
-          background: rgba(255, 255, 255, 0.03);
+          background: rgba(255, 255, 255, 0.02);
         }
 
         .notif-item:last-child {
@@ -532,16 +550,16 @@ export default function Navbar() {
 
         .notif-dot {
           flex-shrink: 0;
-          width: 7px;
-          height: 7px;
+          width: 6px;
+          height: 6px;
           border-radius: 50%;
           margin-top: 5px;
           background: transparent;
-          transition: background 0.2s;
         }
 
         .notif-item--unread .notif-dot {
-          background: #c8102e;
+          background: #BE0027;
+          box-shadow: 0 0 8px #BE0027;
         }
 
         .notif-content {
@@ -551,27 +569,27 @@ export default function Navbar() {
         }
 
         .notif-item-title {
-          font-family: var(--font-cinzel), "Cinzel", serif;
+          font-family: var(--font-inter), "Inter", sans-serif;
           font-size: 0.72rem;
-          letter-spacing: 0.08em;
-          color: rgba(255, 255, 255, 0.9);
+          font-weight: 700;
+          color: rgba(255, 255, 255, 0.95);
           margin: 0;
         }
 
         .notif-item-desc {
-          font-family: var(--font-cormorant), "Cormorant Garamond", serif;
-          font-size: 0.9rem;
-          color: rgba(255, 255, 255, 0.45);
+          font-family: var(--font-inter), "Inter", sans-serif;
+          font-size: 0.72rem;
+          color: rgba(255, 255, 255, 0.55);
           margin: 0;
-          line-height: 1.5;
+          line-height: 1.4;
         }
 
         .notif-item-time {
-          font-family: var(--font-cormorant), "Cormorant Garamond", serif;
-          font-size: 0.72rem;
-          color: rgba(200, 16, 46, 0.6);
-          margin: 0.1rem 0 0;
-          letter-spacing: 0.05em;
+          font-family: var(--font-inter), "Inter", sans-serif;
+          font-size: 0.65rem;
+          color: rgba(190, 0, 39, 0.7);
+          margin: 0.15rem 0 0;
+          letter-spacing: 0.02em;
         }
 
         .notif-footer {
@@ -581,17 +599,17 @@ export default function Navbar() {
         }
 
         .notif-all {
-          font-family: var(--font-cormorant), "Cormorant Garamond", serif;
-          font-size: 0.8rem;
-          letter-spacing: 0.2em;
-          color: rgba(255, 255, 255, 0.35);
+          font-family: var(--font-inter), "Inter", sans-serif;
+          font-size: 0.68rem;
+          font-weight: 600;
+          color: rgba(255, 255, 255, 0.4);
           text-decoration: none;
           text-transform: uppercase;
           transition: color 0.2s ease;
         }
 
         .notif-all:hover {
-          color: #c8102e;
+          color: #BE0027;
         }
 
         /* ── Register Button ── */
@@ -599,28 +617,38 @@ export default function Navbar() {
           display: inline-flex;
           align-items: center;
           gap: 0.5rem;
-          font-family: var(--font-cinzel), "Cinzel", serif;
-          font-size: 0.65rem;
-          letter-spacing: 0.3em;
+          font-family: var(--font-inter), "Inter", sans-serif;
+          font-size: 0.7rem;
+          font-weight: 700;
+          letter-spacing: 0.16em;
           text-transform: uppercase;
           color: #fff;
-          background: #c8102e;
-          padding: 0.65rem 1.4rem;
+          background: linear-gradient(135deg, #BE0027, #91001b);
+          padding: 0.62rem 1.35rem;
           text-decoration: none;
-          border: 1px solid #c8102e;
-          transition: background 0.3s ease, color 0.3s ease,
-            letter-spacing 0.3s ease, transform 0.2s ease;
+          border: none;
+          border-radius: 4px;
+          transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
           white-space: nowrap;
+          box-shadow: 0 4px 12px rgba(190, 0, 39, 0.2);
         }
 
         .register-btn:hover {
-          background: transparent;
-          color: #c8102e;
-          letter-spacing: 0.38em;
+          background: linear-gradient(135deg, #e01235, #BE0027);
+          box-shadow: 0 6px 20px rgba(190, 0, 39, 0.35);
+          transform: translateY(-1px);
         }
 
         .register-btn:active {
-          transform: scale(0.97);
+          transform: scale(0.97) translateY(0);
+        }
+
+        .register-btn svg {
+          transition: transform 0.25s ease;
+        }
+
+        .register-btn:hover svg {
+          transform: translate(2px, -2px);
         }
 
         /* ── Hamburger ── */
@@ -631,23 +659,30 @@ export default function Navbar() {
           gap: 5px;
           width: 36px;
           height: 36px;
-          background: none;
-          border: none;
+          background: rgba(255, 255, 255, 0.04);
+          border: 1px solid rgba(255, 255, 255, 0.08);
+          border-radius: 50%;
           cursor: pointer;
-          padding: 4px;
+          padding: 9px;
+          transition: all 0.25s ease;
+        }
+
+        .hamburger:hover {
+          background: rgba(255, 255, 255, 0.08);
+          border-color: rgba(255, 255, 255, 0.15);
         }
 
         .ham-line {
           display: block;
           width: 100%;
-          height: 1px;
-          background: rgba(255, 255, 255, 0.8);
-          transition: transform 0.35s ease, opacity 0.35s ease;
+          height: 1.5px;
+          background: rgba(255, 255, 255, 0.85);
+          transition: transform 0.3s ease, opacity 0.3s ease;
           transform-origin: center;
         }
 
         .ham-line--top-open {
-          transform: translateY(6px) rotate(45deg);
+          transform: translateY(6.5px) rotate(45deg);
         }
 
         .ham-line--mid-open {
@@ -656,7 +691,7 @@ export default function Navbar() {
         }
 
         .ham-line--bot-open {
-          transform: translateY(-6px) rotate(-45deg);
+          transform: translateY(-6.5px) rotate(-45deg);
         }
 
         /* ═══════════════════════════════════════
@@ -665,18 +700,20 @@ export default function Navbar() {
         .mobile-menu {
           display: none;
           flex-direction: column;
-          background: rgba(0, 0, 0, 0.96);
-          backdrop-filter: blur(20px);
+          background: rgba(12, 12, 12, 0.96);
+          backdrop-filter: blur(24px);
+          -webkit-backdrop-filter: blur(24px);
           padding: 0;
           max-height: 0;
           overflow: hidden;
-          transition: max-height 0.45s ease, padding 0.3s ease;
+          transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1), padding 0.3s ease;
+          border-radius: 0 0 10px 10px;
           border-top: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         .mobile-menu--open {
           max-height: 500px;
-          padding: 1.5rem 0 2rem;
+          padding: 1rem 0 1.75rem;
         }
 
         .mobile-menu ul {
@@ -687,51 +724,68 @@ export default function Navbar() {
 
         .mobile-link {
           display: block;
-          padding: 0.9rem 2.5rem;
-          font-family: var(--font-cinzel), "Cinzel", serif;
-          font-size: 0.8rem;
-          letter-spacing: 0.3em;
+          padding: 0.9rem 2.25rem;
+          font-family: var(--font-inter), "Inter", sans-serif;
+          font-size: 0.78rem;
+          font-weight: 600;
+          letter-spacing: 0.15em;
           color: rgba(255, 255, 255, 0.55);
           text-decoration: none;
           text-transform: uppercase;
-          border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-          transition: color 0.2s ease, padding-left 0.2s ease;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+          transition: all 0.25s ease;
         }
 
         .mobile-link:hover,
         .mobile-link--active {
           color: #fff;
-          padding-left: 3rem;
+          padding-left: 2.75rem;
+          background: rgba(255, 255, 255, 0.02);
         }
 
         .mobile-link--active {
-          color: #c8102e;
+          color: #BE0027;
+          border-left: 3px solid #BE0027;
         }
 
         .mobile-register {
           display: inline-flex;
-          margin: 1.5rem 2.5rem 0;
-          font-family: var(--font-cinzel), "Cinzel", serif;
-          font-size: 0.7rem;
-          letter-spacing: 0.35em;
+          margin: 1.5rem 2.25rem 0;
+          font-family: var(--font-inter), "Inter", sans-serif;
+          font-size: 0.72rem;
+          font-weight: 700;
+          letter-spacing: 0.16em;
           text-transform: uppercase;
           color: #fff;
-          background: #c8102e;
-          padding: 0.9rem 2rem;
+          background: linear-gradient(135deg, #BE0027, #91001b);
+          padding: 0.85rem 2rem;
           text-decoration: none;
           text-align: center;
           justify-content: center;
+          border-radius: 4px;
           transition: background 0.3s ease;
+          box-shadow: 0 4px 15px rgba(190, 0, 39, 0.25);
         }
 
         .mobile-register:hover {
-          background: #e01535;
+          background: linear-gradient(135deg, #e01235, #BE0027);
         }
 
         /* ═══════════════════════════════════════
            RESPONSIVE
         ═══════════════════════════════════════ */
         @media (max-width: 900px) {
+          .navbar {
+            padding: 0 1.25rem;
+            width: calc(100% - 1.5rem);
+            top: 12px;
+          }
+
+          .navbar--scrolled {
+            top: 6px;
+            width: calc(100% - 1rem);
+          }
+
           .navbar__links {
             display: none;
           }
@@ -751,7 +805,14 @@ export default function Navbar() {
 
         @media (max-width: 480px) {
           .navbar {
-            padding: 0 1.25rem;
+            padding: 0 1rem;
+            width: calc(100% - 1rem);
+            top: 8px;
+          }
+
+          .navbar--scrolled {
+            top: 4px;
+            width: calc(100% - 0.5rem);
           }
 
           .logo-sub {

@@ -110,7 +110,7 @@ export default function Navbar() {
                   fontFamily="serif"
                   fill="#c8102e"
                 >
-                  芦
+                  DB
                 </text>
               </svg>
             </div>

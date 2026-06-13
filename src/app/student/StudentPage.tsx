@@ -58,14 +58,14 @@ const SAMPLE_STUDENTS: Student[] = [
 
 const ALL_STATES = [...new Set(SAMPLE_STUDENTS.map(s => s.state))].sort();
 
-// ── Enhanced Legendary Effects ─────────────────────────────────────────────
+// ── Belt Aura (Improved for Rank Difference) ───────────────────────────────
 const BELT_AURA: Record<Belt, { ringColor: string; glowColor: string; animation: string }> = {
-  White: { ringColor: "rgba(255,255,255,0.7)", glowColor: "rgba(255,255,255,0.3)", animation: "aura-shimmer" },
-  Blue: { ringColor: "#4a9eff", glowColor: "rgba(74,158,255,0.6)", animation: "aura-ripple" },
+  White: { ringColor: "#ddd", glowColor: "rgba(255,255,255,0.3)", animation: "aura-shimmer" },
+  Blue: { ringColor: "#4a9eff", glowColor: "rgba(74,158,255,0.55)", animation: "aura-ripple" },
   Yellow: { ringColor: "#ffe600", glowColor: "rgba(255,230,0,0.6)", animation: "aura-pulse" },
-  Green: { ringColor: "#4ade80", glowColor: "rgba(74,222,128,0.5)", animation: "aura-breathe" },
-  Brown: { ringColor: "#d97757", glowColor: "rgba(217,119,87,0.5)", animation: "aura-earthpulse" },
-  Black: { ringColor: "#f5d576", glowColor: "rgba(245,213,118,0.7)", animation: "aura-rotate" },
+  Green: { ringColor: "#4ade80", glowColor: "rgba(74,222,128,0.55)", animation: "aura-breathe" },
+  Brown: { ringColor: "#f59e0b", glowColor: "rgba(245,158,11,0.6)", animation: "aura-earthpulse" },
+  Black: { ringColor: "#f5d576", glowColor: "rgba(245,213,118,0.85)", animation: "aura-rotate" },
 };
 
 const BELT_PANEL: Record<Belt, { gradient: string; pattern: string; glow: string }> = {
@@ -80,6 +80,8 @@ const BELT_PANEL: Record<Belt, { gradient: string; pattern: string; glow: string
 // ── Rotating Legendary Border (Full Card) ───────────────────────────────────
 function LegendaryRotatingBorder({ belt, isChampion }: { belt: Belt; isChampion: boolean }) {
   const aura = BELT_AURA[belt];
+  const isHighRank = belt === "Black" || belt === "Brown";
+  const isBlack = belt === "Black";
   const intensity = isChampion ? 1 : 0.75;
 
   return (
@@ -91,40 +93,59 @@ function LegendaryRotatingBorder({ belt, isChampion }: { belt: Belt; isChampion:
       zIndex: -1,
       pointerEvents: "none",
     }}>
-      {/* Rotating Glow Ring */}
+      {/* Main Rotating Conic Glow - Different for each belt */}
       <div
         style={{
           position: "absolute",
-          inset: "-20px",
+          inset: isBlack ? "-28px" : "-22px",
+          borderRadius: "16px",
+          background: isBlack 
+            ? `conic-gradient(transparent 30%, ${aura.ringColor}, #c9a84c, ${aura.ringColor}, transparent 70%)`
+            : isHighRank
+            ? `conic-gradient(transparent 20%, ${aura.ringColor}, transparent 80%)`
+            : `conic-gradient(transparent, ${aura.ringColor}, transparent)`,
+          animation: `rotateBorder ${isBlack ? "6s" : isHighRank ? "8s" : "10s"} linear infinite`,
+          opacity: intensity * (isBlack ? 0.95 : 0.85),
+          filter: isBlack ? "blur(3px)" : "blur(1.5px)",
+          boxShadow: `0 0 ${isBlack ? "45px" : "32px"} 10px ${aura.glowColor}`,
+        }}
+      />
+
+      {/* Secondary Rotating Layer (Faster) */}
+      <div
+        style={{
+          position: "absolute",
+          inset: isBlack ? "-18px" : "-14px",
           borderRadius: "14px",
-          background: `conic-gradient(transparent, ${aura.ringColor}, transparent)`,
-          animation: "rotateBorder 8s linear infinite",
-          opacity: intensity * 0.85,
-          filter: `blur(2px)`,
-          boxShadow: `0 0 35px 8px ${aura.glowColor}`,
+          background: `conic-gradient(transparent, rgba(255,255,255,0.25), transparent)`,
+          animation: `rotateBorder ${isBlack ? "3.5s" : "5s"} linear infinite reverse`,
+          opacity: intensity * (isBlack ? 0.7 : 0.45),
         }}
       />
 
-      {/* Secondary Faster Ring */}
-      <div
-        style={{
-          position: "absolute",
-          inset: "-12px",
-          borderRadius: "12px",
-          background: `conic-gradient(transparent, #ffffff22, transparent)`,
-          animation: "rotateBorder 4s linear infinite reverse",
-          opacity: intensity * 0.6,
-        }}
-      />
+      {/* Extra Gold Spark Layer for Black & Champions */}
+      { (isBlack || isChampion) && (
+        <div
+          style={{
+            position: "absolute",
+            inset: "-10px",
+            borderRadius: "12px",
+            background: "conic-gradient(transparent, #c9a84c88, transparent)",
+            animation: "rotateBorder 4s linear infinite",
+            opacity: isChampion ? 0.65 : 0.4,
+            filter: "blur(2px)",
+          }}
+        />
+      )}
 
-      {/* Inner Static Glow Frame */}
+      {/* Static Inner Border Glow */}
       <div style={{
         position: "absolute",
-        inset: "0",
-        border: `2px solid ${aura.ringColor}`,
-        borderRadius: "8px",
-        opacity: intensity * 0.4,
-        boxShadow: `0 0 25px 6px ${aura.glowColor}`,
+        inset: "2px",
+        border: `2.5px solid ${aura.ringColor}`,
+        borderRadius: "9px",
+        opacity: intensity * 0.35,
+        boxShadow: `inset 0 0 20px ${aura.glowColor}`,
       }} />
     </div>
   );

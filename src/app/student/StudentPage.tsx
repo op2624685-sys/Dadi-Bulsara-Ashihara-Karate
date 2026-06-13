@@ -38,7 +38,7 @@ const BELT_COLORS: Record<Belt, { bg: string; text: string; border: string }> = 
   Black: { bg: "#111", text: "#fff", border: "#333" },
 };
 
-const BELT_ORDER: Belt[] = ["White","Blue", "Yellow", "Green", "Brown", "Black"];
+const BELT_ORDER: Belt[] = ["White", "Blue", "Yellow", "Green", "Brown", "Black"];
 
 // ── Sample data ───────────────────────────────────────────────────────────────
 const SAMPLE_STUDENTS: Student[] = [
@@ -58,42 +58,141 @@ const SAMPLE_STUDENTS: Student[] = [
 
 const ALL_STATES = [...new Set(SAMPLE_STUDENTS.map(s => s.state))].sort();
 
-// ── Belt avatar animation config ─────────────────────────────────────────────
+// ── Enhanced Legendary Effects ─────────────────────────────────────────────
 const BELT_AURA: Record<Belt, { ringColor: string; glowColor: string; animation: string }> = {
-  White: { ringColor: "rgba(255,255,255,0.4)", glowColor: "rgba(255,255,255,0.1)", animation: "aura-shimmer" },
-  Blue: { ringColor: "#2255aa", glowColor: "rgba(34,85,170,0.4)", animation: "aura-ripple" },
-  Yellow: { ringColor: "#f5c518", glowColor: "rgba(245,197,24,0.3)", animation: "aura-pulse" },
-  Green: { ringColor: "#3a8c3a", glowColor: "rgba(58,140,58,0.3)", animation: "aura-breathe" },
-  Brown: { ringColor: "#7a4520", glowColor: "rgba(122,69,32,0.3)", animation: "aura-earthpulse" },
-  Black: { ringColor: "#555", glowColor: "rgba(180,180,180,0.2)", animation: "aura-rotate" },
+  White: { ringColor: "rgba(255,255,255,0.7)", glowColor: "rgba(255,255,255,0.3)", animation: "aura-shimmer" },
+  Blue: { ringColor: "#4a9eff", glowColor: "rgba(74,158,255,0.6)", animation: "aura-ripple" },
+  Yellow: { ringColor: "#ffe600", glowColor: "rgba(255,230,0,0.6)", animation: "aura-pulse" },
+  Green: { ringColor: "#4ade80", glowColor: "rgba(74,222,128,0.5)", animation: "aura-breathe" },
+  Brown: { ringColor: "#d97757", glowColor: "rgba(217,119,87,0.5)", animation: "aura-earthpulse" },
+  Black: { ringColor: "#f5d576", glowColor: "rgba(245,213,118,0.7)", animation: "aura-rotate" },
 };
 
 const BELT_PANEL: Record<Belt, { gradient: string; pattern: string; glow: string }> = {
-  White: { gradient: "linear-gradient(to bottom, #e8e8e8, #aaa, #e8e8e8)", pattern: "solid", glow: "rgba(255,255,255,0.1)" },
-  Blue: { gradient: "linear-gradient(to bottom, #0f2548, #2255aa, #0f2548)", pattern: "double", glow: "rgba(34,85,170,0.3)" },
-  Yellow: { gradient: "linear-gradient(to bottom, #f5c518, #d4a800, #f5c518)", pattern: "dashes", glow: "rgba(245,197,24,0.25)" },
-  Green: { gradient: "linear-gradient(to bottom, #1e4a1e, #3a8c3a, #1e4a1e)", pattern: "double", glow: "rgba(58,140,58,0.2)" },
-  Brown: { gradient: "linear-gradient(to bottom, #3e2210, #7a4520, #3e2210)", pattern: "dots", glow: "rgba(122,69,32,0.25)" },
-  Black: { gradient: "linear-gradient(to bottom, #111, #555, #c9a84c, #555, #111)", pattern: "zigzag", glow: "rgba(201,168,76,0.25)" },
+  White: { gradient: "linear-gradient(to bottom, #e8e8e8, #aaa, #e8e8e8)", pattern: "solid", glow: "rgba(255,255,255,0.2)" },
+  Blue: { gradient: "linear-gradient(to bottom, #0f2548, #2255aa, #0f2548)", pattern: "double", glow: "rgba(34,85,170,0.4)" },
+  Yellow: { gradient: "linear-gradient(to bottom, #f5c518, #d4a800, #f5c518)", pattern: "dashes", glow: "rgba(245,197,24,0.4)" },
+  Green: { gradient: "linear-gradient(to bottom, #1e4a1e, #3a8c3a, #1e4a1e)", pattern: "double", glow: "rgba(58,140,58,0.35)" },
+  Brown: { gradient: "linear-gradient(to bottom, #3e2210, #7a4520, #3e2210)", pattern: "dots", glow: "rgba(122,69,32,0.4)" },
+  Black: { gradient: "linear-gradient(to bottom, #111, #444, #c9a84c, #444, #111)", pattern: "zigzag", glow: "rgba(201,168,76,0.5)" },
 };
 
-function BeltPanel({ belt }: { belt: Belt; height: number }) {
-  const panel = BELT_PANEL[belt];
-  const W = 6;
-  const patternSVG: Record<string, string> = {
-    solid: "",
-    dashes: `<svg xmlns='http://www.w3.org/2000/svg' width='${W}' height='12'><rect x='0' y='0' width='${W}' height='7' fill='rgba(0,0,0,0.25)'/></svg>`,
-    double: `<svg xmlns='http://www.w3.org/2000/svg' width='${W}' height='1'><rect x='1' y='0' width='1' height='1' fill='rgba(255,255,255,0.2)'/><rect x='4' y='0' width='1' height='1' fill='rgba(255,255,255,0.2)'/></svg>`,
-    dots: `<svg xmlns='http://www.w3.org/2000/svg' width='${W}' height='8'><circle cx='3' cy='4' r='1.2' fill='rgba(255,255,255,0.2)'/></svg>`,
-    zigzag: `<svg xmlns='http://www.w3.org/2000/svg' width='${W}' height='8'><polyline points='0,4 3,0 6,4 3,8' fill='none' stroke='rgba(201,168,76,0.4)' stroke-width='0.8'/></svg>`,
-  };
-  const patternB64 = patternSVG[panel.pattern] ? `url("data:image/svg+xml,${encodeURIComponent(patternSVG[panel.pattern])}")` : "none";
+// ── Rotating Legendary Border (Full Card) ───────────────────────────────────
+function LegendaryRotatingBorder({ belt, isChampion }: { belt: Belt; isChampion: boolean }) {
+  const aura = BELT_AURA[belt];
+  const intensity = isChampion ? 1 : 0.75;
 
   return (
-    <div style={{ position: "absolute", top: 0, left: 0, width: `${W}px`, height: "100%", borderRadius: "4px 0 0 4px", background: panel.gradient, boxShadow: `2px 0 12px 0 ${panel.glow}`, overflow: "hidden" }}>
-      {panel.pattern !== "solid" && <div style={{ position: "absolute", inset: 0, backgroundImage: patternB64, backgroundRepeat: "repeat-y", backgroundSize: `${W}px auto`, mixBlendMode: "overlay" }} />}
-      {belt === "Black" && <div style={{ position: "absolute", left: 0, width: "100%", height: "30px", background: "linear-gradient(to bottom, transparent, rgba(201,168,76,0.8), transparent)", animationName: "panel-spark", animationDuration: "2.4s", animationTimingFunction: "ease-in-out", animationIterationCount: "infinite" }} />}
-      {belt === "Yellow" && <div style={{ position: "absolute", left: 0, width: "100%", height: "20px", background: `linear-gradient(to bottom, transparent, rgba(255,255,255,0.5), transparent)`, animationName: "panel-spark", animationDuration: "1.8s", animationTimingFunction: "ease-in-out", animationIterationCount: "infinite", animationDelay: "0.3s" }} />}
+    <div style={{
+      position: "absolute",
+      inset: "-4px",
+      borderRadius: "10px",
+      overflow: "hidden",
+      zIndex: -1,
+      pointerEvents: "none",
+    }}>
+      {/* Rotating Glow Ring */}
+      <div
+        style={{
+          position: "absolute",
+          inset: "-20px",
+          borderRadius: "14px",
+          background: `conic-gradient(transparent, ${aura.ringColor}, transparent)`,
+          animation: "rotateBorder 8s linear infinite",
+          opacity: intensity * 0.85,
+          filter: `blur(2px)`,
+          boxShadow: `0 0 35px 8px ${aura.glowColor}`,
+        }}
+      />
+
+      {/* Secondary Faster Ring */}
+      <div
+        style={{
+          position: "absolute",
+          inset: "-12px",
+          borderRadius: "12px",
+          background: `conic-gradient(transparent, #ffffff22, transparent)`,
+          animation: "rotateBorder 4s linear infinite reverse",
+          opacity: intensity * 0.6,
+        }}
+      />
+
+      {/* Inner Static Glow Frame */}
+      <div style={{
+        position: "absolute",
+        inset: "0",
+        border: `2px solid ${aura.ringColor}`,
+        borderRadius: "8px",
+        opacity: intensity * 0.4,
+        boxShadow: `0 0 25px 6px ${aura.glowColor}`,
+      }} />
+    </div>
+  );
+}
+
+// ── Left Side Accent Panel (Still keeping for detail) ───────────────────────
+function BeltPanel({ belt }: { belt: Belt }) {
+  const panel = BELT_PANEL[belt];
+  const W = 7;
+
+  const patternSVG: Record<string, string> = {
+    solid: "",
+    dashes: `<svg xmlns='http://www.w3.org/2000/svg' width='${W}' height='12'><rect x='0' y='0' width='${W}' height='7' fill='rgba(0,0,0,0.3)'/></svg>`,
+    double: `<svg xmlns='http://www.w3.org/2000/svg' width='${W}' height='1'><rect x='1' y='0' width='1' height='1' fill='rgba(255,255,255,0.3)'/><rect x='4' y='0' width='1' height='1' fill='rgba(255,255,255,0.3)'/></svg>`,
+    dots: `<svg xmlns='http://www.w3.org/2000/svg' width='${W}' height='8'><circle cx='3' cy='4' r='1.1' fill='rgba(255,255,255,0.3)'/></svg>`,
+    zigzag: `<svg xmlns='http://www.w3.org/2000/svg' width='${W}' height='8'><polyline points='0,4 3,0 6,4 3,8' fill='none' stroke='rgba(201,168,76,0.6)' stroke-width='1'/></svg>`,
+  };
+
+  const patternB64 = patternSVG[panel.pattern]
+    ? `url("data:image/svg+xml,${encodeURIComponent(patternSVG[panel.pattern])}")`
+    : "none";
+
+  return (
+    <div style={{
+      position: "absolute",
+      top: 0,
+      left: 0,
+      width: `${W}px`,
+      height: "100%",
+      borderRadius: "8px 0 0 8px",
+      background: panel.gradient,
+      boxShadow: `4px 0 20px 3px ${panel.glow}`,
+      overflow: "hidden",
+      zIndex: 1,
+    }}>
+      {panel.pattern !== "solid" && (
+        <div style={{
+          position: "absolute",
+          inset: 0,
+          backgroundImage: patternB64,
+          backgroundRepeat: "repeat-y",
+          backgroundSize: `${W}px auto`,
+          mixBlendMode: "overlay",
+        }} />
+      )}
+
+      {/* Spark Effects */}
+      {belt === "Black" && (
+        <div style={{
+          position: "absolute",
+          left: 0,
+          width: "100%",
+          height: "40px",
+          background: "linear-gradient(to bottom, transparent, rgba(245,213,118,0.95), transparent)",
+          animation: "panel-spark 2s linear infinite",
+        }} />
+      )}
+      {belt === "Yellow" && (
+        <div style={{
+          position: "absolute",
+          left: 0,
+          width: "100%",
+          height: "28px",
+          background: "linear-gradient(to bottom, transparent, rgba(255,255,255,0.7), transparent)",
+          animation: "panel-spark 1.6s linear infinite",
+          animationDelay: "0.3s",
+        }} />
+      )}
     </div>
   );
 }
@@ -101,11 +200,12 @@ function BeltPanel({ belt }: { belt: Belt; height: number }) {
 function BeltAvatar({ firstName, lastName, belt, photo }: { firstName: string; lastName: string; belt: Belt; photo?: string }) {
   const bc = BELT_COLORS[belt];
   const aura = BELT_AURA[belt];
-  const SIZE = 64;
+  const SIZE = 78;
 
   return (
     <>
       <style>{`
+        @keyframes rotateBorder { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
         @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
         @keyframes spin-reverse { from { transform: rotate(360deg); } to { transform: rotate(0deg); } }
         @keyframes aura-shimmer { 0%,100% { opacity:0.45; transform:translate(-50%,-50%) scale(1); } 50% { opacity:0.9; transform:translate(-50%,-50%) scale(1.05); } }
@@ -117,33 +217,74 @@ function BeltAvatar({ firstName, lastName, belt, photo }: { firstName: string; l
         @keyframes aura-rotate { 0% { transform:translate(-50%,-50%) rotate(0deg); } 100% { transform:translate(-50%,-50%) rotate(360deg); } }
         @keyframes aura-counter { 0% { transform:translate(-50%,-50%) rotate(0deg); opacity:0.35; } 50% { opacity:0.15; } 100% { transform:translate(-50%,-50%) rotate(-360deg); opacity:0.35; } }
         @keyframes sparks-orbit { 0% { transform:rotate(0deg) translateX(34px) scale(1); opacity:0.9; } 50% { transform:rotate(180deg) translateX(34px) scale(0.4); opacity:0.35; } 100% { transform:rotate(360deg) translateX(34px) scale(1); opacity:0.9; } }
-        @keyframes panel-spark { 0% { top: -30px; } 100% { top: 110%; } }
+        @keyframes panel-spark { 0% { transform: translateY(-150%); } 100% { transform: translateY(250%); } }
       `}</style>
 
-      <div style={{ position: "relative", width: `${SIZE + 16}px`, height: `${SIZE + 16}px`, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
-        <div style={{
-          position: "absolute", top: "50%", left: "50%", width: `${SIZE + 10}px`, height: `${SIZE + 10}px`, borderRadius: "50%",
-          border: belt === "Black" ? "2px solid transparent" : `2px solid ${aura.ringColor}`,
-          background: belt === "Black" ? `conic-gradient(${aura.ringColor} 0deg 55deg, transparent 55deg 110deg, ${aura.ringColor} 110deg 165deg, transparent 165deg 220deg, ${aura.ringColor} 220deg 275deg, transparent 275deg 330deg, ${aura.ringColor} 330deg 360deg)` : "transparent",
-          WebkitMask: belt === "Black" ? `radial-gradient(farthest-side, transparent calc(100% - 3px), #fff calc(100% - 3px))` : "none",
-          boxShadow: `0 0 8px 1px ${aura.glowColor}`, animationName: aura.animation,
-          animationDuration: belt === "White" ? "3s" : belt === "Yellow" ? "2s" : belt === "Green" ? "4s" : belt === "Blue" ? "1.4s" : belt === "Brown" ? "3.5s" : "4s",
-          animationTimingFunction: belt === "Blue" || belt === "Black" ? "linear" : "ease-in-out", animationIterationCount: "infinite",
-        }} />
+      <div style={{ position: "relative", width: `${SIZE + 32}px`, height: `${SIZE + 32}px`, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
 
-        {belt === "Blue" && <div style={{ position: "absolute", top: "50%", left: "50%", width: `${SIZE + 10}px`, height: `${SIZE + 10}px`, borderRadius: "50%", border: `1.5px solid ${aura.ringColor}`, opacity: 0, animationName: "aura-ripple", animationDuration: "1.4s", animationDelay: "0.7s", animationTimingFunction: "linear", animationIterationCount: "infinite" }} />}
-        {belt === "Black" && <div style={{ position: "absolute", top: "50%", left: "50%", width: `${SIZE + 6}px`, height: `${SIZE + 6}px`, borderRadius: "50%", border: "1px solid rgba(201,168,76,0.25)", animationName: "aura-counter", animationDuration: "6s", animationTimingFunction: "linear", animationIterationCount: "infinite" }} />}
-        {belt === "Black" && [0, 1, 2].map(i => (
-          <div key={i} style={{ position: "absolute", top: "50%", left: "50%", width: "3px", height: "3px", borderRadius: "50%", background: i === 0 ? "#c9a84c" : "#fff", animationName: "sparks-orbit", animationDuration: `${2.6 + i * 0.5}s`, animationDelay: `${i * 0.85}s`, animationTimingFunction: "linear", animationIterationCount: "infinite", transformOrigin: "0 0", marginLeft: "-1.5px", marginTop: "-1.5px" }} />
+        {/* Outer legendary frame - multiple glowing rings */}
+        {Array.from({ length: 5 }).map((_, i) => (
+          <div
+            key={i}
+            style={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              width: `${SIZE + 12 + i * 9}px`,
+              height: `${SIZE + 12 + i * 9}px`,
+              borderRadius: "50%",
+              border: `2.5px solid ${aura.ringColor}`,
+              opacity: 0.75 - i * 0.12,
+              transform: "translate(-50%, -50%)",
+              animationName: i % 2 === 0 ? aura.animation : "aura-counter",
+              animationDuration: `${2.8 + i * 0.7}s`,
+              animationTimingFunction: "linear",
+              animationIterationCount: "infinite",
+              boxShadow: `0 0 ${18 + i * 6}px ${aura.glowColor}`,
+            }}
+          />
         ))}
 
-        <div style={{ position: "absolute", top: "50%", left: "50%", width: `${SIZE + 4}px`, height: `${SIZE + 4}px`, borderRadius: "50%", boxShadow: `inset 0 0 6px 2px ${aura.glowColor}`, transform: "translate(-50%,-50%)", pointerEvents: "none", zIndex: 2 }} />
-        <div style={{ width: `${SIZE}px`, height: `${SIZE}px`, borderRadius: "50%", background: bc.bg, border: `2px solid ${bc.border}`, display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", position: "relative", zIndex: 1, flexShrink: 0 }}>
-          {photo
-            ? <img src={photo} alt={firstName} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-            : <span style={{ fontFamily: "var(--font-cinzel)", fontSize: "18px", fontWeight: 700, color: bc.text, letterSpacing: "1px" }}>{firstName[0]}{lastName[0]}</span>
-          }
+        {/* Core avatar */}
+        <div style={{
+          width: `${SIZE}px`,
+          height: `${SIZE}px`,
+          borderRadius: "50%",
+          background: bc.bg,
+          border: `3px solid ${bc.border}`,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          overflow: "hidden",
+          position: "relative",
+          zIndex: 2,
+          boxShadow: `inset 0 0 20px ${aura.glowColor}, 0 0 20px 6px rgba(0,0,0,0.7)`,
+        }}>
+          {photo ? (
+            <img src={photo} alt={firstName} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+          ) : (
+            <span style={{ fontFamily: "var(--font-cinzel)", fontSize: "24px", fontWeight: 700, color: bc.text, letterSpacing: "2px" }}>
+              {firstName[0]}{lastName[0]}
+            </span>
+          )}
         </div>
+
+        {/* Inner glow orb */}
+        <div style={{
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          width: `${SIZE - 8}px`,
+          height: `${SIZE - 8}px`,
+          borderRadius: "50%",
+          background: "transparent",
+          border: `1px solid ${aura.ringColor}`,
+          transform: "translate(-50%, -50%)",
+          zIndex: 3,
+          animation: "legendary-orb 2.2s ease-in-out infinite",
+          pointerEvents: "none",
+        }} />
+
       </div>
     </>
   );
@@ -156,6 +297,28 @@ function BeltBadge({ belt }: { belt: Belt }) {
       <span style={{ width: "8px", height: "8px", borderRadius: "50%", background: bc.text, opacity: 0.6 }} />
       {belt}
     </span>
+  );
+}
+
+// ── Legendary Frame + StudentCard ───────────────────────────────────────────
+function LegendaryFrame({ belt, isChampion }: { belt: Belt; isChampion: boolean }) {
+  const color = BELT_COLORS[belt].border;
+  const glow = BELT_AURA[belt].glowColor;
+
+  return (
+    <div style={{
+      position: "absolute",
+      inset: "-3px",
+      borderRadius: "8px",
+      background: `linear-gradient(135deg, ${color}, #c9a84c88, ${color})`,
+      padding: "3px",
+      zIndex: -1,
+      opacity: isChampion ? 0.95 : 0.7,
+      boxShadow: `0 0 30px 10px ${glow}`,
+      pointerEvents: "none",
+    }}>
+      <div style={{ position: "absolute", inset: "0", borderRadius: "5px", background: "#0a0a0a" }} />
+    </div>
   );
 }
 
@@ -186,8 +349,8 @@ function StudentCard({ student }: { student: Student }) {
       style={{
         background: "#0a0a0a", border: `1px solid ${student.isChampion ? glowColor : "#1e1e1e"}`, borderRadius: "4px",
         padding: "18px 20px 18px 26px", display: "flex", gap: "16px", position: "relative",
-        cursor: "default", overflow: "hidden", opacity: 0, visibility: "hidden", transform: "translateY(30px)",boxShadow: student.isChampion ? `inset 0 0 10px ${glowColor}40, 0 0 5px ${glowColor}20` : "none"
-       // starting position niche rakha hai
+        cursor: "default", overflow: "hidden", opacity: 0, visibility: "hidden", transform: "translateY(30px)", boxShadow: student.isChampion ? `inset 0 0 10px ${glowColor}40, 0 0 5px ${glowColor}20` : "none"
+        // starting position niche rakha hai
       }}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
@@ -201,14 +364,18 @@ function StudentCard({ student }: { student: Student }) {
         pointerEvents: "none",
         opacity: student.isChampion ? 0.8 : 0.2 // Champion ho to border zyada glow karega
       }} />
-      
-      <BeltPanel belt={student.belt} height={0} />
 
       {student.isChampion && (
         <div style={{ position: "absolute", top: "10px", right: "14px", fontFamily: "var(--font-montserrat)", fontSize: "9px", fontWeight: 700, letterSpacing: "2px", color: "#c9a84c", textTransform: "uppercase", border: `1px solid ${glowColor}`, pointerEvents: "none", borderRadius: "4px", boxShadow: `0 0 5px ${glowColor}30` }}>
           ★ Champion {student.championYear}
         </div>
       )}
+
+      <LegendaryRotatingBorder belt={student.belt} isChampion={student.isChampion} />
+      
+      <BeltPanel belt={student.belt} />
+
+      <LegendaryFrame belt={student.belt} isChampion={student.isChampion} />
 
       <BeltAvatar firstName={student.firstName} lastName={student.lastName} belt={student.belt} photo={student.photo} />
 
@@ -281,20 +448,20 @@ export default function StudentPage() {
     );
 
     tl.fromTo(filterRef.current, { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: 0.8 }, "-=0.7");
-    tl.fromTo(".student-card", 
-      { 
-        opacity: 0, 
-        y: 30, 
+    tl.fromTo(".student-card",
+      {
+        opacity: 0,
+        y: 30,
         scale: 0.98,
         autoAlpha: 0 // Shuruat me visibility: hidden rakhega
       },
-      { 
-        opacity: 1, 
-        y: 0, 
+      {
+        opacity: 1,
+        y: 0,
         scale: 1,
         autoAlpha: 1, // Animate hote hi visibility: visible kar dega
-        duration: 0.7, 
-        stagger: 0.12, 
+        duration: 0.7,
+        stagger: 0.12,
         ease: "power2.out",
         onComplete: () => {
           ScrollTrigger.refresh();

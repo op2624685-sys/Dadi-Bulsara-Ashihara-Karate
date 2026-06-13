@@ -1,8 +1,8 @@
 "use client";
-
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link"; // Next.js Link import kiya
+import { usePathname } from "next/navigation"; // Active route detect karne ke liye hook
 import gsap from "gsap";
-import ScrollTrigger from "gsap/ScrollTrigger";
 
 const NAV_LINKS = [
   { label: "Home", href: "/" },
@@ -40,10 +40,11 @@ const NOTIFICATIONS = [
 export default function Navbar() {
   const navRef = useRef<HTMLElement>(null);
   const logoRef = useRef<HTMLDivElement>(null);
+  const pathname = usePathname(); // Yeh check karega current URL kya hai
+
   const [scrolled, setScrolled] = useState(false);
   const [notifOpen, setNotifOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [activeLink, setActiveLink] = useState("/");
   const [notifications, setNotifications] = useState(NOTIFICATIONS);
   const notifRef = useRef<HTMLDivElement>(null);
   const unreadCount = notifications.filter((n) => n.unread).length;
@@ -122,22 +123,21 @@ export default function Navbar() {
 
           {/* ── Desktop Nav Links ── */}
           <ul className="navbar__links" role="list">
-            {NAV_LINKS.map((link) => (
-              <li key={link.href}>
-                <a
-                  href={link.href}
-                  className={`nav-link ${activeLink === link.href ? "nav-link--active" : ""}`}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setActiveLink(link.href);
-                  }}
-                  aria-current={activeLink === link.href ? "page" : undefined}
-                >
-                  {link.label}
-                  <span className="nav-link__underline" aria-hidden="true" />
-                </a>
-              </li>
-            ))}
+            {NAV_LINKS.map((link) => {
+              const isActive = pathname === link.href;
+              return (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className={`nav-link ${isActive ? "nav-link--active" : ""}`}
+                    aria-current={isActive ? "page" : undefined}
+                  >
+                    {link.label}
+                    <span className="nav-link__underline" aria-hidden="true" />
+                  </Link>
+                </li>
+              );
+            })}
           </ul>
 
           {/* ── Right Actions ── */}
@@ -200,16 +200,16 @@ export default function Navbar() {
                     ))}
                   </ul>
                   <div className="notif-footer">
-                    <a href="/notifications" className="notif-all">
+                    <Link href="/notifications" className="notif-all">
                       View all notifications
-                    </a>
+                    </Link>
                   </div>
                 </div>
               )}
             </div>
 
             {/* Register Now CTA */}
-            <a href="/register" className="register-btn">
+            <Link href="/signup" className="register-btn">
               <span>Register Now</span>
               <svg
                 width="12"
@@ -226,7 +226,7 @@ export default function Navbar() {
                   strokeLinejoin="round"
                 />
               </svg>
-            </a>
+            </Link>
 
             {/* Hamburger (mobile) */}
             <button
@@ -245,29 +245,28 @@ export default function Navbar() {
         {/* ── Mobile Menu ── */}
         <div className={`mobile-menu ${mobileOpen ? "mobile-menu--open" : ""}`}>
           <ul role="list">
-            {NAV_LINKS.map((link) => (
-              <li key={link.href}>
-                <a
-                  href={link.href}
-                  className={`mobile-link ${activeLink === link.href ? "mobile-link--active" : ""}`}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setActiveLink(link.href);
-                    setMobileOpen(false);
-                  }}
-                >
-                  {link.label}
-                </a>
-              </li>
-            ))}
+            {NAV_LINKS.map((link) => {
+              const isActive = pathname === link.href;
+              return (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className={`mobile-link ${isActive ? "mobile-link--active" : ""}`}
+                    onClick={() => setMobileOpen(false)} // Mobile menu close handler bina preventDefault ke
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              );
+            })}
           </ul>
-          <a href="/register" className="mobile-register">
+          <Link href="/sigup" className="mobile-register" onClick={() => setMobileOpen(false)}>
             Register Now
-          </a>
+          </Link>
         </div>
       </nav>
 
-      <style jsx>{`
+<style jsx>{`
         /* ═══════════════════════════════════════
            NAVBAR BASE (Floating Glassmorphism)
         ═══════════════════════════════════════ */
@@ -290,7 +289,6 @@ export default function Navbar() {
           box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
         }
 
-        /* Scrolled state — shifts slightly and shrinks width margin */
         .navbar--scrolled {
           top: 8px;
           width: calc(100% - 1rem);
@@ -315,9 +313,7 @@ export default function Navbar() {
           height: 58px;
         }
 
-        /* ═══════════════════════════════════════
-           LOGO
-        ═══════════════════════════════════════ */
+        /* ── LOGO ── */
         .navbar__logo {
           display: flex;
           align-items: center;
@@ -360,9 +356,7 @@ export default function Navbar() {
           font-weight: 400;
         }
 
-        /* ═══════════════════════════════════════
-           NAV LINKS (Modern Sans-Serif)
-        ═══════════════════════════════════════ */
+        /* ── NAV LINKS (:global wrapper add kiya Next.js Links ke liye) ── */
         .navbar__links {
           display: flex;
           align-items: center;
@@ -372,7 +366,7 @@ export default function Navbar() {
           padding: 0;
         }
 
-        .nav-link {
+        .navbar__links :global(.nav-link) {
           position: relative;
           display: inline-flex;
           flex-direction: column;
@@ -389,16 +383,15 @@ export default function Navbar() {
           white-space: nowrap;
         }
 
-        .nav-link:hover {
+        .navbar__links :global(.nav-link:hover) {
           color: #fff;
         }
 
-        .nav-link--active {
+        .navbar__links :global(.nav-link--active) {
           color: #BE0027;
         }
 
-        /* Subtle modern underline */
-        .nav-link__underline {
+        .navbar__links :global(.nav-link__underline) {
           position: absolute;
           bottom: 0px;
           left: 50%;
@@ -411,14 +404,12 @@ export default function Navbar() {
           border-radius: 1px;
         }
 
-        .nav-link:hover .nav-link__underline,
-        .nav-link--active .nav-link__underline {
+        .navbar__links :global(.nav-link:hover .nav-link__underline),
+        .navbar__links :global(.nav-link--active .nav-link__underline) {
           transform: translateX(-50%) scaleX(1);
         }
 
-        /* ═══════════════════════════════════════
-           RIGHT ACTIONS
-        ═══════════════════════════════════════ */
+        /* ── RIGHT ACTIONS ── */
         .navbar__actions {
           display: flex;
           align-items: center;
@@ -426,7 +417,6 @@ export default function Navbar() {
           flex-shrink: 0;
         }
 
-        /* ── Notification Bell ── */
         .notif-wrapper {
           position: relative;
         }
@@ -473,7 +463,6 @@ export default function Navbar() {
           animation: badgePulse 2s ease-in-out infinite;
         }
 
-        /* ── Notification Dropdown ── */
         .notif-dropdown {
           position: absolute;
           top: calc(100% + 14px);
@@ -487,6 +476,11 @@ export default function Navbar() {
           box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
           animation: dropdownIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
           overflow: hidden;
+        }
+
+        .navbar__actions :global(.notif-dropdown a) {
+          color: inherit;
+          text-decoration: none;
         }
 
         .notif-header {
@@ -598,7 +592,7 @@ export default function Navbar() {
           text-align: center;
         }
 
-        .notif-all {
+        .navbar__actions :global(.notif-all) {
           font-family: var(--font-inter), "Inter", sans-serif;
           font-size: 0.68rem;
           font-weight: 600;
@@ -608,12 +602,12 @@ export default function Navbar() {
           transition: color 0.2s ease;
         }
 
-        .notif-all:hover {
+        .navbar__actions :global(.notif-all:hover) {
           color: #BE0027;
         }
 
-        /* ── Register Button ── */
-        .register-btn {
+        /* ── REGISTER BUTTON ── */
+        .navbar__actions :global(.register-btn) {
           display: inline-flex;
           align-items: center;
           gap: 0.5rem;
@@ -633,25 +627,25 @@ export default function Navbar() {
           box-shadow: 0 4px 12px rgba(190, 0, 39, 0.2);
         }
 
-        .register-btn:hover {
+        .navbar__actions :global(.register-btn:hover) {
           background: linear-gradient(135deg, #e01235, #BE0027);
           box-shadow: 0 6px 20px rgba(190, 0, 39, 0.35);
           transform: translateY(-1px);
         }
 
-        .register-btn:active {
+        .navbar__actions :global(.register-btn:active) {
           transform: scale(0.97) translateY(0);
         }
 
-        .register-btn svg {
+        .navbar__actions :global(.register-btn svg) {
           transition: transform 0.25s ease;
         }
 
-        .register-btn:hover svg {
+        .navbar__actions :global(.register-btn:hover svg) {
           transform: translate(2px, -2px);
         }
 
-        /* ── Hamburger ── */
+        /* ── HAMBURGER ── */
         .hamburger {
           display: none;
           flex-direction: column;
@@ -722,7 +716,7 @@ export default function Navbar() {
           margin: 0;
         }
 
-        .mobile-link {
+        .mobile-menu :global(.mobile-link) {
           display: block;
           padding: 0.9rem 2.25rem;
           font-family: var(--font-inter), "Inter", sans-serif;
@@ -736,19 +730,19 @@ export default function Navbar() {
           transition: all 0.25s ease;
         }
 
-        .mobile-link:hover,
-        .mobile-link--active {
+        .mobile-menu :global(.mobile-link:hover),
+        .mobile-menu :global(.mobile-link--active) {
           color: #fff;
           padding-left: 2.75rem;
           background: rgba(255, 255, 255, 0.02);
         }
 
-        .mobile-link--active {
+        .mobile-menu :global(.mobile-link--active) {
           color: #BE0027;
           border-left: 3px solid #BE0027;
         }
 
-        .mobile-register {
+        .mobile-menu :global(.mobile-register) {
           display: inline-flex;
           margin: 1.5rem 2.25rem 0;
           font-family: var(--font-inter), "Inter", sans-serif;
@@ -767,7 +761,7 @@ export default function Navbar() {
           box-shadow: 0 4px 15px rgba(190, 0, 39, 0.25);
         }
 
-        .mobile-register:hover {
+        .mobile-menu :global(.mobile-register:hover) {
           background: linear-gradient(135deg, #e01235, #BE0027);
         }
 
@@ -790,7 +784,7 @@ export default function Navbar() {
             display: none;
           }
 
-          .register-btn {
+          .navbar__actions :global(.register-btn) {
             display: none;
           }
 
@@ -825,9 +819,7 @@ export default function Navbar() {
           }
         }
 
-        /* ═══════════════════════════════════════
-           ANIMATIONS
-        ═══════════════════════════════════════ */
+        /* ── ANIMATIONS ── */
         @keyframes badgePulse {
           0%, 100% { box-shadow: 0 0 0 0 rgba(200, 16, 46, 0.6); }
           50% { box-shadow: 0 0 0 4px rgba(200, 16, 46, 0); }

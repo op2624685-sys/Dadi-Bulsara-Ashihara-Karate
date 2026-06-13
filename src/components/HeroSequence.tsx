@@ -9,6 +9,7 @@ import {
 import { useScrollFrame } from "@/hooks/useScrollFrame";
 import { TOTAL_FRAMES } from "@/hooks/useFramePreloader";
 import HeroOverlayText from "./HeroOverlayText";
+import { useLenis } from "@/components/Lenisprovider";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -201,16 +202,34 @@ export default function HeroSequence({ frames, visible }: HeroSequenceProps) {
     stopIdle();
   }, [stopIdle]);
 
+  // ── Idle detection via Lenis scroll event ────────────────────────────────
+  // Lenis fires 'scroll' on every virtual scroll tick — more reliable than
+  // window 'scroll' which can miss events when Lenis is driving the position.
+  const lenis = useLenis();
+
   useEffect(() => {
     if (!visible) return;
+
     const onScroll = () => { cancelIdle(); scheduleIdle(); };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    scheduleIdle();
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      cancelIdle();
-    };
-  }, [visible, cancelIdle, scheduleIdle]);
+
+    if (lenis) {
+      // Lenis is available — subscribe to its scroll event
+      lenis.on("scroll", onScroll);
+      scheduleIdle();
+      return () => {
+        lenis.off("scroll", onScroll);
+        cancelIdle();
+      };
+    } else {
+      // Fallback: Lenis not yet initialised, use native scroll
+      window.addEventListener("scroll", onScroll, { passive: true });
+      scheduleIdle();
+      return () => {
+        window.removeEventListener("scroll", onScroll);
+        cancelIdle();
+      };
+    }
+  }, [visible, lenis, cancelIdle, scheduleIdle]);
 
   // ── Scroll-driven frame updates ───────────────────────────────────────────
   const handleFrame = useCallback(

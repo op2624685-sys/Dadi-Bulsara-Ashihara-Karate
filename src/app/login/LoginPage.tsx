@@ -22,14 +22,14 @@ export default function LoginPage() {
 
   // GSAP animation refs
   const containerRef = useRef<HTMLDivElement>(null);
-  const leftRef      = useRef<HTMLDivElement>(null);
-  const rightRef     = useRef<HTMLDivElement>(null);
-  const logoRef      = useRef<HTMLDivElement>(null);
-  const h1Ref        = useRef<HTMLHeadingElement>(null);
-  const subRef       = useRef<HTMLParagraphElement>(null);
-  const credoRefs    = useRef<(HTMLDivElement | null)[]>([]);
-  const fieldRefs    = useRef<(HTMLDivElement | null)[]>([]);
-  const btnRef       = useRef<HTMLButtonElement>(null);
+  const leftRef = useRef<HTMLDivElement>(null);
+  const rightRef = useRef<HTMLDivElement>(null);
+  const logoRef = useRef<HTMLDivElement>(null);
+  const h1Ref = useRef<HTMLHeadingElement>(null);
+  const subRef = useRef<HTMLParagraphElement>(null);
+  const credoRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const fieldRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const btnRef = useRef<HTMLButtonElement>(null);
 
   // ── Entrance Animation (Matches Signup Exactly) ───────────────────────────
   useEffect(() => {
@@ -37,7 +37,7 @@ export default function LoginPage() {
       const tl = gsap.timeline({ defaults: { ease: "power4.out" } });
 
       tl.fromTo([leftRef.current, rightRef.current],
-        { y: 30, opacity: 0 }, 
+        { y: 30, opacity: 0 },
         { y: 0, opacity: 1, duration: 1, stagger: 0.15 }
       );
       tl.fromTo(logoRef.current,
@@ -61,7 +61,7 @@ export default function LoginPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitted(true);
-    
+
     // Premium 1.05 Pop scale interaction on submit
     gsap.timeline()
       .to(btnRef.current, { scale: 1.05, duration: 0.1 })
@@ -74,7 +74,7 @@ export default function LoginPage() {
 
   return (
     <div ref={containerRef} className="relative w-full min-h-screen flex items-center justify-center bg-gradient-to-tr from-[#060606] via-[#0c0c0c] to-[#060606] mt-[72px] p-6 md:p-12 overflow-hidden selection:bg-[#BE0027]/30">
-      
+
       {/* Ambient Glows */}
       <div className="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-[#BE0027]/5 blur-[140px] rounded-full pointer-events-none" />
       <div className="absolute bottom-1/4 right-1/4 translate-x-1/2 translate-y-1/2 w-[500px] h-[500px] bg-[#BE0027]/5 blur-[160px] rounded-full pointer-events-none" />
@@ -99,7 +99,9 @@ export default function LoginPage() {
               <div className="w-14 h-14 border border-[#BE0027]/40 rounded-xl flex items-center justify-center bg-black/60 shadow-[0_0_25px_rgba(190,0,39,0.15)]">
                 <svg width="32" height="32" viewBox="0 0 36 36" fill="none">
                   <polygon points="18,2 34,10 34,26 18,34 2,26 2,10" stroke="#BE0027" strokeWidth="2" fill="none" />
-                  <text x="18" y="23" textAnchor="middle" fontSize="13" fontFamily="serif" fontWeight="bold" fill="#BE0027">DB</text>
+                  <text x="18" y="23" textAnchor="middle" fontSize="11" fontFamily="sans-serif" fontWeight="bold" fill="#BE0027">
+                    DB
+                  </text>
                 </svg>
               </div>
               <div className="flex flex-col leading-tight items-center">
@@ -164,7 +166,7 @@ export default function LoginPage() {
         >
           {/* Matched Width: max-w-[620px] */}
           <div className="w-full max-w-[620px] mx-auto my-auto flex flex-col justify-center h-full">
-            
+
             {/* Mobile Header */}
             <div className="flex items-center justify-between mb-8 lg:hidden">
               <div className="flex items-center gap-2.5">
@@ -190,7 +192,7 @@ export default function LoginPage() {
 
             {/* Login Inputs with matching spacing (px-7 py-4.5 text-base) */}
             <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-6">
-              
+
               {/* Email Address */}
               <div ref={(el) => { fieldRefs.current[1] = el; }} className="flex flex-col gap-2">
                 <label htmlFor="email" className="text-sm font-medium text-white/70 tracking-wide font-inter ml-1">Email address</label>

@@ -10,7 +10,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 type Belt =
-  | "White" | "Yellow" | "Orange" | "Green"
+  | "White" | "Yellow" | "Green"
   | "Blue" | "Brown" | "Black";
 
 interface Student {
@@ -31,15 +31,14 @@ interface Student {
 // ── Belt colour system ────────────────────────────────────────────────────────
 const BELT_COLORS: Record<Belt, { bg: string; text: string; border: string }> = {
   White: { bg: "#f5f5f5", text: "#111", border: "#ccc" },
-  Yellow: { bg: "#f5c518", text: "#111", border: "#d4a800" },
-  Orange: { bg: "#e8650a", text: "#fff", border: "#c45508" },
-  Green: { bg: "#2d6a2d", text: "#fff", border: "#1e4a1e" },
   Blue: { bg: "#1a3a6e", text: "#fff", border: "#0f2548" },
+  Yellow: { bg: "#f5c518", text: "#111", border: "#d4a800" },
+  Green: { bg: "#2d6a2d", text: "#fff", border: "#1e4a1e" },
   Brown: { bg: "#5c3317", text: "#fff", border: "#3e2210" },
   Black: { bg: "#111", text: "#fff", border: "#333" },
 };
 
-const BELT_ORDER: Belt[] = ["White", "Yellow", "Orange", "Green", "Blue", "Brown", "Black"];
+const BELT_ORDER: Belt[] = ["White","Blue", "Yellow", "Green", "Brown", "Black"];
 
 // ── Sample data ───────────────────────────────────────────────────────────────
 const SAMPLE_STUDENTS: Student[] = [
@@ -49,7 +48,7 @@ const SAMPLE_STUDENTS: Student[] = [
   { id: 4, firstName: "Sneha", lastName: "Patil", age: 17, belt: "Black", state: "Maharashtra", sensei: "Dadi Bulsara", campsCount: 8, eventsCount: 15, isChampion: true, championYear: 2024 },
   { id: 5, firstName: "Vikram", lastName: "Singh", age: 13, belt: "Green", state: "Punjab", sensei: "Raj Nair", campsCount: 2, eventsCount: 4, isChampion: false },
   { id: 6, firstName: "Ananya", lastName: "Iyer", age: 15, belt: "Brown", state: "Tamil Nadu", sensei: "Dadi Bulsara", campsCount: 5, eventsCount: 9, isChampion: false },
-  { id: 7, firstName: "Dev", lastName: "Kapoor", age: 11, belt: "Orange", state: "Delhi", sensei: "Raj Nair", campsCount: 1, eventsCount: 2, isChampion: false },
+  { id: 7, firstName: "Dev", lastName: "Kapoor", age: 11, belt: "Green", state: "Delhi", sensei: "Raj Nair", campsCount: 1, eventsCount: 2, isChampion: false },
   { id: 8, firstName: "Meera", lastName: "Nair", age: 18, belt: "Black", state: "Kerala", sensei: "Dadi Bulsara", campsCount: 9, eventsCount: 18, isChampion: true, championYear: 2022 },
   { id: 9, firstName: "Karan", lastName: "Joshi", age: 14, belt: "Blue", state: "Rajasthan", sensei: "Raj Nair", campsCount: 3, eventsCount: 6, isChampion: false },
   { id: 10, firstName: "Ishaan", lastName: "Reddy", age: 16, belt: "Brown", state: "Andhra", sensei: "Dadi Bulsara", campsCount: 4, eventsCount: 7, isChampion: false },
@@ -62,20 +61,18 @@ const ALL_STATES = [...new Set(SAMPLE_STUDENTS.map(s => s.state))].sort();
 // ── Belt avatar animation config ─────────────────────────────────────────────
 const BELT_AURA: Record<Belt, { ringColor: string; glowColor: string; animation: string }> = {
   White: { ringColor: "rgba(255,255,255,0.4)", glowColor: "rgba(255,255,255,0.1)", animation: "aura-shimmer" },
-  Yellow: { ringColor: "#f5c518", glowColor: "rgba(245,197,24,0.3)", animation: "aura-pulse" },
-  Orange: { ringColor: "#e8650a", glowColor: "rgba(232,101,10,0.4)", animation: "aura-ember" },
-  Green: { ringColor: "#3a8c3a", glowColor: "rgba(58,140,58,0.3)", animation: "aura-breathe" },
   Blue: { ringColor: "#2255aa", glowColor: "rgba(34,85,170,0.4)", animation: "aura-ripple" },
+  Yellow: { ringColor: "#f5c518", glowColor: "rgba(245,197,24,0.3)", animation: "aura-pulse" },
+  Green: { ringColor: "#3a8c3a", glowColor: "rgba(58,140,58,0.3)", animation: "aura-breathe" },
   Brown: { ringColor: "#7a4520", glowColor: "rgba(122,69,32,0.3)", animation: "aura-earthpulse" },
   Black: { ringColor: "#555", glowColor: "rgba(180,180,180,0.2)", animation: "aura-rotate" },
 };
 
 const BELT_PANEL: Record<Belt, { gradient: string; pattern: string; glow: string }> = {
   White: { gradient: "linear-gradient(to bottom, #e8e8e8, #aaa, #e8e8e8)", pattern: "solid", glow: "rgba(255,255,255,0.1)" },
-  Yellow: { gradient: "linear-gradient(to bottom, #f5c518, #d4a800, #f5c518)", pattern: "dashes", glow: "rgba(245,197,24,0.25)" },
-  Orange: { gradient: "linear-gradient(to bottom, #e8650a, #ff8c42, #e8650a)", pattern: "dashes", glow: "rgba(232,101,10,0.35)" },
-  Green: { gradient: "linear-gradient(to bottom, #1e4a1e, #3a8c3a, #1e4a1e)", pattern: "double", glow: "rgba(58,140,58,0.2)" },
   Blue: { gradient: "linear-gradient(to bottom, #0f2548, #2255aa, #0f2548)", pattern: "double", glow: "rgba(34,85,170,0.3)" },
+  Yellow: { gradient: "linear-gradient(to bottom, #f5c518, #d4a800, #f5c518)", pattern: "dashes", glow: "rgba(245,197,24,0.25)" },
+  Green: { gradient: "linear-gradient(to bottom, #1e4a1e, #3a8c3a, #1e4a1e)", pattern: "double", glow: "rgba(58,140,58,0.2)" },
   Brown: { gradient: "linear-gradient(to bottom, #3e2210, #7a4520, #3e2210)", pattern: "dots", glow: "rgba(122,69,32,0.25)" },
   Black: { gradient: "linear-gradient(to bottom, #111, #555, #c9a84c, #555, #111)", pattern: "zigzag", glow: "rgba(201,168,76,0.25)" },
 };
@@ -96,7 +93,7 @@ function BeltPanel({ belt }: { belt: Belt; height: number }) {
     <div style={{ position: "absolute", top: 0, left: 0, width: `${W}px`, height: "100%", borderRadius: "4px 0 0 4px", background: panel.gradient, boxShadow: `2px 0 12px 0 ${panel.glow}`, overflow: "hidden" }}>
       {panel.pattern !== "solid" && <div style={{ position: "absolute", inset: 0, backgroundImage: patternB64, backgroundRepeat: "repeat-y", backgroundSize: `${W}px auto`, mixBlendMode: "overlay" }} />}
       {belt === "Black" && <div style={{ position: "absolute", left: 0, width: "100%", height: "30px", background: "linear-gradient(to bottom, transparent, rgba(201,168,76,0.8), transparent)", animationName: "panel-spark", animationDuration: "2.4s", animationTimingFunction: "ease-in-out", animationIterationCount: "infinite" }} />}
-      {(belt === "Yellow" || belt === "Orange") && <div style={{ position: "absolute", left: 0, width: "100%", height: "20px", background: `linear-gradient(to bottom, transparent, rgba(255,255,255,0.5), transparent)`, animationName: "panel-spark", animationDuration: "1.8s", animationTimingFunction: "ease-in-out", animationIterationCount: "infinite", animationDelay: "0.3s" }} />}
+      {belt === "Yellow" && <div style={{ position: "absolute", left: 0, width: "100%", height: "20px", background: `linear-gradient(to bottom, transparent, rgba(255,255,255,0.5), transparent)`, animationName: "panel-spark", animationDuration: "1.8s", animationTimingFunction: "ease-in-out", animationIterationCount: "infinite", animationDelay: "0.3s" }} />}
     </div>
   );
 }
@@ -109,6 +106,8 @@ function BeltAvatar({ firstName, lastName, belt, photo }: { firstName: string; l
   return (
     <>
       <style>{`
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @keyframes spin-reverse { from { transform: rotate(360deg); } to { transform: rotate(0deg); } }
         @keyframes aura-shimmer { 0%,100% { opacity:0.45; transform:translate(-50%,-50%) scale(1); } 50% { opacity:0.9; transform:translate(-50%,-50%) scale(1.05); } }
         @keyframes aura-pulse { 0%,100% { opacity:0.9; transform:translate(-50%,-50%) scale(1); } 50% { opacity:0.45; transform:translate(-50%,-50%) scale(1.07); } }
         @keyframes aura-ember { 0% { opacity:0.9; transform:translate(-50%,-50%) scale(1) rotate(0deg); } 40% { opacity:0.6; transform:translate(-50%,-50%) scale(1.05) rotate(4deg); } 70% { opacity:1; transform:translate(-50%,-50%) scale(0.97) rotate(-3deg); } 100% { opacity:0.9; transform:translate(-50%,-50%) scale(1) rotate(0deg); } }
@@ -128,7 +127,7 @@ function BeltAvatar({ firstName, lastName, belt, photo }: { firstName: string; l
           background: belt === "Black" ? `conic-gradient(${aura.ringColor} 0deg 55deg, transparent 55deg 110deg, ${aura.ringColor} 110deg 165deg, transparent 165deg 220deg, ${aura.ringColor} 220deg 275deg, transparent 275deg 330deg, ${aura.ringColor} 330deg 360deg)` : "transparent",
           WebkitMask: belt === "Black" ? `radial-gradient(farthest-side, transparent calc(100% - 3px), #fff calc(100% - 3px))` : "none",
           boxShadow: `0 0 8px 1px ${aura.glowColor}`, animationName: aura.animation,
-          animationDuration: belt === "White" ? "3s" : belt === "Yellow" ? "2s" : belt === "Orange" ? "1.8s" : belt === "Green" ? "4s" : belt === "Blue" ? "1.4s" : belt === "Brown" ? "3.5s" : "4s",
+          animationDuration: belt === "White" ? "3s" : belt === "Yellow" ? "2s" : belt === "Green" ? "4s" : belt === "Blue" ? "1.4s" : belt === "Brown" ? "3.5s" : "4s",
           animationTimingFunction: belt === "Blue" || belt === "Black" ? "linear" : "ease-in-out", animationIterationCount: "infinite",
         }} />
 
@@ -163,11 +162,13 @@ function BeltBadge({ belt }: { belt: Belt }) {
 // ── Student Card ──────────────────────────────────────────────────────────────
 function StudentCard({ student }: { student: Student }) {
   const cardRef = useRef<HTMLDivElement>(null);
+  const glowColor = BELT_COLORS[student.belt].border;
 
   const handleMouseEnter = () => {
     gsap.to(cardRef.current, {
       borderColor: "#3a3a3a", x: 6, backgroundColor: "#0f0f0f",
-      boxShadow: "0 8px 24px rgba(0,0,0,0.5)", duration: 0.3, ease: "power2.out"
+      boxShadow: `0 8px 24px rgba(0,0,0,0.5), 0 0 10px ${glowColor}20`, // Glow effect on hover
+      duration: 0.3, ease: "power2.out"
     });
   };
 
@@ -183,17 +184,28 @@ function StudentCard({ student }: { student: Student }) {
       ref={cardRef}
       className="student-card"
       style={{
-        background: "#0a0a0a", border: "1px solid #1e1e1e", borderRadius: "4px",
+        background: "#0a0a0a", border: `1px solid ${student.isChampion ? glowColor : "#1e1e1e"}`, borderRadius: "4px",
         padding: "18px 20px 18px 26px", display: "flex", gap: "16px", position: "relative",
-        cursor: "default", overflow: "hidden", opacity: 0, visibility: "hidden", transform: "translateY(30px)" // starting position niche rakha hai
+        cursor: "default", overflow: "hidden", opacity: 0, visibility: "hidden", transform: "translateY(30px)",boxShadow: student.isChampion ? `inset 0 0 10px ${glowColor}40, 0 0 5px ${glowColor}20` : "none"
+       // starting position niche rakha hai
       }}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
+      {/* --- LEGENDARY BORDER EFFECT --- */}
+      <div style={{
+        position: "absolute", inset: 0, padding: "1px", borderRadius: "4px",
+        background: `linear-gradient(135deg, ${glowColor}, transparent 50%, ${glowColor})`,
+        WebkitMask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+        WebkitMaskComposite: "xor",
+        pointerEvents: "none",
+        opacity: student.isChampion ? 0.8 : 0.2 // Champion ho to border zyada glow karega
+      }} />
+      
       <BeltPanel belt={student.belt} height={0} />
 
       {student.isChampion && (
-        <div style={{ position: "absolute", top: "10px", right: "14px", fontFamily: "var(--font-montserrat)", fontSize: "9px", fontWeight: 700, letterSpacing: "2px", color: "#c9a84c", textTransform: "uppercase" }}>
+        <div style={{ position: "absolute", top: "10px", right: "14px", fontFamily: "var(--font-montserrat)", fontSize: "9px", fontWeight: 700, letterSpacing: "2px", color: "#c9a84c", textTransform: "uppercase", border: `1px solid ${glowColor}`, pointerEvents: "none", borderRadius: "4px", boxShadow: `0 0 5px ${glowColor}30` }}>
           ★ Champion {student.championYear}
         </div>
       )}

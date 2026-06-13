@@ -99,7 +99,7 @@ export default function SignupPage() {
   const strength = Math.min(Math.floor(form.password.length / 3), 4);
 
   return (
-    <div ref={containerRef} className="relative w-full min-h-[calc(100vh-72px)] flex items-center justify-center bg-gradient-to-tr from-[#060606] via-[#0c0c0c] to-[#060606] mt-[72px] p-6 md:p-12 overflow-hidden selection:bg-[#BE0027]/30">
+    <div ref={containerRef} className="relative w-full min-h-screen flex items-center justify-center bg-gradient-to-tr from-[#060606] via-[#0c0c0c] to-[#060606] mt-[72px] p-6 md:p-12 overflow-hidden selection:bg-[#BE0027]/30">
       
       {/* Ambient Glows */}
       <div className="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-[#BE0027]/5 blur-[140px] rounded-full pointer-events-none" />
@@ -125,7 +125,7 @@ export default function SignupPage() {
               <div className="w-14 h-14 border border-[#BE0027]/40 rounded-xl flex items-center justify-center bg-black/60 shadow-[0_0_25px_rgba(190,0,39,0.15)]">
                 <svg width="32" height="32" viewBox="0 0 36 36" fill="none">
                   <polygon points="18,2 34,10 34,26 18,34 2,26 2,10" stroke="#BE0027" strokeWidth="2" fill="none" />
-                  <text x="18" y="23" textAnchor="middle" fontSize="13" fontFamily="serif" fontWeight="bold" fill="#BE0027">芦</text>
+                  <text x="18" y="23" textAnchor="middle" fontSize="13" fontFamily="serif" fontWeight="bold" fill="#BE0027">DB</text>
                 </svg>
               </div>
               <div className="flex flex-col leading-tight items-center">

@@ -185,7 +185,7 @@ function StudentCard({ student }: { student: Student }) {
       style={{
         background: "#0a0a0a", border: "1px solid #1e1e1e", borderRadius: "4px",
         padding: "18px 20px 18px 26px", display: "flex", gap: "16px", position: "relative",
-        cursor: "default", overflow: "hidden", opacity: 0, transform: "translateY(30px)" // starting position niche rakha hai
+        cursor: "default", overflow: "hidden", opacity: 0, visibility: "hidden", transform: "translateY(30px)" // starting position niche rakha hai
       }}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
@@ -269,6 +269,27 @@ export default function StudentPage() {
     );
 
     tl.fromTo(filterRef.current, { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: 0.8 }, "-=0.7");
+    tl.fromTo(".student-card", 
+      { 
+        opacity: 0, 
+        y: 30, 
+        scale: 0.98,
+        autoAlpha: 0 // Shuruat me visibility: hidden rakhega
+      },
+      { 
+        opacity: 1, 
+        y: 0, 
+        scale: 1,
+        autoAlpha: 1, // Animate hote hi visibility: visible kar dega
+        duration: 0.7, 
+        stagger: 0.12, 
+        ease: "power2.out",
+        onComplete: () => {
+          ScrollTrigger.refresh();
+        }
+      },
+      "-=0.4"
+    );
   }, []);
 
   // 2. ScrollTrigger + Dynamic Filtering Setup

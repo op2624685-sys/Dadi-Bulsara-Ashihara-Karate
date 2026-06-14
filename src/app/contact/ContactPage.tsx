@@ -150,13 +150,13 @@ export default function ContactPage() {
     return (
         <div
             ref={containerRef}
-            className="relative w-full min-h-screen mt-[72px] bg-gradient-to-tr from-[#060606] via-[#0c0c0c] to-[#060606] overflow-hidden selection:bg-[#BE0027]/30"
+            className="relative w-full min-h-screen mt-18 bg-gradient-to-tr from-[#060606] via-[#0c0c0c] to-[#060606] overflow-hidden selection:bg-[#BE0027]/30"
         >
             {/* ── Ambient Glows ── */}
-            <div className="fixed top-0 left-1/4 w-[600px] h-[600px] bg-[#BE0027]/4 blur-[160px] rounded-full pointer-events-none" />
-            <div className="fixed bottom-0 right-1/4 w-[600px] h-[600px] bg-[#BE0027]/3 blur-[180px] rounded-full pointer-events-none" />
+            <div className="fixed top-0 left-1/4 w-[600px] h-[800px] bg-[#BE0027]/4 blur-[160px] rounded-full pointer-events-none" />
+            <div className="fixed bottom-0 right-1/4 w-[600px] h-[800px] bg-[#BE0027]/3 blur-[180px] rounded-full pointer-events-none" />
 
-            <div className="relative z-10 max-w-[1300px] mx-auto px-6 md:px-10 py-16 flex flex-col gap-20">
+            <div className="relative z-10 mx-auto px-6 md:px-10 py-16 flex flex-col gap-20">
 
                 {/* ══════════════════════════════════════════════════
                     SECTION 1 — HERO HEADER
@@ -183,19 +183,19 @@ export default function ContactPage() {
                 {/* ══════════════════════════════════════════════════
                     SECTION 2 — CONTACT FORM + INFO SIDEBAR
                 ══════════════════════════════════════════════════ */}
-                <div className="grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-8 items-start">
+                <div className="grid grid-cols-1 lg:grid-cols-[1fr_650px] gap-10 w-[95vw] max-w-[1800px] mx-auto">
 
                     {/* ── FORM PANEL ── */}
                     <div
                         ref={formRef}
-                        className="relative bg-white/[0.02] backdrop-blur-xl border border-white/10 rounded-2xl p-8 md:p-10 shadow-[0_24px_60px_rgba(0,0,0,0.5)] overflow-hidden"
+                        className="relative bg-white/[0.02] h-[60vh] gap-10 flex flex-col justify-center backdrop-blur-xl border border-white/10 rounded-3xl p-10 md:p-14 shadow-[0_24px_60px_rgba(0,0,0,0.5)]"
                     >
                         {/* Top accent line */}
                         <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#BE0027] to-transparent" />
 
                         <div className="mb-8">
-                            <p className="font-inter text-[10px] font-bold tracking-[0.3em] uppercase text-[#BE0027] mb-2">Send a Message</p>
-                            <h2 className="font-cinzel font-bold text-2xl text-white tracking-wide">Get In Touch</h2>
+                            <p className="font-inter text-[14px] font-bold tracking-[0.3em] uppercase text-[#BE0027] mb-2">Send a Message</p>
+                            <h2 className="font-cinzel font-bold text-5xl text-white tracking-wide">Get In Touch</h2>
                             <p className="font-inter text-sm text-white/40 mt-2">Fill out the form below and our team will get back to you within 24 hours.</p>
                         </div>
 
@@ -211,7 +211,7 @@ export default function ContactPage() {
                                 </p>
                                 <button
                                     onClick={() => setStatus("idle")}
-                                    className="mt-4 font-inter text-sm text-[#BE0027] hover:text-white border border-[#BE0027]/30 hover:border-white/20 px-6 py-2 rounded-xl transition-all duration-300"
+                                    className="mt-4 font-inter text-sm text-[#BE0027] hover:text-white border border-[#BE0027]/30 hover:border-white/20 px-6 py-5 rounded-4xl transition-all duration-300"
                                 >
                                     Send Another Message
                                 </button>
@@ -221,8 +221,8 @@ export default function ContactPage() {
 
                                 {/* Row: Name + Email */}
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                                    <div className="flex flex-col gap-2">
-                                        <label className="flex items-center gap-1.5 font-inter text-xs font-semibold tracking-wider text-white/50 uppercase">
+                                    <div className="flex flex-col gap-2.5">
+                                        <label className="flex items-center gap-1.5 font-inter text-mb font-semibold tracking-wider text-white/50 uppercase">
                                             <User size={11} /> Full Name
                                         </label>
                                         <input
@@ -232,11 +232,11 @@ export default function ContactPage() {
                                             value={form.name}
                                             onChange={handleChange}
                                             required
-                                            className="w-full px-5 py-3.5 bg-white/[0.03] focus:bg-white/[0.06] border border-white/10 focus:border-[#BE0027] text-white rounded-xl font-inter text-sm placeholder:text-white/25 transition-all outline-none"
+                                            className="w-full px-6 py-5 bg-white/[0.03] focus:bg-white/[0.06] border border-white/10 focus:border-[#BE0027] text-white rounded-b-xl font-inter text-mb placeholder:text-white/25 transition-all outline-none"
                                         />
                                     </div>
-                                    <div className="flex flex-col gap-2">
-                                        <label className="flex items-center gap-1.5 font-inter text-xs font-semibold tracking-wider text-white/50 uppercase">
+                                    <div className="flex flex-col gap-2.5">
+                                        <label className="flex items-center gap-1.5 font-inter text-mb font-semibold tracking-wider text-white/50 uppercase">
                                             <Mail size={11} /> Email Address
                                         </label>
                                         <input
@@ -246,14 +246,14 @@ export default function ContactPage() {
                                             value={form.email}
                                             onChange={handleChange}
                                             required
-                                            className="w-full px-5 py-3.5 bg-white/[0.03] focus:bg-white/[0.06] border border-white/10 focus:border-[#BE0027] text-white rounded-xl font-inter text-sm placeholder:text-white/25 transition-all outline-none"
+                                            className="w-full px-6 py-5 bg-white/[0.03] focus:bg-white/[0.06] border border-white/10 focus:border-[#BE0027] text-white rounded-b-xl font-inter text-mb placeholder:text-white/25 transition-all outline-none"
                                         />
                                     </div>
                                 </div>
 
                                 {/* Subject */}
-                                <div className="flex flex-col gap-2">
-                                    <label className="flex items-center gap-1.5 font-inter text-xs font-semibold tracking-wider text-white/50 uppercase">
+                                <div className="flex flex-col gap-2.5">
+                                    <label className="flex items-center gap-1.5 font-inter text-mb font-semibold tracking-wider text-white/50 uppercase">
                                         <ChevronRight size={11} /> Subject
                                     </label>
                                     <input
@@ -262,13 +262,13 @@ export default function ContactPage() {
                                         placeholder="What is this regarding?"
                                         value={form.subject}
                                         onChange={handleChange}
-                                        className="w-full px-5 py-3.5 bg-white/[0.03] focus:bg-white/[0.06] border border-white/10 focus:border-[#BE0027] text-white rounded-xl font-inter text-sm placeholder:text-white/25 transition-all outline-none"
+                                        className="w-full px-6 py-5 bg-white/[0.03] focus:bg-white/[0.06] border border-white/10 focus:border-[#BE0027] text-white rounded-b-xl font-inter text-mb placeholder:text-white/25 transition-all outline-none"
                                     />
                                 </div>
 
                                 {/* Message */}
-                                <div className="flex flex-col gap-2">
-                                    <label className="flex items-center gap-1.5 font-inter text-xs font-semibold tracking-wider text-white/50 uppercase">
+                                <div className="flex flex-col gap-2.5">
+                                    <label className="flex items-center gap-1.5 font-inter text-mb font-semibold tracking-wider text-white/50 uppercase">
                                         <MessageSquare size={11} /> Message
                                     </label>
                                     <textarea
@@ -277,15 +277,15 @@ export default function ContactPage() {
                                         value={form.message}
                                         onChange={handleChange}
                                         required
-                                        rows={5}
-                                        className="w-full px-5 py-4 bg-white/[0.03] focus:bg-white/[0.06] border border-white/10 focus:border-[#BE0027] text-white rounded-xl font-inter text-sm placeholder:text-white/25 transition-all outline-none resize-none"
+                                        rows={7}
+                                        className="w-full px-6 py-6.5 bg-white/[0.03] focus:bg-white/[0.06] border border-white/10 focus:border-[#BE0027] text-white rounded-b-xl font-inter text-mb placeholder:text-white/25 transition-all outline-none resize-none"
                                     />
                                 </div>
 
                                 {/* Error state */}
                                 {status === "error" && (
                                     <div className="flex items-center gap-2.5 px-4 py-3 bg-[#BE0027]/10 border border-[#BE0027]/20 rounded-xl">
-                                        <AlertCircle size={15} className="text-[#BE0027] shrink-0" />
+                                        <AlertCircle size={18} className="text-[#BE0027] shrink-0" />
                                         <p className="font-inter text-xs text-[#BE0027]">Something went wrong. Please try again or contact us directly.</p>
                                     </div>
                                 )}
@@ -295,7 +295,7 @@ export default function ContactPage() {
                                     ref={btnRef}
                                     type="submit"
                                     disabled={status === "sending"}
-                                    className="w-full flex items-center justify-center gap-3 py-4 px-8 bg-[#BE0027] hover:enabled:bg-white hover:enabled:text-black hover:enabled:shadow-[0_0_30px_rgba(255,255,255,0.2)] disabled:opacity-60 disabled:cursor-not-allowed text-white rounded-xl font-inter text-sm font-bold tracking-widest uppercase transition-all duration-300"
+                                    className="w-full flex items-center justify-center gap-3 py-5 px-8 bg-[#BE0027] hover:enabled:bg-[#02be34] hover:enabled:text-black hover:enabled:shadow-[0_0_30px_rgba(255,255,255,0.2)] disabled:opacity-60 disabled:cursor-not-allowed text-white rounded-b-xl font-inter text-base font-bold tracking-widest uppercase transition-all duration-300"
                                 >
                                     {status === "sending" ? (
                                         <>
@@ -306,7 +306,7 @@ export default function ContactPage() {
                                             Sending...
                                         </>
                                     ) : (
-                                        <>Send Message <Send size={15} /></>
+                                        <>Send Message <Send size={18} /></>
                                     )}
                                 </button>
                             </form>
@@ -314,7 +314,7 @@ export default function ContactPage() {
                     </div>
 
                     {/* ── INFO SIDEBAR ── */}
-                    <div className="flex flex-col gap-5">
+                    <div className="h-full flex flex-col gap-6">
 
                         {/* Dojo Info Card */}
                         <div className="relative bg-white/[0.02] backdrop-blur-xl border border-white/10 rounded-2xl p-6 shadow-[0_24px_60px_rgba(0,0,0,0.4)] overflow-hidden">

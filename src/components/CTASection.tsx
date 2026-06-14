@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
+import Link from "next/link";
 
 export default function CTASection() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -78,9 +79,11 @@ export default function CTASection() {
         <p className="cta-sub reveal">
           The dojo awaits. Your path begins with a single step.
         </p>
-        <button className="cta-btn reveal" type="button">
-          Join The Dojo
-        </button>
+        <Link href="/signup">
+          <button className="cta-btn reveal" type="button">
+            Join The Dojo
+          </button>
+        </Link>
       </div>
 
       <div className="footer-bar">

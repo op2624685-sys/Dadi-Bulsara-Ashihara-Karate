@@ -96,24 +96,29 @@ export default function Navbar() {
           {/* ── Logo ── */}
           <div ref={logoRef} className="navbar__logo">
             <div className="logo-mark" aria-hidden="true">
-              <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
-                <polygon
-                  points="18,2 34,10 34,26 18,34 2,26 2,10"
-                  stroke="#c8102e"
-                  strokeWidth="1.5"
-                  fill="none"
+              <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                <defs>
+                  <clipPath id="logoCircle">
+                    <circle cx="20" cy="20" r="20" />
+                  </clipPath>
+                </defs>
+                <image
+                  href="/img/logo.png"
+                  width="40"
+                  height="40"
+                  clipPath="url(#logoCircle)"
+                  preserveAspectRatio="xMidYMid slice"
                 />
-                <text
-                  x="18"
-                  y="23"
-                  textAnchor="middle"
-                  fontSize="13"
-                  fontFamily="serif"
-                  fill="#c8102e"
-                >
-                  DB
-                </text>
               </svg>
+              {/* Optional red border */}
+              <circle
+                cx="20"
+                cy="20"
+                r="16"
+                fill="none"
+                stroke="#c8102e"
+                strokeWidth="1.5"
+              />
             </div>
             <div className="logo-text">
               <span className="logo-name">Dadi Bulsara</span>
@@ -266,7 +271,7 @@ export default function Navbar() {
         </div>
       </nav>
 
-<style jsx>{`
+      <style jsx>{`
         /* ═══════════════════════════════════════
            NAVBAR BASE (Floating Glassmorphism)
         ═══════════════════════════════════════ */
@@ -329,7 +334,7 @@ export default function Navbar() {
         }
 
         .navbar__logo:hover .logo-mark {
-          transform: rotate(15deg) scale(1.05);
+          transform: scale(1.10);
         }
 
         .logo-text {

@@ -87,12 +87,6 @@ export default function HeroOverlayText({
 
   return (
     <div className="overlay-text-container">
-      {/* Top brand */}
-      <div className="brand-top">
-        <span className="brand-name">Dadi Bulsara</span>
-        <span className="brand-sep" aria-hidden="true" />
-        <span className="brand-subtitle">Ashihara Karate</span>
-      </div>
 
       {/* Dynamic message */}
       <div className="message-area">
@@ -128,44 +122,6 @@ export default function HeroOverlayText({
           pointer-events: none;
           display: flex;
           flex-direction: column;
-        }
-
-        /* ── Brand top ── */
-        .brand-top {
-          position: absolute;
-          top: 5.5vh;
-          left: 0;
-          right: 0;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 1rem;
-          flex-wrap: wrap;
-        }
-
-        .brand-name {
-          font-family: var(--font-cinzel), "Cinzel", serif;
-          font-size: clamp(0.65rem, 1.5vw, 0.9rem);
-          font-weight: 600;
-          letter-spacing: 0.5em;
-          color: rgba(255, 255, 255, 0.9);
-          text-transform: uppercase;
-        }
-
-        .brand-sep {
-          display: inline-block;
-          width: 1px;
-          height: 1rem;
-          background: rgba(200, 16, 46, 0.6);
-        }
-
-        .brand-subtitle {
-          font-family: var(--font-cormorant), "Cormorant Garamond", serif;
-          font-size: clamp(0.65rem, 1.5vw, 0.9rem);
-          font-weight: 300;
-          letter-spacing: 0.5em;
-          color: rgba(255, 255, 255, 0.6);
-          text-transform: uppercase;
         }
 
         /* ── Dynamic message ── */

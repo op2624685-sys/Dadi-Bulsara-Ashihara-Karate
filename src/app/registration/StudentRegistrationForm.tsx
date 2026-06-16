@@ -298,9 +298,9 @@ export default function StudentRegistrationForm() {
         {/* ── Page Header ── */}
         <header className="page-header">
           <div className="header-inner">
-            <div className="header-kamon">武</div>
+            <div className="header-kamon"></div>
             <div>
-              <p className="header-eyebrow">Bushido Karate Federation</p>
+              <p className="header-eyebrow">Dadi Bulsara Karate Federation</p>
               <h1 className="header-title">Student Registration</h1>
             </div>
           </div>
@@ -714,6 +714,7 @@ const globalStyles = `
     min-height: 100vh;
     background: linear-gradient(160deg, #0f0f0f 0%, #1a0005 50%, #0a0a0a 100%);
     padding-bottom: 60px;
+    margin-Top: 45px;
   }
 
   /* ── Header ── */

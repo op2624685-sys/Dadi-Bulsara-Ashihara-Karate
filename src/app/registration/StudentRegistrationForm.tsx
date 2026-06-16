@@ -690,7 +690,6 @@ export default function StudentRegistrationForm() {
 
 // ── Styles ────────────────────────────────────────────────────────────
 const globalStyles = `
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
     --primary: #BE0027;

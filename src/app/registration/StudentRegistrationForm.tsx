@@ -681,7 +681,7 @@ export default function StudentRegistrationForm() {
 
         {/* ── Footer ── */}
         <footer className="form-footer">
-          <p>© 2025 Bushido Karate Federation · All rights reserved</p>
+          <p>© 2025 Dadi Bulsara Ashihara Karate Federation · All rights reserved</p>
         </footer>
       </div>
     </>

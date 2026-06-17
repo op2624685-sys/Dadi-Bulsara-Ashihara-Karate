@@ -21,6 +21,7 @@
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import { gsap } from "gsap";
+import { saveEquipped } from "./cosmeticsStore";
 
 // ── cosmetics.ts imports ──────────────────────────────────────────────────────
 import {
@@ -697,9 +698,8 @@ export default function CustomizePage() {
 
   const handleSave = () => {
     setSaveState("saving");
-    // Replace setTimeout with your real API call:
-    // await updateStudentCosmetics({ avatarId: equippedAvatarId, bannerId: equippedBannerId })
     setTimeout(() => {
+      saveEquipped({ avatarId: equippedAvatarId, bannerId: equippedBannerId });
       setSavedAvatarId(equippedAvatarId);
       setSavedBannerId(equippedBannerId);
       setSaveState("saved");

@@ -111,14 +111,6 @@ export default function Navbar() {
                 />
               </svg>
               {/* Optional red border */}
-              <circle
-                cx="20"
-                cy="20"
-                r="16"
-                fill="none"
-                stroke="#c8102e"
-                strokeWidth="1.5"
-              />
             </div>
             <div className="logo-text">
               <span className="logo-name">Dadi Bulsara</span>

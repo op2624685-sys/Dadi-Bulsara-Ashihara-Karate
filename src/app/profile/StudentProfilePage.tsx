@@ -225,9 +225,13 @@ export default function StudentProfilePage() {
     return getEquipped().bannerId;
   });
   // ─────────────────────────────────────────────────────────
-
+  const [mounted, setMounted] = useState(false);
   const heroRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     const els = [heroRef.current, ...cardsRef.current].filter(Boolean) as HTMLDivElement[];
@@ -281,7 +285,7 @@ export default function StudentProfilePage() {
 
           {/* BANNER — from cosmeticsStore */}
           <div className="h-44 relative overflow-hidden border-b border-white/5">
-            <BannerRenderer bannerId={bannerId} height={176} />
+            {mounted && <BannerRenderer bannerId={bannerId} height={176} />}
           </div>
 
           {/* Identity panel */}
@@ -290,7 +294,7 @@ export default function StudentProfilePage() {
 
               {/* AVATAR — from cosmeticsStore */}
               <div className="relative flex-shrink-0 z-10">
-                <AvatarRenderer avatarId={avatarId} size={88} />
+                {mounted && <AvatarRenderer avatarId={avatarId} size={88} />}
               </div>
 
               {/* Name + status */}

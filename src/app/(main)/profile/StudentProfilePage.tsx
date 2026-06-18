@@ -8,8 +8,8 @@ import {
 } from "lucide-react";
 
 // ── cosmetics imports ─────────────────────────────────────────────────────────
-import { AVATARS, BANNERS } from "../profile/avatar/cosmetics";
-import { getEquipped } from "../profile/avatar/cosmeticsStore";
+import { AVATARS, BANNERS } from "./avatar/cosmetics";
+import { getEquipped } from "./avatar/cosmeticsStore";
 
 // ── Visual system ─────────────────────────────────────────────────────────────
 const BELT_COLORS: Record<string, { bg: string; text: string; border: string }> = {

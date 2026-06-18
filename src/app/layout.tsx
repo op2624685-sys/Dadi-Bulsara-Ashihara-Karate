@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import { Cinzel, Cormorant_Garamond, Montserrat, Inter } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/Navbar";
-import LenisProvider from "@/components/Lenisprovider";
 
 const cinzel = Cinzel({
   subsets: ["latin"],
@@ -56,11 +54,7 @@ export default function RootLayout({
       className={`${cinzel.variable} ${cormorant.variable} ${montserrat.variable} ${inter.variable}`}
     >
       <body>
-        {/* LenisProvider initializes smooth scroll and syncs with GSAP ticker */}
-        <LenisProvider>
-          <Navbar />
-          {children}
-        </LenisProvider>
+        {children}
       </body>
     </html>
   );

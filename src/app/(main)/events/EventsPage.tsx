@@ -13,7 +13,7 @@ type Participant = {
   placement?: "1st" | "2nd" | "3rd" | null;
 };
 
-type EventType = "Tournament" | "Championship" | "Seminar" | "Camp";
+type EventType = "Tournament" | "Championship" | "Seminar" ;
 
 type KarateEvent = {
   id: string;
@@ -55,19 +55,6 @@ const EVENTS: KarateEvent[] = [
     highlight: "Open to all belt grades across Bihar state",
   },
   {
-    id: "e5",
-    title: "Annual Winter Gasshuku 2026",
-    date: "20 December 2026",
-    location: "Mahabaleshwar, Maharashtra",
-    organizer: "Dadi Bulsara Federation",
-    type: "Camp",
-    duration: "5 Days",
-    totalParticipants: 80,
-    status: "upcoming",
-    highlight: "Kata & Kumite residential intensive — highlands of Maharashtra",
-    slug: "sis-gto-training-camp-2011",
-  },
-  {
     id: "e3",
     title: "All India Full Contact Karate Championship 2025",
     date: "20 December 2025",
@@ -101,51 +88,12 @@ const EVENTS: KarateEvent[] = [
       { id:"p8", name:"Manish Kumar", role:"Student", state:"Bihar",       belt:"Yellow Belt",          placement:null  },
     ],
   },
-  {
-    id: "e6",
-    title: "SIS GTO Training Camp 2011",
-    date: "March 2011",
-    location: "Mahabaleshwar, Maharashtra",
-    organizer: "Dadi Bulsara Federation",
-    type: "Camp",
-    duration: "5 Days",
-    totalParticipants: 75,
-    status: "past",
-    highlight: "First international instructors · Kata & Kumite intensive",
-    slug: "sis-gto-training-camp-2011",
-    participants: [
-      { id:"c1", name:"Sensei K. Tanaka", role:"Teacher", state:"Japan",       belt:"Black Belt (6th Dan)", placement:null  },
-      { id:"c2", name:"Sensei R. Desai",  role:"Teacher", state:"Maharashtra", belt:"Black Belt (5th Dan)", placement:null  },
-      { id:"c3", name:"Rahul Singh",      role:"Student", state:"Bihar",       belt:"Brown Belt",           placement:"1st" },
-      { id:"c4", name:"Neha Gupta",       role:"Student", state:"UP",          belt:"Green Belt",           placement:"2nd" },
-      { id:"c5", name:"Vikram Das",       role:"Student", state:"West Bengal", belt:"Blue Belt",            placement:"3rd" },
-    ],
-  },
-  {
-    id: "e7",
-    title: "Sabaki Challenge Camp 2013",
-    date: "July 2013",
-    location: "Alibaug Beach, Maharashtra",
-    organizer: "Dadi Bulsara Federation",
-    type: "Camp",
-    duration: "3 Days",
-    totalParticipants: 95,
-    status: "past",
-    highlight: "Beach sabaki training · Ocean conditioning drills",
-    slug: "sabaki-challenge-camp-2013",
-    participants: [
-      { id:"d1", name:"Anjali Roy",   role:"Student", state:"West Bengal", belt:"Brown Belt",           placement:"1st" },
-      { id:"d2", name:"Ravi Teja",    role:"Teacher", state:"Odisha",      belt:"Black Belt (2nd Dan)", placement:"2nd" },
-      { id:"d3", name:"Suresh Patil", role:"Student", state:"Maharashtra", belt:"Blue Belt",            placement:"3rd" },
-    ],
-  },
 ];
 
 const TYPE_META: Record<EventType, { color:string; dim:string; border:string; label:string }> = {
   Championship: { color:"#FF4D6D", dim:"rgba(255,77,109,0.1)",  border:"rgba(255,77,109,0.3)",  label:"Championship" },
   Tournament:   { color:"#60A5FA", dim:"rgba(96,165,250,0.1)",  border:"rgba(96,165,250,0.3)",  label:"Tournament"   },
   Seminar:      { color:"#A78BFA", dim:"rgba(167,139,250,0.1)", border:"rgba(167,139,250,0.3)", label:"Seminar"      },
-  Camp:         { color:"#34D399", dim:"rgba(52,211,153,0.1)",  border:"rgba(52,211,153,0.3)",  label:"Camp"         },
 };
 
 const TYPE_ICONS: Record<EventType|"All", React.ReactNode> = {
@@ -169,11 +117,7 @@ const TYPE_ICONS: Record<EventType|"All", React.ReactNode> = {
       <line x1="16" y1="16" x2="20" y2="20"/><line x1="19" y1="21" x2="21" y2="19"/>
     </svg>
   ),
-  Camp: (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" style={{width:16,height:16}}>
-      <path d="M3 17l4-8 4 4 3-5 4 9H3z"/><circle cx="18" cy="6" r="2"/>
-    </svg>
-  ),
+
   Seminar: (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" style={{width:16,height:16}}>
       <path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/>
@@ -311,7 +255,7 @@ export default function EventsPage() {
                 Filter by Type
               </span>
               <div className="ep-type-filters">
-                {(["All","Tournament","Championship","Camp","Seminar"] as const).map(tp => {
+                {(["All","Tournament","Championship","Seminar"] as const).map(tp => {
                   const meta  = tp !== "All" ? TYPE_META[tp as EventType] : null;
                   const active = typeFilter === tp;
                   const cnt   = counts[tp] ?? 0;
@@ -436,38 +380,6 @@ export default function EventsPage() {
                     {/* ── DIVIDER ── */}
                     <div className="ep-divider" style={{background:`linear-gradient(90deg,${meta.color}33,rgba(255,255,255,0.06),transparent)`}}/>
 
-                    {/* ── ACTIONS ── */}
-                    <div className="ep-actions">
-                      {/* upcoming non-camp: enroll */}
-                      {ev.status==="upcoming" && ev.type!=="Camp" && (
-                        <button className="ep-btn ep-btn--enroll" onClick={e=>{e.stopPropagation();alert(`Enrolling: ${ev.title}`);}}>
-                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{width:14,height:14}}>
-                            <path d="M5 12h14M12 5l7 7-7 7"/>
-                          </svg>
-                          Enroll Now
-                        </button>
-                      )}
-
-                      {/* upcoming camp: enroll + view details */}
-                      {ev.status==="upcoming" && ev.type==="Camp" && (
-                        <>
-                          <button className="ep-btn ep-btn--enroll" onClick={e=>{e.stopPropagation();alert(`Enrolling for camp: ${ev.title}`);}}>
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{width:14,height:14}}>
-                              <path d="M5 12h14M12 5l7 7-7 7"/>
-                            </svg>
-                            Enroll Now
-                          </button>
-                          {ev.slug && (
-                            <button className="ep-btn ep-btn--camp" onClick={e=>{e.stopPropagation();router.push(`/camps/${ev.slug}`);}}>
-                              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{width:14,height:14}}>
-                                <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
-                              </svg>
-                              View Camp Details
-                            </button>
-                          )}
-                        </>
-                      )}
-
                       {/* past: expand participants */}
                       {ev.status==="past" && allP.length>0 && (
                         <button className="ep-btn ep-btn--expand" onClick={e=>{e.stopPropagation();toggle(ev.id);}}>
@@ -475,17 +387,7 @@ export default function EventsPage() {
                             style={{width:14,height:14,transform:isOpen?"rotate(180deg)":"rotate(0deg)",transition:"transform .35s"}}>
                             <polyline points="6 9 12 15 18 9"/>
                           </svg>
-                          {isOpen ? "Hide" : "View"} Results &amp; Participants
-                        </button>
-                      )}
-
-                      {/* past camp: also full page */}
-                      {ev.status==="past" && ev.type==="Camp" && ev.slug && (
-                        <button className="ep-btn ep-btn--camp" onClick={e=>{e.stopPropagation();router.push(`/camps/${ev.slug}`);}}>
-                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{width:14,height:14}}>
-                            <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
-                          </svg>
-                          Full Camp Page
+                          {isOpen ? "Hide " : "View "} Results &amp; Participants
                         </button>
                       )}
                     </div>
@@ -494,15 +396,6 @@ export default function EventsPage() {
                     {isOpen && allP.length>0 && (
                       <div className="ep-expanded" onClick={e=>e.stopPropagation()}>
                         <div className="ep-exp-head">
-                          <div>
-                            <div className="ep-exp-kicker" style={{color:meta.color}}>
-                              <div style={{width:20,height:1,background:meta.color,marginRight:8,flexShrink:0}}/>
-                              {ev.type==="Camp" ? "Camp Participants" : "Results & Participants"}
-                            </div>
-                            <h3 className="ep-exp-title">
-                              {ev.type==="Camp" ? "Instructors & Students" : "Winners & Competitors"}
-                            </h3>
-                          </div>
                           <div className="ep-psearch">
                             <svg style={{position:"absolute",left:12,top:"50%",transform:"translateY(-50%)",width:13,height:13,color:"rgba(238,232,223,0.3)"}} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                               <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
@@ -567,7 +460,6 @@ export default function EventsPage() {
                       </div>
                     )}
                   </div>
-                </div>
               );
             })}
           </div>
@@ -766,8 +658,6 @@ const CSS = `
 .ep-btn { display:inline-flex; align-items:center; gap:8px; padding:.62rem 1.5rem; font-family:inherit; font-size:.7rem; font-weight:700; text-transform:uppercase; letter-spacing:.14em; cursor:pointer; border:none; transition:all .25s; }
 .ep-btn--enroll { background:#059669; color:#fff; }
 .ep-btn--enroll:hover { background:#047857; transform:translateY(-2px); box-shadow:0 6px 20px rgba(5,150,105,.35); }
-.ep-btn--camp   { background:rgba(192,57,43,.1); color:#C0392B; border:1px solid rgba(192,57,43,.28); }
-.ep-btn--camp:hover   { background:rgba(192,57,43,.18); transform:translateY(-2px); }
 .ep-btn--expand { background:rgba(255,255,255,.04); color:rgba(238,232,223,.6); border:1px solid rgba(255,255,255,.08); }
 .ep-btn--expand:hover { background:rgba(255,255,255,.08); color:#EEE8DF; }
 

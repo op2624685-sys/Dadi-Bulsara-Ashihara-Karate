@@ -378,10 +378,10 @@ export default function AboutPage() {
             <section className="relative z-10 w-full border-t border-white/[0.06] bg-white/[0.01] py-28">
                 <div className="mx-auto w-full px-6 md:px-10">
                     <SectionHeader
-                        eyebrow="Annual Gasshuku"
+                        eyebrow="Annual Camps"
                         title="Every Year,"
                         highlight="A New Camp."
-                        sub="Gasshuku — intensive residential training camps — are the heartbeat of our federation calendar"
+                        sub="Dadi Bulsara — intensive residential training camps — are the heartbeat of our federation calendar"
                     />
 
                     <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">

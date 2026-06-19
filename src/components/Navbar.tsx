@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link"; // Next.js Link import kiya
 import { usePathname } from "next/navigation"; // Active route detect karne ke liye hook
 import gsap from "gsap";
+import NavbarProfileCard from "@/components/navbar/NavbarProfileCard";
 
 const NAV_LINKS = [
   { label: "Home", href: "/" },
@@ -205,6 +206,9 @@ export default function Navbar() {
                 </div>
               )}
             </div>
+
+            {/* Profile Card ⬇*/}
+            <NavbarProfileCard />
 
             {/* Register Now CTA */}
             <Link href="/signup" className="register-btn">

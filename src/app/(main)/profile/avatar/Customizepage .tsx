@@ -21,7 +21,7 @@
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import { gsap } from "gsap";
-import { saveEquipped } from "./cosmeticsStore";
+import { useCosmetics } from "@/context/CosmeticsContext";
 
 // ── cosmetics.ts imports ──────────────────────────────────────────────────────
 import {
@@ -647,6 +647,7 @@ export default function CustomizePage() {
   const [studentBelt]     = useState<Belt>(STUDENT.belt);
   const [activeSeason, setActiveSeason] = useState(STUDENT.seasonId);
   const [activeTab, setActiveTab]       = useState<Tab>("avatar");
+  const { updateCosmetics } = useCosmetics();
 
   // Equipped state — tracked by CosmeticItem.id
   const [equippedAvatarId, setEquippedAvatarId] = useState(STUDENT.equippedAvatarId);
@@ -699,7 +700,7 @@ export default function CustomizePage() {
   const handleSave = () => {
     setSaveState("saving");
     setTimeout(() => {
-      saveEquipped({ avatarId: equippedAvatarId, bannerId: equippedBannerId });
+      updateCosmetics({ avatarId: equippedAvatarId, bannerId: equippedBannerId });
       setSavedAvatarId(equippedAvatarId);
       setSavedBannerId(equippedBannerId);
       setSaveState("saved");

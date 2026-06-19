@@ -209,7 +209,7 @@ export default function CampDetailPage({ params }: { params: Promise<{ slug: str
           </svg>
           All Camps
         </Link>
-        <span className="text-[10px] tracking-[0.22em] uppercase text-[#C0392B]">Annual Gasshuku</span>
+        <span className="text-[10px] tracking-[0.22em] uppercase text-[#C0392B]">Annual Winter Camp</span>
       </nav>
 
       {/* ═══════════ HERO ═══════════ */}
@@ -232,7 +232,7 @@ export default function CampDetailPage({ params }: { params: Promise<{ slug: str
           {/* Eyebrow */}
           <div ref={heroEyeRef} className="flex items-center gap-4 mb-5">
             <div className="w-10 h-px bg-[#C0392B] shrink-0" />
-            <span className="text-[10px] tracking-[0.35em] uppercase text-[#C0392B] font-medium">Annual Gasshuku · {camp.location}</span>
+            <span className="text-[10px] tracking-[0.35em] uppercase text-[#C0392B] font-medium">Annual Camp · {camp.location}</span>
           </div>
           {/* Kana */}
           <div ref={heroKanaRef} className="mb-2 font-light tracking-[0.5em] uppercase text-white/25"
@@ -318,7 +318,7 @@ export default function CampDetailPage({ params }: { params: Promise<{ slug: str
             <div className="absolute top-1/2 left-0 -translate-y-1/2 -translate-x-7 w-14 h-14 bg-[#C0392B] z-10" />
             <div className="absolute bottom-12 left-[-20px] w-[90px] h-[90px] bg-[#0A0A0A] border border-white/[0.06] flex flex-col items-center justify-center gap-[2px] z-10">
               <span className="text-[#C0392B] leading-none" style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: "32px" }}>{camp.year}</span>
-              <span className="text-[8px] tracking-[0.2em] uppercase text-[#5A5A5A]">Gasshuku</span>
+              <span className="text-[8px] tracking-[0.2em] uppercase text-[#5A5A5A]">Bulsara</span>
             </div>
           </div>
         </div>
@@ -501,7 +501,7 @@ export default function CampDetailPage({ params }: { params: Promise<{ slug: str
           style={{ background: "radial-gradient(ellipse 55% 60% at 50% 50%,rgba(192,57,43,.13),transparent)" }} />
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 select-none pointer-events-none text-white/[0.02] leading-none whitespace-nowrap gsap-reveal"
           style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: "clamp(80px,14vw,200px)", letterSpacing: "0.05em" }}>
-          GASSHUKU
+          BULSARA
         </div>
         <div className="relative z-10">
           <div className="gsap-reveal text-[9px] tracking-[0.35em] uppercase text-[#C0392B] mb-5">Next Annual Camp</div>
@@ -532,7 +532,7 @@ export default function CampDetailPage({ params }: { params: Promise<{ slug: str
       {/* ═══════════ FOOTER ═══════════ */}
       <footer className="px-16 py-8 border-t border-white/[0.06] flex items-center justify-between max-lg:px-6 max-sm:flex-col max-sm:gap-3 max-sm:text-center">
         <div className="text-[#EEE8DF]" style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: "18px", fontWeight: 600, letterSpacing: "0.08em" }}>
-          Gasshuku <span className="text-[#C0392B]">Federation</span>
+          Dadi Bulsara <span className="text-[#C0392B]">Federation</span>
         </div>
         <div className="text-[10px] tracking-[0.18em] uppercase text-[#5A5A5A]">Annual Training Camps · Est. 2009</div>
       </footer>

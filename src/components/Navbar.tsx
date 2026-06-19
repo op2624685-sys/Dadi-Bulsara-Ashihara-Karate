@@ -10,6 +10,7 @@ const NAV_LINKS = [
   { label: "Teacher", href: "/teacher" },
   { label: "Student", href: "/student" },
   { label: "Events", href: "/events" },
+  { label: "Camps", href: "/camps" },
   { label: "Contact", href: "/contact" },
 ];
 
@@ -63,7 +64,7 @@ export default function Navbar() {
     gsap.fromTo(
       nav,
       { y: -80, opacity: 0 },
-      { y: 0, opacity: 1, duration: 1, ease: "power3.out", delay: 5.2 }
+      { y: 0, opacity: 1, duration: 1, ease: "power3.out", delay: 0.5 }
     );
   }, []);
 

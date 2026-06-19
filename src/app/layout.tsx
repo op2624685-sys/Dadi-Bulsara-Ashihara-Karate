@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Cinzel, Cormorant_Garamond, Montserrat, Inter } from "next/font/google";
 import "./globals.css";
+import { CosmeticsProvider } from "@/context/CosmeticsContext";
 
 const cinzel = Cinzel({
   subsets: ["latin"],
@@ -54,7 +55,9 @@ export default function RootLayout({
       className={`${cinzel.variable} ${cormorant.variable} ${montserrat.variable} ${inter.variable}`}
     >
       <body>
-        {children}
+        <CosmeticsProvider>
+          {children}
+        </CosmeticsProvider>
       </body>
     </html>
   );

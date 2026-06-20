@@ -6,18 +6,13 @@ import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { camps } from "@/data/camps";
+import { CampData } from "@/types/camp";
 
 gsap.registerPlugin(ScrollTrigger);
-
-const TYPE_META = {
-  upcoming: { color: "#34D399", dim: "rgba(52,211,153,0.12)", border: "rgba(52,211,153,0.3)" },
-  past:     { color: "rgba(238,232,223,0.35)", dim: "rgba(255,255,255,0.04)", border: "rgba(255,255,255,0.1)" },
-};
 
 export default function CampsPage() {
   const [filter, setFilter] = useState<"all" | "past" | "upcoming">("all");
   const heroRef   = useRef<HTMLDivElement>(null);
-  const lineRef   = useRef<HTMLDivElement>(null);
 
   const filtered = camps.filter(c =>
     filter === "all" ? true : (filter === "upcoming" ? c.status === "upcoming" : c.status !== "upcoming")
@@ -161,8 +156,8 @@ export default function CampsPage() {
 
           {/* ── GRID ── */}
           <div className="camps-grid">
-            {filtered.map((camp, idx) => (
-              <CampCard key={camp.slug} camp={camp} idx={idx} />
+            {filtered.map((camp) => (
+              <CampCard key={camp.slug} camp={camp}/>
             ))}
           </div>
 
@@ -189,8 +184,7 @@ export default function CampsPage() {
 /* ══════════════════════════════════════
    CAMP CARD
 ══════════════════════════════════════ */
-function CampCard({ camp, idx }: { camp: any; idx: number }) {
-  const cardRef = useRef<HTMLDivElement>(null);
+function CampCard({ camp}: { camp: CampData }) {
   const imgRef  = useRef<HTMLDivElement>(null);
   const [hovered, setHovered] = useState(false);
 
@@ -211,7 +205,6 @@ function CampCard({ camp, idx }: { camp: any; idx: number }) {
       className="camp-card"
       onMouseEnter={onEnter}
       onMouseLeave={onLeave}
-      ref={cardRef as any}
     >
       {/* ── IMAGE ── */}
       <div className="camp-card-img-wrap">

@@ -4,6 +4,7 @@ export const camps: CampData[] = [
   {
     slug: "sis-gto-training-camp-2011",
     year: 2011,
+    status: "past",
     name: "SIS GTO",
     subtitle: "Training Camp",
     location: "Mahabaleshwar",
@@ -56,6 +57,7 @@ export const camps: CampData[] = [
   {
     slug: "sabaki-challenge-camp-2013",
     year: 2013,
+    status: "past",
     name: "Sabaki Challenge",
     subtitle: "Camp",
     location: "Alibaug Beach",

@@ -27,6 +27,7 @@ export interface ScheduleDay {
 export interface CampData {
   slug: string;
   year: number;
+  status: "upcoming" | "past";
   name: string;
   subtitle: string;
   location: string;

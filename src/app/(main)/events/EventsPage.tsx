@@ -1,7 +1,7 @@
 "use client";
 
+import Link from "next/link";
 import React, { useState, useEffect, useRef, useMemo } from "react";
-import { useRouter } from "next/navigation";
 import gsap from "gsap";
 
 type Participant = {
@@ -126,7 +126,6 @@ const TYPE_ICONS: Record<EventType|"All", React.ReactNode> = {
 };
 
 export default function EventsPage() {
-  const router = useRouter();
   const [tab,        setTab]        = useState<"upcoming"|"past">("upcoming");
   const [typeFilter, setTypeFilter] = useState<EventType|"All">("All");
   const [search,     setSearch]     = useState("");
@@ -380,6 +379,16 @@ export default function EventsPage() {
                     {/* ── DIVIDER ── */}
                     <div className="ep-divider" style={{background:`linear-gradient(90deg,${meta.color}33,rgba(255,255,255,0.06),transparent)`}}/>
 
+                    <div className="ep-actions">
+                      {ev.status === "upcoming" && (
+                        <Link href="/signup" className="ep-btn ep-btn--enroll">
+                          Enroll Now
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{width:14,height:14}}>
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                          </svg>
+                        </Link>
+                      )}
+
                       {/* past: expand participants */}
                       {ev.status==="past" && allP.length>0 && (
                         <button className="ep-btn ep-btn--expand" onClick={e=>{e.stopPropagation();toggle(ev.id);}}>
@@ -460,6 +469,7 @@ export default function EventsPage() {
                       </div>
                     )}
                   </div>
+                </div>
               );
             })}
           </div>
@@ -655,7 +665,7 @@ const CSS = `
 
 /* actions */
 .ep-actions { display:flex; gap:10px; flex-wrap:wrap; }
-.ep-btn { display:inline-flex; align-items:center; gap:8px; padding:.62rem 1.5rem; font-family:inherit; font-size:.7rem; font-weight:700; text-transform:uppercase; letter-spacing:.14em; cursor:pointer; border:none; transition:all .25s; }
+.ep-btn { display:inline-flex; align-items:center; gap:8px; padding:.62rem 1.5rem; font-family:inherit; font-size:.7rem; font-weight:700; text-transform:uppercase; letter-spacing:.14em; cursor:pointer; border:none; text-decoration:none; transition:all .25s; }
 .ep-btn--enroll { background:#059669; color:#fff; }
 .ep-btn--enroll:hover { background:#047857; transform:translateY(-2px); box-shadow:0 6px 20px rgba(5,150,105,.35); }
 .ep-btn--expand { background:rgba(255,255,255,.04); color:rgba(238,232,223,.6); border:1px solid rgba(255,255,255,.08); }

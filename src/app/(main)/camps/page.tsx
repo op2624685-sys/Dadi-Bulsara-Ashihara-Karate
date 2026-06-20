@@ -12,7 +12,9 @@ gsap.registerPlugin(ScrollTrigger);
 
 export default function CampsPage() {
   const [filter, setFilter] = useState<"all" | "past" | "upcoming">("all");
-  const heroRef   = useRef<HTMLDivElement>(null);
+  const heroRef = useRef<HTMLDivElement>(null);
+  const filterBarRef = useRef<HTMLDivElement>(null);
+  const gridRef = useRef<HTMLDivElement>(null);
 
   const filtered = camps.filter(c =>
     filter === "all" ? true : (filter === "upcoming" ? c.status === "upcoming" : c.status !== "upcoming")
@@ -37,24 +39,36 @@ export default function CampsPage() {
       gsap.fromTo(".camps-hero-stat",
         { y: 20, opacity: 0 }, { y: 0, opacity: 1, stagger: 0.1, duration: 0.7, ease: "power3.out", delay: 1.1 }
       );
-      gsap.fromTo(".camps-filter-bar",
-        { y: 16, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7, ease: "power3.out", delay: 1.3 }
-      );
     }, heroRef);
     return () => ctx.revert();
   }, []);
 
+  useEffect(() => {
+    if (!filterBarRef.current) return;
+    gsap.fromTo(filterBarRef.current,
+      { y: 16, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.7, ease: "power3.out", delay: 1.3 }
+    );
+  }, []);
+
   /* ── Cards scroll reveal ── */
   useEffect(() => {
+    const cards = gridRef.current?.querySelectorAll<HTMLElement>(".camp-card");
+    if (!cards || cards.length === 0) return;
+
     const ctx = gsap.context(() => {
-      gsap.fromTo(".camp-card",
+      gsap.fromTo(cards,
         { y: 60, opacity: 0 },
         {
-          y: 0, opacity: 1, stagger: 0.12, duration: 0.9, ease: "power3.out",
-          scrollTrigger: { trigger: ".camps-grid", start: "top 85%", once: true }
+          y: 0,
+          opacity: 1,
+          stagger: 0.12,
+          duration: 0.9,
+          ease: "power3.out",
+          scrollTrigger: { trigger: gridRef.current, start: "top 85%", once: true }
         }
       );
-    });
+    }, gridRef);
     return () => ctx.revert();
   }, [filter]);
 
@@ -136,7 +150,7 @@ export default function CampsPage() {
         <section className="camps-body">
 
           {/* Filter bar */}
-          <div className="camps-filter-bar">
+          <div className="camps-filter-bar" ref={filterBarRef}>
             <div className="camps-filter-left">
               {(["all", "upcoming", "past"] as const).map(f => (
                 <button
@@ -155,7 +169,7 @@ export default function CampsPage() {
           </div>
 
           {/* ── GRID ── */}
-          <div className="camps-grid">
+          <div className="camps-grid" ref={gridRef}>
             {filtered.map((camp) => (
               <CampCard key={camp.slug} camp={camp}/>
             ))}
@@ -213,6 +227,7 @@ function CampCard({ camp}: { camp: CampData }) {
             src={camp.heroImage}
             alt={camp.name}
             fill
+            sizes="(max-width: 768px) 100vw, 33vw"
             className="camp-card-img"
             style={{ filter: hovered ? "grayscale(0%) brightness(0.75)" : "grayscale(30%) brightness(0.6)" }}
           />

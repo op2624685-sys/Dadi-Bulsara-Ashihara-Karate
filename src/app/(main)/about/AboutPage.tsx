@@ -151,6 +151,7 @@ export default function AboutPage() {
                         src="/img/01.jpg"
                         alt="Karate training"
                         fill
+                        sizes="100vw"
                         className="object-cover object-center"
                         priority
                     />
@@ -212,6 +213,7 @@ export default function AboutPage() {
                                     src="/img/05.jpg"
                                     alt="Shihan Santosh Kumar"
                                     fill
+                                    sizes="(max-width: 1024px) 100vw, 480px"
                                     className="object-cover object-top grayscale group-hover:grayscale-0 scale-100 group-hover:scale-105 transition-all duration-700"
                                 />
                                 <div className="absolute inset-0 bg-gradient-to-t from-[#060606]/80 via-transparent to-transparent" />
@@ -396,6 +398,7 @@ export default function AboutPage() {
                                         src={camp.photo}
                                         alt={camp.title}
                                         fill
+                                        sizes="(max-width: 768px) 100vw, 33vw"
                                         className="object-cover object-center grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700"
                                     />
                                     <div className="absolute inset-0 bg-gradient-to-t from-[#0c0c0c] via-[#0c0c0c]/30 to-transparent" />

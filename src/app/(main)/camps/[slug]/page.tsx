@@ -8,7 +8,7 @@ import { notFound } from "next/navigation";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { getCampBySlug } from "@/data/camps";
-import { CampData, TrainingPillar } from "@/types/camp";
+import { TrainingPillar } from "@/types/camp";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -197,7 +197,7 @@ export default function CampDetailPage({ params }: { params: Promise<{ slug: str
       });
 
       /* Pillar cards fade in as they scroll into view */
-      document.querySelectorAll<HTMLElement>(".pillar-card").forEach((card, i) => {
+      document.querySelectorAll<HTMLElement>(".pillar-card").forEach((card) => {
         gsap.fromTo(
           card,
           { opacity: 0, y: 40 },
@@ -371,10 +371,10 @@ export default function CampDetailPage({ params }: { params: Promise<{ slug: str
           {/* Right — image collage */}
           <div className="gsap-reveal relative h-[600px] max-lg:h-[400px]">
             <div className="absolute top-0 left-0 w-[76%] h-[80%] overflow-hidden">
-              <Image src={camp.aboutImages[0]} alt="Camp" fill className="object-cover brightness-[0.82] grayscale-[15%]" />
+              <Image src={camp.aboutImages[0]} alt="Camp" fill sizes="(max-width: 1024px) 100vw, 48vw" className="object-cover brightness-[0.82] grayscale-[15%]" />
             </div>
             <div className="absolute bottom-0 right-0 w-[53%] h-[47%] overflow-hidden" style={{ outline: "6px solid #060606" }}>
-              <Image src={camp.aboutImages[1]} alt="Kata" fill className="object-cover brightness-[0.82] grayscale-[15%]" />
+              <Image src={camp.aboutImages[1]} alt="Kata" fill sizes="(max-width: 1024px) 100vw, 32vw" className="object-cover brightness-[0.82] grayscale-[15%]" />
             </div>
             <div className="absolute top-1/2 left-0 -translate-y-1/2 -translate-x-7 w-14 h-14 bg-[#C0392B] z-10" />
             <div className="absolute bottom-12 left-[-20px] w-[90px] h-[90px] bg-[#0A0A0A] border border-white/[0.06] flex flex-col items-center justify-center gap-[2px] z-10">

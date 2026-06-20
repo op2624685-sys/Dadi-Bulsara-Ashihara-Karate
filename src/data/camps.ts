@@ -1,5 +1,18 @@
 import { CampData } from "@/types/camp";
 
+const LOCAL_IMAGES = [
+  "/img/01.jpg",
+  "/img/02.jpg",
+  "/img/03.jpg",
+  "/img/04.jpg",
+  "/img/05.jpg",
+  "/img/06.jpg",
+  "/img/07.jpg",
+  "/img/08.jpg",
+  "/img/09.jpg",
+  "/img/10.jpg",
+];
+
 export const camps: CampData[] = [
   {
     slug: "sis-gto-training-camp-2011",
@@ -14,10 +27,10 @@ export const camps: CampData[] = [
     sessions: 14,
     instructorCount: 4,
     kana: "武道合宿 · Budo Gasshuku",
-    heroImage: "https://images.unsplash.com/photo-1555597673-b21d5c935865?w=1920&q=90",
+    heroImage: LOCAL_IMAGES[0],
     aboutImages: [
-      "https://images.unsplash.com/photo-1587280501635-68a0e82cd5ff?w=900&q=80",
-      "https://images.unsplash.com/photo-1593812956977-f6a7e18db5d5?w=600&q=80",
+      LOCAL_IMAGES[1],
+      LOCAL_IMAGES[2],
     ],
     quote: "A gasshuku is not a retreat from ordinary life — it is a concentrated collision with it.",
     quoteAuthor: "Sensei R. Desai, Camp Director",
@@ -32,10 +45,10 @@ export const camps: CampData[] = [
       { id: "06", method: "Method 06", title: "Dojo Culture & Philosophy", description: "Nightly seminars on Budo philosophy, the origin of the gasshuku tradition in Okinawan karate, and federation lineage.", hoursPerDay: "Nightly", icon: "philosophy" },
     ],
     instructors: [
-      { id: "1", name: "Sensei K. Tanaka", grade: "6th Dan", role: "Head Instructor", origin: "Osaka, Japan", image: "https://images.unsplash.com/photo-1564564321837-a57b7070ac4f?w=600&q=80" },
-      { id: "2", name: "Sensei R. Desai", grade: "5th Dan", role: "Camp Director", origin: "Pune, Maharashtra", image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=600&q=80" },
-      { id: "3", name: "Sensei V. Mehta", grade: "4th Dan", origin: "New Delhi", image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=600&q=80" },
-      { id: "4", name: "Sensei P. Sharma", grade: "4th Dan", role: "Youth Coach", origin: "Mumbai, Maharashtra", image: "https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=600&q=80" },
+      { id: "1", name: "Sensei K. Tanaka", grade: "6th Dan", role: "Head Instructor", origin: "Osaka, Japan", image: LOCAL_IMAGES[3] },
+      { id: "2", name: "Sensei R. Desai", grade: "5th Dan", role: "Camp Director", origin: "Pune, Maharashtra", image: LOCAL_IMAGES[4] },
+      { id: "3", name: "Sensei V. Mehta", grade: "4th Dan", origin: "New Delhi", image: LOCAL_IMAGES[5] },
+      { id: "4", name: "Sensei P. Sharma", grade: "4th Dan", role: "Youth Coach", origin: "Mumbai, Maharashtra", image: LOCAL_IMAGES[6] },
     ],
     schedule: [
       { dayNum: "01", dayLabel: "Monday · Arrival", title: "Arrival & Opening Ceremony", description: "Participants arrived through the afternoon. Opening ceremony at dusk — formal introductions, recitation of the Dojo Kun, and a ceremonial first warm-up as one group.", tags: ["Orientation", "Dojo Kun", "Evening Ceremony"] },
@@ -45,11 +58,11 @@ export const camps: CampData[] = [
       { dayNum: "05", dayLabel: "Friday · Close", title: "Final Session & Closing Ceremony", description: "Joint kata performance by all 75 participants. Certificates presented. Closing remarks from Sensei Tanaka. Formal close with Dojo Kun recitation and group photo at sunset.", tags: ["Joint Kata", "Certificates", "Closing Ceremony"] },
     ],
     galleryImages: [
-      "https://images.unsplash.com/photo-1555597673-b21d5c935865?w=1200&q=85",
-      "https://images.unsplash.com/photo-1566694271453-390536dd1f0d?w=700&q=85",
-      "https://images.unsplash.com/photo-1590244568428-e46b75ded60c?w=700&q=85",
-      "https://images.unsplash.com/photo-1589985270826-4b7bb135bc9d?w=700&q=85",
-      "https://images.unsplash.com/photo-1599058945522-28d584b6f0ff?w=700&q=85",
+      LOCAL_IMAGES[7],
+      LOCAL_IMAGES[8],
+      LOCAL_IMAGES[9],
+      LOCAL_IMAGES[1],
+      LOCAL_IMAGES[2],
     ],
   },
 
@@ -67,10 +80,10 @@ export const camps: CampData[] = [
     sessions: 9,
     instructorCount: 3,
     kana: "武道合宿 · Budo Gasshuku",
-    heroImage: "https://images.unsplash.com/photo-1590244568428-e46b75ded60c?w=1920&q=90",
+    heroImage: LOCAL_IMAGES[5],
     aboutImages: [
-      "https://images.unsplash.com/photo-1599058945522-28d584b6f0ff?w=900&q=80",
-      "https://images.unsplash.com/photo-1566694271453-390536dd1f0d?w=600&q=80",
+      LOCAL_IMAGES[6],
+      LOCAL_IMAGES[7],
     ],
     quote: "On the beach, there is nowhere to hide — from the ocean, or from yourself.",
     quoteAuthor: "Sensei K. Tanaka, Head Instructor",
@@ -82,9 +95,9 @@ export const camps: CampData[] = [
       { id: "03", method: "Method 03", title: "Kumite Adaptation", description: "Sparring on sand forces competitors to develop new footwork and stance patterns, translating directly to tournament performance.", hoursPerDay: "3 hrs / day", icon: "kumite" },
     ],
     instructors: [
-      { id: "1", name: "Sensei K. Tanaka", grade: "6th Dan", role: "Head Instructor", origin: "Osaka, Japan", image: "https://images.unsplash.com/photo-1564564321837-a57b7070ac4f?w=600&q=80" },
-      { id: "2", name: "Sensei R. Desai", grade: "5th Dan", origin: "Pune, Maharashtra", image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=600&q=80" },
-      { id: "3", name: "Sensei V. Mehta", grade: "4th Dan", origin: "New Delhi", image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=600&q=80" },
+      { id: "1", name: "Sensei K. Tanaka", grade: "6th Dan", role: "Head Instructor", origin: "Osaka, Japan", image: LOCAL_IMAGES[3] },
+      { id: "2", name: "Sensei R. Desai", grade: "5th Dan", origin: "Pune, Maharashtra", image: LOCAL_IMAGES[4] },
+      { id: "3", name: "Sensei V. Mehta", grade: "4th Dan", origin: "New Delhi", image: LOCAL_IMAGES[5] },
     ],
     schedule: [
       { dayNum: "01", dayLabel: "Friday · Arrival", title: "Arrival & Beach Opening", description: "Evening arrival at Alibaug. Opening ceremony conducted on the beach at dusk with waves as backdrop. First conditioning session in the surf.", tags: ["Arrival", "Beach Ceremony", "Evening"] },
@@ -92,11 +105,11 @@ export const camps: CampData[] = [
       { dayNum: "03", dayLabel: "Sunday · Close", title: "Final Session & Ceremony", description: "Morning final kata on the beach. Group photograph at the shore. Closing ceremony and certificates.", tags: ["Final Kata", "Certificates", "Closing"] },
     ],
     galleryImages: [
-      "https://images.unsplash.com/photo-1590244568428-e46b75ded60c?w=1200&q=85",
-      "https://images.unsplash.com/photo-1599058945522-28d584b6f0ff?w=700&q=85",
-      "https://images.unsplash.com/photo-1566694271453-390536dd1f0d?w=700&q=85",
-      "https://images.unsplash.com/photo-1587280501635-68a0e82cd5ff?w=700&q=85",
-      "https://images.unsplash.com/photo-1555597673-b21d5c935865?w=700&q=85",
+      LOCAL_IMAGES[5],
+      LOCAL_IMAGES[6],
+      LOCAL_IMAGES[7],
+      LOCAL_IMAGES[8],
+      LOCAL_IMAGES[9],
     ],
   },
 ];

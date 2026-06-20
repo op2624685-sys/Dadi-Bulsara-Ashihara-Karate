@@ -150,13 +150,13 @@ export default function ContactPage() {
     return (
         <div
             ref={containerRef}
-            className="relative w-full min-h-screen mt-18 bg-gradient-to-tr from-[#060606] via-[#0c0c0c] to-[#060606] overflow-hidden selection:bg-[#BE0027]/30"
+            className="relative w-full min-h-screen mt-[72px] bg-gradient-to-tr from-[#060606] via-[#0c0c0c] to-[#060606] overflow-hidden selection:bg-[#BE0027]/30"
         >
             {/* ── Ambient Glows ── */}
             <div className="fixed top-0 left-1/4 w-[600px] h-[800px] bg-[#BE0027]/4 blur-[160px] rounded-full pointer-events-none" />
             <div className="fixed bottom-0 right-1/4 w-[600px] h-[800px] bg-[#BE0027]/3 blur-[180px] rounded-full pointer-events-none" />
 
-            <div className="relative z-10 mx-auto px-6 md:px-10 py-16 flex flex-col gap-20">
+            <div className="relative z-10 mx-auto w-full max-w-[1600px] px-6 md:px-10 py-16 flex flex-col gap-20">
 
                 {/* ══════════════════════════════════════════════════
                     SECTION 1 — HERO HEADER
@@ -183,12 +183,12 @@ export default function ContactPage() {
                 {/* ══════════════════════════════════════════════════
                     SECTION 2 — CONTACT FORM + INFO SIDEBAR
                 ══════════════════════════════════════════════════ */}
-                <div className="grid grid-cols-1 lg:grid-cols-[1fr_650px] gap-10 w-[95vw] max-w-[1800px] mx-auto">
+                <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_650px] xl:grid-cols-[760px_650px] gap-10 w-full xl:justify-center lg:items-start lg:gap-12 xl:gap-16">
 
                     {/* ── FORM PANEL ── */}
                     <div
                         ref={formRef}
-                        className="relative bg-white/[0.02] h-[60vh] gap-10 flex flex-col justify-center backdrop-blur-xl border border-white/10 rounded-3xl p-10 md:p-14 shadow-[0_24px_60px_rgba(0,0,0,0.5)]"
+                        className="relative w-full max-w-none bg-white/[0.02] h-auto min-h-[60vh] gap-10 flex flex-col justify-center backdrop-blur-xl border border-white/10 rounded-3xl p-8 sm:p-10 md:p-14 shadow-[0_24px_60px_rgba(0,0,0,0.5)]"
                     >
                         {/* Top accent line */}
                         <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#BE0027] to-transparent" />
@@ -314,7 +314,7 @@ export default function ContactPage() {
                     </div>
 
                     {/* ── INFO SIDEBAR ── */}
-                    <div className="h-full flex flex-col gap-6">
+                    <div className="h-full flex flex-col gap-6 lg:pt-6">
 
                         {/* Dojo Info Card */}
                         <div className="relative bg-white/[0.02] backdrop-blur-xl border border-white/10 rounded-2xl p-6 shadow-[0_24px_60px_rgba(0,0,0,0.4)] overflow-hidden">

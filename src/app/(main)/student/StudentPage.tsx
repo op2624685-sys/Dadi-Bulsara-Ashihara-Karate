@@ -2,16 +2,12 @@
 
 import { useState, useMemo, useEffect, useRef } from "react";
 import { gsap } from "gsap";
-// ScrollTrigger plugin ko import karein
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-// GSAP core me ScrollTrigger ko register karna mandatory hai
 gsap.registerPlugin(ScrollTrigger);
 
 // ── Types ─────────────────────────────────────────────────────────────────────
-type Belt =
-  | "White" | "Yellow" | "Green"
-  | "Blue" | "Brown" | "Black";
+type Belt = "White" | "Yellow" | "Green" | "Blue" | "Brown" | "Black";
 
 interface Student {
   id: number;
@@ -29,337 +25,222 @@ interface Student {
 }
 
 // ── Belt colour system ────────────────────────────────────────────────────────
-const BELT_COLORS: Record<Belt, { bg: string; text: string; border: string }> = {
-  White: { bg: "#f5f5f5", text: "#111", border: "#ccc" },
-  Blue: { bg: "#1a3a6e", text: "#fff", border: "#0f2548" },
-  Yellow: { bg: "#f5c518", text: "#111", border: "#d4a800" },
-  Green: { bg: "#2d6a2d", text: "#fff", border: "#1e4a1e" },
-  Brown: { bg: "#5c3317", text: "#fff", border: "#3e2210" },
-  Black: { bg: "#111", text: "#fff", border: "#333" },
+const BELT_COLORS: Record<Belt, { bg: string; text: string; border: string; glow: string }> = {
+  White:  { bg: "#f5f5f5", text: "#111", border: "#ccc",    glow: "rgba(255,255,255,0.25)" },
+  Blue:   { bg: "#1a3a6e", text: "#fff", border: "#2255aa", glow: "rgba(34,85,170,0.5)" },
+  Yellow: { bg: "#f5c518", text: "#111", border: "#d4a800", glow: "rgba(245,197,24,0.45)" },
+  Green:  { bg: "#2d6a2d", text: "#fff", border: "#3a8c3a", glow: "rgba(58,140,58,0.4)" },
+  Brown:  { bg: "#5c3317", text: "#fff", border: "#7a4520", glow: "rgba(122,69,32,0.4)" },
+  Black:  { bg: "#111",    text: "#fff", border: "#555",    glow: "rgba(201,168,76,0.4)" },
 };
 
-const BELT_ORDER: Belt[] = ["White", "Blue", "Yellow", "Green", "Brown", "Black"];
+const BELT_GRADIENTS: Record<Belt, string> = {
+  White:  "linear-gradient(180deg, #e8e8e8, #aaa, #e8e8e8)",
+  Blue:   "linear-gradient(180deg, #0f2548, #2255aa, #0f2548)",
+  Yellow: "linear-gradient(180deg, #f5c518, #d4a800, #f5c518)",
+  Green:  "linear-gradient(180deg, #1e4a1e, #3a8c3a, #1e4a1e)",
+  Brown:  "linear-gradient(180deg, #3e2210, #7a4520, #3e2210)",
+  Black:  "linear-gradient(180deg, #111, #555, #c9a84c, #555, #111)",
+};
+
+const BELT_ORDER: Belt[] = ["White", "Yellow", "Green", "Blue", "Brown", "Black"];
 
 // ── Sample data ───────────────────────────────────────────────────────────────
 const SAMPLE_STUDENTS: Student[] = [
-  { id: 1, firstName: "Arjun", lastName: "Sharma", age: 14, belt: "Black", state: "Maharashtra", sensei: "Dadi Bulsara", campsCount: 6, eventsCount: 12, isChampion: true, championYear: 2023 },
-  { id: 2, firstName: "Priya", lastName: "Mehta", age: 16, belt: "Brown", state: "Gujarat", sensei: "Dadi Bulsara", campsCount: 4, eventsCount: 8, isChampion: false },
-  { id: 3, firstName: "Rahul", lastName: "Verma", age: 12, belt: "Blue", state: "Delhi", sensei: "Raj Nair", campsCount: 3, eventsCount: 5, isChampion: false },
-  { id: 4, firstName: "Sneha", lastName: "Patil", age: 17, belt: "Black", state: "Maharashtra", sensei: "Dadi Bulsara", campsCount: 8, eventsCount: 15, isChampion: true, championYear: 2024 },
-  { id: 5, firstName: "Vikram", lastName: "Singh", age: 13, belt: "Green", state: "Punjab", sensei: "Raj Nair", campsCount: 2, eventsCount: 4, isChampion: false },
-  { id: 6, firstName: "Ananya", lastName: "Iyer", age: 15, belt: "Brown", state: "Tamil Nadu", sensei: "Dadi Bulsara", campsCount: 5, eventsCount: 9, isChampion: false },
-  { id: 7, firstName: "Dev", lastName: "Kapoor", age: 11, belt: "Green", state: "Delhi", sensei: "Raj Nair", campsCount: 1, eventsCount: 2, isChampion: false },
-  { id: 8, firstName: "Meera", lastName: "Nair", age: 18, belt: "Black", state: "Kerala", sensei: "Dadi Bulsara", campsCount: 9, eventsCount: 18, isChampion: true, championYear: 2022 },
-  { id: 9, firstName: "Karan", lastName: "Joshi", age: 14, belt: "Blue", state: "Rajasthan", sensei: "Raj Nair", campsCount: 3, eventsCount: 6, isChampion: false },
-  { id: 10, firstName: "Ishaan", lastName: "Reddy", age: 16, belt: "Brown", state: "Andhra", sensei: "Dadi Bulsara", campsCount: 4, eventsCount: 7, isChampion: false },
-  { id: 11, firstName: "Tara", lastName: "Bose", age: 13, belt: "Yellow", state: "West Bengal", sensei: "Raj Nair", campsCount: 1, eventsCount: 3, isChampion: false },
-  { id: 12, firstName: "Aditya", lastName: "Kumar", age: 17, belt: "Black", state: "Karnataka", sensei: "Dadi Bulsara", campsCount: 7, eventsCount: 14, isChampion: true, championYear: 2024 },
+  { id: 1,  firstName: "Arjun",  lastName: "Sharma", age: 14, belt: "Black",  state: "Maharashtra", sensei: "Dadi Bulsara", campsCount: 6,  eventsCount: 12, isChampion: true,  championYear: 2023 },
+  { id: 2,  firstName: "Priya",  lastName: "Mehta",  age: 16, belt: "Brown",  state: "Gujarat",     sensei: "Dadi Bulsara", campsCount: 4,  eventsCount: 8,  isChampion: false },
+  { id: 3,  firstName: "Rahul",  lastName: "Verma",  age: 12, belt: "Blue",   state: "Delhi",       sensei: "Raj Nair",     campsCount: 3,  eventsCount: 5,  isChampion: false },
+  { id: 4,  firstName: "Sneha",  lastName: "Patil",  age: 17, belt: "Black",  state: "Maharashtra", sensei: "Dadi Bulsara", campsCount: 8,  eventsCount: 15, isChampion: true,  championYear: 2024 },
+  { id: 5,  firstName: "Vikram", lastName: "Singh",  age: 13, belt: "Green",  state: "Punjab",      sensei: "Raj Nair",     campsCount: 2,  eventsCount: 4,  isChampion: false },
+  { id: 6,  firstName: "Ananya", lastName: "Iyer",   age: 15, belt: "Brown",  state: "Tamil Nadu",  sensei: "Dadi Bulsara", campsCount: 5,  eventsCount: 9,  isChampion: false },
+  { id: 7,  firstName: "Dev",    lastName: "Kapoor", age: 11, belt: "Green",  state: "Delhi",       sensei: "Raj Nair",     campsCount: 1,  eventsCount: 2,  isChampion: false },
+  { id: 8,  firstName: "Meera",  lastName: "Nair",   age: 18, belt: "Black",  state: "Kerala",      sensei: "Dadi Bulsara", campsCount: 9,  eventsCount: 18, isChampion: true,  championYear: 2022 },
+  { id: 9,  firstName: "Karan",  lastName: "Joshi",  age: 14, belt: "Blue",   state: "Rajasthan",   sensei: "Raj Nair",     campsCount: 3,  eventsCount: 6,  isChampion: false },
+  { id: 10, firstName: "Ishaan", lastName: "Reddy",  age: 16, belt: "Brown",  state: "Andhra",      sensei: "Dadi Bulsara", campsCount: 4,  eventsCount: 7,  isChampion: false },
+  { id: 11, firstName: "Tara",   lastName: "Bose",   age: 13, belt: "Yellow", state: "West Bengal", sensei: "Raj Nair",     campsCount: 1,  eventsCount: 3,  isChampion: false },
+  { id: 12, firstName: "Aditya", lastName: "Kumar",  age: 17, belt: "Black",  state: "Karnataka",   sensei: "Dadi Bulsara", campsCount: 7,  eventsCount: 14, isChampion: true,  championYear: 2024 },
 ];
 
 const ALL_STATES = [...new Set(SAMPLE_STUDENTS.map(s => s.state))].sort();
 
-// ── Belt Aura (Improved for Rank Difference) ───────────────────────────────
-const BELT_AURA: Record<Belt, { ringColor: string; glowColor: string; animation: string }> = {
-  White: { ringColor: "#ddd", glowColor: "rgba(255,255,255,0.3)", animation: "aura-shimmer" },
-  Blue: { ringColor: "#4a9eff", glowColor: "rgba(74,158,255,0.55)", animation: "aura-ripple" },
-  Yellow: { ringColor: "#ffe600", glowColor: "rgba(255,230,0,0.6)", animation: "aura-pulse" },
-  Green: { ringColor: "#4ade80", glowColor: "rgba(74,222,128,0.55)", animation: "aura-breathe" },
-  Brown: { ringColor: "#f59e0b", glowColor: "rgba(245,158,11,0.6)", animation: "aura-earthpulse" },
-  Black: { ringColor: "#f5d576", glowColor: "rgba(245,213,118,0.85)", animation: "aura-rotate" },
-};
+// ── Global keyframes ──────────────────────────────────────────────────────────
+const GLOBAL_STYLES = `
+  @keyframes ring-spin        { from { transform: rotate(0deg); }   to { transform: rotate(360deg); } }
+  @keyframes ring-spin-rev    { from { transform: rotate(0deg); }   to { transform: rotate(-360deg); } }
+  @keyframes ring-pulse       { 0%,100% { opacity:.6; transform:scale(1); } 50% { opacity:1; transform:scale(1.07); } }
+  @keyframes ring-ripple      { 0% { opacity:.8; transform:scale(1); } 100% { opacity:0; transform:scale(1.45); } }
+  @keyframes spark-orbit      { 0% { transform:rotate(0deg) translateX(40px); opacity:1; } 50% { opacity:.3; } 100% { transform:rotate(360deg) translateX(40px); opacity:1; } }
+  @keyframes banner-shine     { 0% { top:-50px; opacity:0; } 25% { opacity:1; } 75% { opacity:1; } 100% { top:110%; opacity:0; } }
+  @keyframes white-shimmer    { 0%,100% { opacity:.4; transform:scale(1); } 50% { opacity:.9; transform:scale(1.05); } }
+  @keyframes green-breathe    { 0%,100% { opacity:.5; transform:scale(1); } 50% { opacity:.15; transform:scale(1.10); } }
+  @keyframes brown-earthpulse { 0%,100% { opacity:.5; transform:scale(1); } 50% { opacity:.9; transform:scale(1.06); } }
+  @keyframes yellow-dashes    { from { transform:rotate(0deg); } to { transform:rotate(360deg); } }
+  input::placeholder { color:#333; }
+  select option { background:#0d0d0d; }
+  @media (max-width: 1024px) {
+    .cards-grid { grid-template-columns: 1fr !important; }
+  }
+  @media (max-width: 768px) {
+    .hero-section, .filters-bar, .divider-bar, .cards-grid { padding-left: 20px !important; padding-right: 20px !important; }
+    .hero-bg-text { display: none !important; }
+  }
+`;
 
-const BELT_PANEL: Record<Belt, { gradient: string; pattern: string; glow: string }> = {
-  White: { gradient: "linear-gradient(to bottom, #e8e8e8, #aaa, #e8e8e8)", pattern: "solid", glow: "rgba(255,255,255,0.2)" },
-  Blue: { gradient: "linear-gradient(to bottom, #0f2548, #2255aa, #0f2548)", pattern: "double", glow: "rgba(34,85,170,0.4)" },
-  Yellow: { gradient: "linear-gradient(to bottom, #f5c518, #d4a800, #f5c518)", pattern: "dashes", glow: "rgba(245,197,24,0.4)" },
-  Green: { gradient: "linear-gradient(to bottom, #1e4a1e, #3a8c3a, #1e4a1e)", pattern: "double", glow: "rgba(58,140,58,0.35)" },
-  Brown: { gradient: "linear-gradient(to bottom, #3e2210, #7a4520, #3e2210)", pattern: "dots", glow: "rgba(122,69,32,0.4)" },
-  Black: { gradient: "linear-gradient(to bottom, #111, #444, #c9a84c, #444, #111)", pattern: "zigzag", glow: "rgba(201,168,76,0.5)" },
-};
+// ── Avatar ring effects ───────────────────────────────────────────────────────
+function AvatarRings({ belt }: { belt: Belt }) {
+  const bc = BELT_COLORS[belt];
 
-// ── Rotating Legendary Border (Full Card) ───────────────────────────────────
-function LegendaryRotatingBorder({ belt, isChampion }: { belt: Belt; isChampion: boolean }) {
-  const aura = BELT_AURA[belt];
-  const isHighRank = belt === "Black" || belt === "Brown";
-  const isBlack = belt === "Black";
-  const intensity = isChampion ? 1 : 0.75;
-
-  return (
-    <div style={{
-      position: "absolute",
-      inset: "-4px",
-      borderRadius: "10px",
-      overflow: "hidden",
-      zIndex: -1,
-      pointerEvents: "none",
-    }}>
-      {/* Main Rotating Conic Glow - Different for each belt */}
-      <div
-        style={{
-          position: "absolute",
-          inset: isBlack ? "-28px" : "-22px",
-          borderRadius: "16px",
-          background: isBlack 
-            ? `conic-gradient(transparent 30%, ${aura.ringColor}, #c9a84c, ${aura.ringColor}, transparent 70%)`
-            : isHighRank
-            ? `conic-gradient(transparent 20%, ${aura.ringColor}, transparent 80%)`
-            : `conic-gradient(transparent, ${aura.ringColor}, transparent)`,
-          animation: `rotateBorder ${isBlack ? "6s" : isHighRank ? "8s" : "10s"} linear infinite`,
-          opacity: intensity * (isBlack ? 0.95 : 0.85),
-          filter: isBlack ? "blur(3px)" : "blur(1.5px)",
-          boxShadow: `0 0 ${isBlack ? "45px" : "32px"} 10px ${aura.glowColor}`,
-        }}
-      />
-
-      {/* Secondary Rotating Layer (Faster) */}
-      <div
-        style={{
-          position: "absolute",
-          inset: isBlack ? "-18px" : "-14px",
-          borderRadius: "14px",
-          background: `conic-gradient(transparent, rgba(255,255,255,0.25), transparent)`,
-          animation: `rotateBorder ${isBlack ? "3.5s" : "5s"} linear infinite reverse`,
-          opacity: intensity * (isBlack ? 0.7 : 0.45),
-        }}
-      />
-
-      {/* Extra Gold Spark Layer for Black & Champions */}
-      { (isBlack || isChampion) && (
-        <div
-          style={{
-            position: "absolute",
-            inset: "-10px",
-            borderRadius: "12px",
-            background: "conic-gradient(transparent, #c9a84c88, transparent)",
-            animation: "rotateBorder 4s linear infinite",
-            opacity: isChampion ? 0.65 : 0.4,
-            filter: "blur(2px)",
-          }}
-        />
-      )}
-
-      {/* Static Inner Border Glow */}
+  if (belt === "Black") return (
+    <>
       <div style={{
-        position: "absolute",
-        inset: "2px",
-        border: `2.5px solid ${aura.ringColor}`,
-        borderRadius: "9px",
-        opacity: intensity * 0.35,
-        boxShadow: `inset 0 0 20px ${aura.glowColor}`,
+        position: "absolute", inset: "-9px", borderRadius: "50%",
+        background: `conic-gradient(#c9a84c 0deg 40deg, transparent 40deg 90deg, #c9a84c 90deg 130deg, transparent 130deg 180deg, #c9a84c 180deg 220deg, transparent 220deg 270deg, #c9a84c 270deg 310deg, transparent 310deg 360deg)`,
+        WebkitMask: "radial-gradient(farthest-side, transparent calc(100% - 2px), #fff calc(100% - 2px))",
+        animationName: "ring-spin", animationDuration: "5s", animationTimingFunction: "linear", animationIterationCount: "infinite",
       }} />
-    </div>
+      <div style={{
+        position: "absolute", inset: "-4px", borderRadius: "50%",
+        border: "1px solid rgba(201,168,76,0.25)",
+        animationName: "ring-spin-rev", animationDuration: "8s", animationTimingFunction: "linear", animationIterationCount: "infinite",
+        boxShadow: "0 0 10px rgba(201,168,76,0.2), inset 0 0 8px rgba(201,168,76,0.1)",
+      }} />
+      {[
+        { color: "#c9a84c", dur: "2.6s", delay: "0s" },
+        { color: "#fff",    dur: "3.2s", delay: "0.9s" },
+        { color: "#c9a84c", dur: "3.8s", delay: "1.8s" },
+      ].map((sp, i) => (
+        <div key={i} style={{
+          position: "absolute", top: "50%", left: "50%",
+          width: "4px", height: "4px", borderRadius: "50%", margin: "-2px 0 0 -2px",
+          background: sp.color,
+          animationName: "spark-orbit", animationDuration: sp.dur, animationDelay: sp.delay,
+          animationTimingFunction: "linear", animationIterationCount: "infinite",
+          boxShadow: `0 0 5px 2px ${sp.color}`,
+        }} />
+      ))}
+    </>
   );
-}
 
-// ── Left Side Accent Panel (Still keeping for detail) ───────────────────────
-function BeltPanel({ belt }: { belt: Belt }) {
-  const panel = BELT_PANEL[belt];
-  const W = 7;
+  if (belt === "Blue") return (
+    <>
+      <div style={{ position: "absolute", inset: "-5px", borderRadius: "50%", border: `2px solid ${bc.border}`, boxShadow: `0 0 14px ${bc.glow}`, animationName: "ring-pulse", animationDuration: "2s", animationTimingFunction: "ease-in-out", animationIterationCount: "infinite" }} />
+      <div style={{ position: "absolute", inset: "-6px", borderRadius: "50%", border: `1px solid ${bc.border}`, opacity: 0, animationName: "ring-ripple", animationDuration: "1.6s", animationTimingFunction: "ease-out", animationIterationCount: "infinite" }} />
+      <div style={{ position: "absolute", inset: "-6px", borderRadius: "50%", border: `1px solid ${bc.border}`, opacity: 0, animationName: "ring-ripple", animationDuration: "1.6s", animationDelay: "0.8s", animationTimingFunction: "ease-out", animationIterationCount: "infinite" }} />
+    </>
+  );
 
-  const patternSVG: Record<string, string> = {
-    solid: "",
-    dashes: `<svg xmlns='http://www.w3.org/2000/svg' width='${W}' height='12'><rect x='0' y='0' width='${W}' height='7' fill='rgba(0,0,0,0.3)'/></svg>`,
-    double: `<svg xmlns='http://www.w3.org/2000/svg' width='${W}' height='1'><rect x='1' y='0' width='1' height='1' fill='rgba(255,255,255,0.3)'/><rect x='4' y='0' width='1' height='1' fill='rgba(255,255,255,0.3)'/></svg>`,
-    dots: `<svg xmlns='http://www.w3.org/2000/svg' width='${W}' height='8'><circle cx='3' cy='4' r='1.1' fill='rgba(255,255,255,0.3)'/></svg>`,
-    zigzag: `<svg xmlns='http://www.w3.org/2000/svg' width='${W}' height='8'><polyline points='0,4 3,0 6,4 3,8' fill='none' stroke='rgba(201,168,76,0.6)' stroke-width='1'/></svg>`,
-  };
+  if (belt === "Yellow") return (
+    <>
+      <div style={{ position: "absolute", inset: "-5px", borderRadius: "50%", border: `2px solid ${bc.border}`, boxShadow: `0 0 16px ${bc.glow}`, animationName: "ring-pulse", animationDuration: "1.8s", animationTimingFunction: "ease-in-out", animationIterationCount: "infinite" }} />
+      <div style={{ position: "absolute", inset: "-9px", borderRadius: "50%", border: `1px dashed ${bc.border}`, opacity: 0.45, animationName: "yellow-dashes", animationDuration: "9s", animationTimingFunction: "linear", animationIterationCount: "infinite" }} />
+    </>
+  );
 
-  const patternB64 = patternSVG[panel.pattern]
-    ? `url("data:image/svg+xml,${encodeURIComponent(patternSVG[panel.pattern])}")`
-    : "none";
+  if (belt === "Green") return (
+    <>
+      <div style={{ position: "absolute", inset: "-5px", borderRadius: "50%", border: `2px solid ${bc.border}`, boxShadow: `0 0 12px ${bc.glow}`, animationName: "green-breathe", animationDuration: "3.5s", animationTimingFunction: "ease-in-out", animationIterationCount: "infinite" }} />
+      <div style={{ position: "absolute", inset: "-9px", borderRadius: "50%", border: `1px solid ${bc.border}`, opacity: 0.2, animationName: "ring-spin", animationDuration: "10s", animationTimingFunction: "linear", animationIterationCount: "infinite" }} />
+    </>
+  );
 
+  if (belt === "Brown") return (
+    <div style={{ position: "absolute", inset: "-5px", borderRadius: "50%", border: `2px solid ${bc.border}`, boxShadow: `0 0 12px ${bc.glow}`, animationName: "brown-earthpulse", animationDuration: "3s", animationTimingFunction: "ease-in-out", animationIterationCount: "infinite" }} />
+  );
+
+  // White
   return (
-    <div style={{
-      position: "absolute",
-      top: 0,
-      left: 0,
-      width: `${W}px`,
-      height: "100%",
-      borderRadius: "8px 0 0 8px",
-      background: panel.gradient,
-      boxShadow: `4px 0 20px 3px ${panel.glow}`,
-      overflow: "hidden",
-      zIndex: 1,
-    }}>
-      {panel.pattern !== "solid" && (
-        <div style={{
-          position: "absolute",
-          inset: 0,
-          backgroundImage: patternB64,
-          backgroundRepeat: "repeat-y",
-          backgroundSize: `${W}px auto`,
-          mixBlendMode: "overlay",
-        }} />
-      )}
-
-      {/* Spark Effects */}
-      {belt === "Black" && (
-        <div style={{
-          position: "absolute",
-          left: 0,
-          width: "100%",
-          height: "40px",
-          background: "linear-gradient(to bottom, transparent, rgba(245,213,118,0.95), transparent)",
-          animation: "panel-spark 2s linear infinite",
-        }} />
-      )}
-      {belt === "Yellow" && (
-        <div style={{
-          position: "absolute",
-          left: 0,
-          width: "100%",
-          height: "28px",
-          background: "linear-gradient(to bottom, transparent, rgba(255,255,255,0.7), transparent)",
-          animation: "panel-spark 1.6s linear infinite",
-          animationDelay: "0.3s",
-        }} />
-      )}
-    </div>
+    <div style={{ position: "absolute", inset: "-5px", borderRadius: "50%", border: "1px solid rgba(255,255,255,0.35)", boxShadow: "0 0 8px rgba(255,255,255,0.1)", animationName: "white-shimmer", animationDuration: "4s", animationTimingFunction: "ease-in-out", animationIterationCount: "infinite" }} />
   );
 }
 
 function BeltAvatar({ firstName, lastName, belt, photo }: { firstName: string; lastName: string; belt: Belt; photo?: string }) {
   const bc = BELT_COLORS[belt];
-  const aura = BELT_AURA[belt];
-  const SIZE = 78;
-
   return (
-    <>
-      <style>{`
-        @keyframes rotateBorder { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-        @keyframes spin-reverse { from { transform: rotate(360deg); } to { transform: rotate(0deg); } }
-        @keyframes aura-shimmer { 0%,100% { opacity:0.45; transform:translate(-50%,-50%) scale(1); } 50% { opacity:0.9; transform:translate(-50%,-50%) scale(1.05); } }
-        @keyframes aura-pulse { 0%,100% { opacity:0.9; transform:translate(-50%,-50%) scale(1); } 50% { opacity:0.45; transform:translate(-50%,-50%) scale(1.07); } }
-        @keyframes aura-ember { 0% { opacity:0.9; transform:translate(-50%,-50%) scale(1) rotate(0deg); } 40% { opacity:0.6; transform:translate(-50%,-50%) scale(1.05) rotate(4deg); } 70% { opacity:1; transform:translate(-50%,-50%) scale(0.97) rotate(-3deg); } 100% { opacity:0.9; transform:translate(-50%,-50%) scale(1) rotate(0deg); } }
-        @keyframes aura-breathe { 0%,100% { opacity:0.6; transform:translate(-50%,-50%) scale(1); } 50% { opacity:0.2; transform:translate(-50%,-50%) scale(1.09); } }
-        @keyframes aura-ripple { 0% { opacity:0.75; transform:translate(-50%,-50%) scale(1); } 100% { opacity:0; transform:translate(-50%,-50%) scale(1.30); } }
-        @keyframes aura-earthpulse { 0%,100% { opacity:0.55; transform:translate(-50%,-50%) scale(1) filter:blur(0px); } 50% { opacity:0.9; transform:translate(-50%,-50%) scale(1.05) filter:blur(1px); } }
-        @keyframes aura-rotate { 0% { transform:translate(-50%,-50%) rotate(0deg); } 100% { transform:translate(-50%,-50%) rotate(360deg); } }
-        @keyframes aura-counter { 0% { transform:translate(-50%,-50%) rotate(0deg); opacity:0.35; } 50% { opacity:0.15; } 100% { transform:translate(-50%,-50%) rotate(-360deg); opacity:0.35; } }
-        @keyframes sparks-orbit { 0% { transform:rotate(0deg) translateX(34px) scale(1); opacity:0.9; } 50% { transform:rotate(180deg) translateX(34px) scale(0.4); opacity:0.35; } 100% { transform:rotate(360deg) translateX(34px) scale(1); opacity:0.9; } }
-        @keyframes panel-spark { 0% { transform: translateY(-150%); } 100% { transform: translateY(250%); } }
-      `}</style>
-
-      <div style={{ position: "relative", width: `${SIZE + 32}px`, height: `${SIZE + 32}px`, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
-
-        {/* Outer legendary frame - multiple glowing rings */}
-        {Array.from({ length: 5 }).map((_, i) => (
-          <div
-            key={i}
-            style={{
-              position: "absolute",
-              top: "50%",
-              left: "50%",
-              width: `${SIZE + 12 + i * 9}px`,
-              height: `${SIZE + 12 + i * 9}px`,
-              borderRadius: "50%",
-              border: `2.5px solid ${aura.ringColor}`,
-              opacity: 0.75 - i * 0.12,
-              transform: "translate(-50%, -50%)",
-              animationName: i % 2 === 0 ? aura.animation : "aura-counter",
-              animationDuration: `${2.8 + i * 0.7}s`,
-              animationTimingFunction: "linear",
-              animationIterationCount: "infinite",
-              boxShadow: `0 0 ${18 + i * 6}px ${aura.glowColor}`,
-            }}
-          />
-        ))}
-
-        {/* Core avatar */}
-        <div style={{
-          width: `${SIZE}px`,
-          height: `${SIZE}px`,
-          borderRadius: "50%",
-          background: bc.bg,
-          border: `3px solid ${bc.border}`,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          overflow: "hidden",
-          position: "relative",
-          zIndex: 2,
-          boxShadow: `inset 0 0 20px ${aura.glowColor}, 0 0 20px 6px rgba(0,0,0,0.7)`,
-        }}>
-          {photo ? (
-            <img src={photo} alt={firstName} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-          ) : (
-            <span style={{ fontFamily: "var(--font-cinzel)", fontSize: "24px", fontWeight: 700, color: bc.text, letterSpacing: "2px" }}>
-              {firstName[0]}{lastName[0]}
-            </span>
-          )}
-        </div>
-
-        {/* Inner glow orb */}
-        <div style={{
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          width: `${SIZE - 8}px`,
-          height: `${SIZE - 8}px`,
-          borderRadius: "50%",
-          background: "transparent",
-          border: `1px solid ${aura.ringColor}`,
-          transform: "translate(-50%, -50%)",
-          zIndex: 3,
-          animation: "legendary-orb 2.2s ease-in-out infinite",
-          pointerEvents: "none",
-        }} />
-
+    <div style={{ position: "relative", width: "88px", height: "88px", flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
+      <AvatarRings belt={belt} />
+      <div style={{
+        width: "72px", height: "72px", borderRadius: "50%",
+        background: bc.bg, border: `2px solid ${bc.border}`,
+        display: "flex", alignItems: "center", justifyContent: "center",
+        overflow: "hidden", position: "relative", zIndex: 2,
+        boxShadow: `0 0 18px ${bc.glow}66`,
+      }}>
+        {photo
+          ? <img src={photo} alt={firstName} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+          : <span style={{ fontFamily: "var(--font-cinzel)", fontSize: "20px", fontWeight: 700, color: bc.text, letterSpacing: "1px" }}>{firstName[0]}{lastName[0]}</span>
+        }
       </div>
-    </>
+    </div>
   );
 }
 
 function BeltBadge({ belt }: { belt: Belt }) {
   const bc = BELT_COLORS[belt];
   return (
-    <span style={{ display: "inline-flex", alignItems: "center", gap: "5px", padding: "2px 10px 2px 6px", background: bc.bg, color: bc.text, border: `1px solid ${bc.border}`, borderRadius: "2px", fontFamily: "var(--font-montserrat)", fontSize: "10px", fontWeight: 700, letterSpacing: "1.5px", textTransform: "uppercase" }}>
-      <span style={{ width: "8px", height: "8px", borderRadius: "50%", background: bc.text, opacity: 0.6 }} />
+    <span style={{ display: "inline-flex", alignItems: "center", gap: "5px", padding: "3px 10px 3px 6px", background: bc.bg, color: bc.text, border: `1px solid ${bc.border}`, borderRadius: "2px", fontFamily: "var(--font-montserrat)", fontSize: "10px", fontWeight: 700, letterSpacing: "1.5px", textTransform: "uppercase" }}>
+      <span style={{ width: "7px", height: "7px", borderRadius: "50%", background: bc.text, opacity: 0.6 }} />
       {belt}
     </span>
   );
 }
 
-// ── Legendary Frame + StudentCard ───────────────────────────────────────────
-function LegendaryFrame({ belt, isChampion }: { belt: Belt; isChampion: boolean }) {
-  const color = BELT_COLORS[belt].border;
-  const glow = BELT_AURA[belt].glowColor;
-
+// ── Left banner panel ─────────────────────────────────────────────────────────
+function BannerPanel({ belt }: { belt: Belt }) {
+  const bc = BELT_COLORS[belt];
+  const isBlack = belt === "Black";
+  const shineColor = isBlack ? "rgba(201,168,76,0.85)" : `${bc.border}cc`;
   return (
-    <div style={{
-      position: "absolute",
-      inset: "-3px",
-      borderRadius: "8px",
-      background: `linear-gradient(135deg, ${color}, #c9a84c88, ${color})`,
-      padding: "3px",
-      zIndex: -1,
-      opacity: isChampion ? 0.95 : 0.7,
-      boxShadow: `0 0 30px 10px ${glow}`,
-      pointerEvents: "none",
-    }}>
-      <div style={{ position: "absolute", inset: "0", borderRadius: "5px", background: "#0a0a0a" }} />
+    <div style={{ width: "9px", flexShrink: 0, position: "relative", overflow: "hidden", borderRadius: "6px 0 0 6px" }}>
+      <div style={{ position: "absolute", inset: 0, background: BELT_GRADIENTS[belt], boxShadow: `4px 0 14px ${bc.glow}55` }} />
+      <div style={{
+        position: "absolute", left: 0, width: "100%", height: "60px",
+        background: `linear-gradient(to bottom, transparent, ${shineColor}, transparent)`,
+        animationName: "banner-shine",
+        animationDuration: isBlack ? "2.2s" : "3s",
+        animationTimingFunction: "ease-in-out",
+        animationIterationCount: "infinite",
+        animationDelay: isBlack ? "0s" : "0.4s",
+      }} />
     </div>
+  );
+}
+
+// ── 4-sided legendary border edges ───────────────────────────────────────────
+function LegendaryEdges({ belt, isChampion }: { belt: Belt; isChampion: boolean }) {
+  const bc = BELT_COLORS[belt];
+  const op  = isChampion ? "bb" : "44";
+  const op2 = isChampion ? "88" : "28";
+  return (
+    <>
+      <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "1px", background: `linear-gradient(to right, ${bc.border}00, ${bc.border}${op}, ${bc.border}00)`, pointerEvents: "none", zIndex: 4 }} />
+      <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: "1px", background: `linear-gradient(to right, ${bc.border}00, ${bc.border}${op2}, ${bc.border}00)`, pointerEvents: "none", zIndex: 4 }} />
+      <div style={{ position: "absolute", top: 0, bottom: 0, right: 0, width: "1px", background: `linear-gradient(to bottom, ${bc.border}00, ${bc.border}${op}, ${bc.border}00)`, pointerEvents: "none", zIndex: 4 }} />
+    </>
   );
 }
 
 // ── Student Card ──────────────────────────────────────────────────────────────
 function StudentCard({ student }: { student: Student }) {
   const cardRef = useRef<HTMLDivElement>(null);
-  const glowColor = BELT_COLORS[student.belt].border;
+  const bc = BELT_COLORS[student.belt];
 
   const handleMouseEnter = () => {
     gsap.to(cardRef.current, {
-      borderColor: "#3a3a3a", x: 6, backgroundColor: "#0f0f0f",
-      boxShadow: `0 8px 24px rgba(0,0,0,0.5), 0 0 10px ${glowColor}20`, // Glow effect on hover
-      duration: 0.3, ease: "power2.out"
+      y: -4, backgroundColor: "#0f0f0f",
+      boxShadow: student.isChampion
+        ? `0 10px 32px rgba(0,0,0,0.7), 0 0 16px ${bc.glow}`
+        : `0 8px 24px rgba(0,0,0,0.5), 0 0 8px ${bc.border}20`,
+      duration: 0.28, ease: "power2.out",
     });
   };
 
   const handleMouseLeave = () => {
     gsap.to(cardRef.current, {
-      borderColor: "#1e1e1e", x: 0, backgroundColor: "#0a0a0a",
-      boxShadow: "0 0 0 rgba(0,0,0,0)", duration: 0.25, ease: "power2.inOut"
+      y: 0, backgroundColor: "#0a0a0a",
+      boxShadow: student.isChampion
+        ? `inset 0 0 14px ${bc.glow}15, 0 0 6px ${bc.glow}20`
+        : "none",
+      duration: 0.22, ease: "power2.inOut",
     });
   };
 
@@ -368,58 +249,51 @@ function StudentCard({ student }: { student: Student }) {
       ref={cardRef}
       className="student-card"
       style={{
-        background: "#0a0a0a", border: `1px solid ${student.isChampion ? glowColor : "#1e1e1e"}`, borderRadius: "4px",
-        padding: "18px 20px 18px 26px", display: "flex", gap: "16px", position: "relative",
-        cursor: "default", overflow: "hidden", opacity: 0, visibility: "hidden", transform: "translateY(30px)", boxShadow: student.isChampion ? `inset 0 0 10px ${glowColor}40, 0 0 5px ${glowColor}20` : "none"
-        // starting position niche rakha hai
+        position: "relative", background: "#0a0a0a", borderRadius: "6px",
+        display: "flex", overflow: "hidden", cursor: "default",
+        opacity: 0, visibility: "hidden",
+        border: student.isChampion ? "1px solid transparent" : "1px solid #1a1a1a",
+        boxShadow: student.isChampion ? `inset 0 0 14px ${bc.glow}15, 0 0 6px ${bc.glow}20` : "none",
       }}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      {/* --- LEGENDARY BORDER EFFECT --- */}
-      <div style={{
-        position: "absolute", inset: 0, padding: "1px", borderRadius: "4px",
-        background: `linear-gradient(135deg, ${glowColor}, transparent 50%, ${glowColor})`,
-        WebkitMask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-        WebkitMaskComposite: "xor",
-        pointerEvents: "none",
-        opacity: student.isChampion ? 0.8 : 0.2 // Champion ho to border zyada glow karega
-      }} />
+      <LegendaryEdges belt={student.belt} isChampion={student.isChampion} />
+      <BannerPanel belt={student.belt} />
 
-      {student.isChampion && (
-        <div style={{ position: "absolute", top: "10px", right: "14px", fontFamily: "var(--font-montserrat)", fontSize: "9px", fontWeight: 700, letterSpacing: "2px", color: "#c9a84c", textTransform: "uppercase", border: `1px solid ${glowColor}`, pointerEvents: "none", borderRadius: "4px", boxShadow: `0 0 5px ${glowColor}30` }}>
-          ★ Champion {student.championYear}
-        </div>
-      )}
+      {/* Card body */}
+      <div style={{ flex: 1, padding: "22px 22px 18px 18px", display: "flex", gap: "18px", alignItems: "flex-start", minWidth: 0 }}>
+        <BeltAvatar firstName={student.firstName} lastName={student.lastName} belt={student.belt} photo={student.photo} />
 
-      <LegendaryRotatingBorder belt={student.belt} isChampion={student.isChampion} />
-      
-      <BeltPanel belt={student.belt} />
+        <div style={{ flex: 1, minWidth: 0 }}>
+          {/* Name + champion badge */}
+          <div style={{ display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap", marginBottom: "7px" }}>
+            <span style={{ fontFamily: "var(--font-cinzel)", fontSize: "16px", fontWeight: 600, color: "#e0e0e0", letterSpacing: "0.5px" }}>
+              {student.firstName} {student.lastName}
+            </span>
+            {student.isChampion && (
+              <span style={{ fontFamily: "var(--font-montserrat)", fontSize: "9px", fontWeight: 700, letterSpacing: "1.5px", textTransform: "uppercase", padding: "2px 8px", borderRadius: "2px", color: "#c9a84c", border: "1px solid #c9a84c44", background: "#c9a84c10" }}>
+                ★ {student.championYear}
+              </span>
+            )}
+          </div>
 
-      <LegendaryFrame belt={student.belt} isChampion={student.isChampion} />
+          {/* Belt + meta */}
+          <div style={{ display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap", marginBottom: "14px" }}>
+            <BeltBadge belt={student.belt} />
+            <span style={{ fontFamily: "var(--font-montserrat)", fontSize: "11px", color: "#555" }}>Age {student.age}</span>
+            <span style={{ color: "#2a2a2a" }}>·</span>
+            <span style={{ fontFamily: "var(--font-montserrat)", fontSize: "11px", color: "#555" }}>{student.state}</span>
+          </div>
 
-      <BeltAvatar firstName={student.firstName} lastName={student.lastName} belt={student.belt} photo={student.photo} />
-
-      <div style={{ flex: 1, minWidth: 0 }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap", marginBottom: "6px" }}>
-          <span style={{ fontFamily: "var(--font-cinzel)", fontSize: "15px", fontWeight: 600, color: "#e8e8e8", letterSpacing: "0.5px" }}>
-            {student.firstName} {student.lastName}
-          </span>
-        </div>
-
-        <div style={{ display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap", marginBottom: "10px" }}>
-          <BeltBadge belt={student.belt} />
-          <span style={{ fontFamily: "var(--font-montserrat)", fontSize: "11px", color: "#555" }}>Age {student.age}</span>
-          <span style={{ color: "#2a2a2a" }}>·</span>
-          <span style={{ fontFamily: "var(--font-montserrat)", fontSize: "11px", color: "#555" }}>{student.state}</span>
-        </div>
-
-        <div style={{ display: "flex", gap: "16px", flexWrap: "wrap" }}>
-          <Stat label="Camps" value={student.campsCount} />
-          <Stat label="Events" value={student.eventsCount} />
-          <div style={{ marginLeft: "auto", display: "flex", alignItems: "center", gap: "5px" }}>
-            <span style={{ fontFamily: "var(--font-montserrat)", fontSize: "10px", color: "#444", letterSpacing: "0.5px" }}>SENSEI</span>
-            <span style={{ fontFamily: "var(--font-cormorant)", fontSize: "13px", color: "#888", fontStyle: "italic" }}>{student.sensei}</span>
+          {/* Stats + sensei */}
+          <div style={{ display: "flex", gap: "20px", alignItems: "flex-end" }}>
+            <MiniStat label="Camps"  value={student.campsCount} />
+            <MiniStat label="Events" value={student.eventsCount} />
+            <div style={{ marginLeft: "auto", display: "flex", flexDirection: "column", alignItems: "flex-end", gap: "2px" }}>
+              <span style={{ fontFamily: "var(--font-montserrat)", fontSize: "8px", color: "#444", letterSpacing: "1px", textTransform: "uppercase" }}>Sensei</span>
+              <span style={{ fontFamily: "var(--font-cormorant)", fontSize: "14px", color: "#777", fontStyle: "italic" }}>{student.sensei}</span>
+            </div>
           </div>
         </div>
       </div>
@@ -427,186 +301,178 @@ function StudentCard({ student }: { student: Student }) {
   );
 }
 
-function Stat({ label, value }: { label: string; value: number }) {
+function MiniStat({ label, value }: { label: string; value: number }) {
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: "1px" }}>
-      <span style={{ fontFamily: "var(--font-cinzel)", fontSize: "16px", fontWeight: 700, color: "#ccc", lineHeight: 1 }}>{value}</span>
+    <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
+      <span style={{ fontFamily: "var(--font-cinzel)", fontSize: "18px", fontWeight: 700, color: "#bbb", lineHeight: 1 }}>{value}</span>
       <span style={{ fontFamily: "var(--font-montserrat)", fontSize: "9px", color: "#444", letterSpacing: "1.5px", textTransform: "uppercase" }}>{label}</span>
+    </div>
+  );
+}
+
+// ── Header Stats ──────────────────────────────────────────────────────────────
+function HeaderStat({ value, label }: { value: number; label: string }) {
+  return (
+    <div style={{ flex: 1, padding: "16px 24px", borderRight: "1px solid #1a1a1a", background: "#080808" }}>
+      <div style={{ fontFamily: "var(--font-cinzel)", fontSize: "32px", fontWeight: 700, color: "#e8e8e8", lineHeight: 1, marginBottom: "5px" }}>{value}</div>
+      <div style={{ fontFamily: "var(--font-montserrat)", fontSize: "9px", color: "#444", letterSpacing: "2px", textTransform: "uppercase" }}>{label}</div>
     </div>
   );
 }
 
 // ── Main Page ─────────────────────────────────────────────────────────────────
 export default function StudentPage() {
-  const [search, setSearch] = useState("");
-  const [beltFilter, setBeltFilter] = useState<Belt | "All">("All");
+  const [search, setSearch]           = useState("");
+  const [beltFilter, setBeltFilter]   = useState<Belt | "All">("All");
   const [stateFilter, setStateFilter] = useState("All");
 
   const headerRef = useRef<HTMLDivElement>(null);
   const filterRef = useRef<HTMLDivElement>(null);
-  const listRef = useRef<HTMLDivElement>(null);
 
   const filtered = useMemo(() => {
     return SAMPLE_STUDENTS.filter(s => {
-      const q = search.toLowerCase();
+      const q          = search.toLowerCase();
       const matchSearch = !q || s.firstName.toLowerCase().includes(q) || s.lastName.toLowerCase().includes(q) || s.sensei.toLowerCase().includes(q);
-      const matchBelt = beltFilter === "All" || s.belt === beltFilter;
-      const matchState = stateFilter === "All" || s.state === stateFilter;
+      const matchBelt   = beltFilter  === "All" || s.belt  === beltFilter;
+      const matchState  = stateFilter === "All" || s.state === stateFilter;
       return matchSearch && matchBelt && matchState;
     });
   }, [search, beltFilter, stateFilter]);
 
   const champions = filtered.filter(s => s.isChampion).length;
 
-  // 1. Initial Load Orchestration
+  // Initial entrance animation
   useEffect(() => {
-    const tl = gsap.timeline({ defaults: { ease: "power4.out" } });
     gsap.to(".page-container", { opacity: 1, duration: 0.4 });
-
-    tl.fromTo(headerRef.current ? headerRef.current.children : [],
+    const tl = gsap.timeline({ defaults: { ease: "power4.out" } });
+    tl.fromTo(
+      headerRef.current ? headerRef.current.children : [],
       { opacity: 0, y: 30, filter: "blur(10px)" },
       { opacity: 1, y: 0, filter: "blur(0px)", duration: 1.2, stagger: 0.15 }
     );
-
     tl.fromTo(filterRef.current, { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: 0.8 }, "-=0.7");
-    tl.fromTo(".student-card",
-      {
-        opacity: 0,
-        y: 30,
-        scale: 0.98,
-        autoAlpha: 0 // Shuruat me visibility: hidden rakhega
-      },
-      {
-        opacity: 1,
-        y: 0,
-        scale: 1,
-        autoAlpha: 1, // Animate hote hi visibility: visible kar dega
-        duration: 0.7,
-        stagger: 0.12,
-        ease: "power2.out",
-        onComplete: () => {
-          ScrollTrigger.refresh();
-        }
-      },
+    tl.fromTo(
+      ".student-card",
+      { opacity: 0, y: 30, scale: 0.98, autoAlpha: 0 },
+      { opacity: 1, y: 0, scale: 1, autoAlpha: 1, duration: 0.7, stagger: 0.08, ease: "power2.out", onComplete: () => ScrollTrigger.refresh() },
       "-=0.4"
     );
   }, []);
 
-  // 2. ScrollTrigger + Dynamic Filtering Setup
+  // ScrollTrigger on filter change
   useEffect(() => {
-    // Purane chal rahe ScrollTriggers ko clear karein taki memory leak ya duplicate triggers na banein
-    ScrollTrigger.getAll().forEach(trigger => trigger.kill());
-
-    const cards = document.querySelectorAll(".student-card");
-
-    if (cards.length > 0) {
-      cards.forEach((card) => {
-        gsap.fromTo(card,
-          {
-            opacity: 0,
-            y: 30,
-            scale: 0.98
+    ScrollTrigger.getAll().forEach(t => t.kill());
+    document.querySelectorAll(".student-card").forEach(card => {
+      gsap.fromTo(card,
+        { opacity: 0, y: 30, scale: 0.98 },
+        {
+          opacity: 1, y: 0, scale: 1, duration: 0.5, ease: "power1.out",
+          scrollTrigger: {
+            trigger: card, start: "top 100%", end: "top 88%",
+            toggleActions: "play reverse none reverse", scrub: 0.5, invalidateOnRefresh: true,
           },
-          {
-            opacity: 1,
-            y: 0,
-            scale: 1,
-            duration: 0.5,
-            ease: "power1.out",
-            scrollTrigger: {
-              trigger: card,
-              start: "top 95%",    // Niche se enter hote hi card dikhega (Jaise aapko chahiye tha)
-              end: "top 88%",       // Jab card screen ke bilkul upar (top se 8% niche) pahuchega
-
-              // Sabse important change:
-              // 1st (play): niche se enter hote hi chalega
-              // 2nd (reverse): upar se wapas niche aane par wapas animate hoga
-              // 3rd (none): upar jaate waqt normal animation handle hoga
-              // 4th (reverse): jab card upar se screen ke bahar nikal jaye toh wapas hide ho jaye
-              toggleActions: "play reverse none reverse",
-
-              // Upward scroll ko smooth fade-out karne ke liye scrub ko enable kiya
-              scrub: 0.5,
-
-              invalidateOnRefresh: true
-            },
-            // Note: clearProps ko humne hata diya hai taaki upar scroll ka animation state track ho sake
-          }
-        );
-      });
-    }
+        }
+      );
+    });
   }, [filtered]);
 
   return (
     <div className="page-container" style={{ minHeight: "100vh", background: "#050505", paddingTop: "80px", opacity: 0 }}>
+      <style>{GLOBAL_STYLES}</style>
 
-      {/* Header */}
-      <div ref={headerRef} style={{ borderBottom: "1px solid #111", padding: "48px 40px 32px", maxWidth: "900px", margin: "0 auto" }}>
-        <p style={{ fontFamily: "var(--font-montserrat)", fontSize: "11px", letterSpacing: "4px", color: "#555", textTransform: "uppercase", marginBottom: "12px" }}>
-          Dadi Bulsara Ashihara Karate
-        </p>
-        <h1 style={{ fontFamily: "var(--font-cinzel)", fontSize: "clamp(32px, 5vw, 52px)", fontWeight: 700, color: "#e8e8e8", letterSpacing: "3px", textTransform: "uppercase", margin: "0 0 8px" }}>
-          Students
-        </h1>
-        <div style={{ display: "flex", gap: "24px", marginTop: "16px" }}>
-          <HeaderStat value={SAMPLE_STUDENTS.length} label="Enrolled" />
-          <HeaderStat value={SAMPLE_STUDENTS.filter(s => s.belt === "Black").length} label="Black Belts" />
-          <HeaderStat value={SAMPLE_STUDENTS.filter(s => s.isChampion).length} label="Champions" />
+      {/* ── HERO HEADER ── */}
+      <div className="hero-section" style={{ position: "relative", overflow: "hidden", padding: "60px 56px 0" }}>
+        <div className="hero-bg-text" style={{ position: "absolute", top: "-10px", right: "-20px", fontFamily: "var(--font-cinzel)", fontSize: "200px", fontWeight: 900, color: "rgba(255,255,255,0.02)", letterSpacing: "10px", textTransform: "uppercase", pointerEvents: "none", userSelect: "none", lineHeight: 1 }}>
+          KARATE
+        </div>
+
+        <div ref={headerRef}>
+          {/* Eyebrow */}
+          <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "20px" }}>
+            <div style={{ width: "32px", height: "1px", background: "#555" }} />
+            <span style={{ fontFamily: "var(--font-montserrat)", fontSize: "10px", letterSpacing: "5px", color: "#555", textTransform: "uppercase" }}>
+              Dadi Bulsara Ashihara Karate · Dojo Records
+            </span>
+          </div>
+
+          {/* Title + stats */}
+          <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: "32px", flexWrap: "wrap", marginBottom: "40px" }}>
+            <div>
+              <div style={{ fontFamily: "var(--font-montserrat)", fontSize: "clamp(10px,1.2vw,14px)", fontWeight: 300, letterSpacing: "10px", color: "#3a3a3a", marginBottom: "8px", textTransform: "uppercase" }}>
+                Hall of
+              </div>
+              <h1 style={{ fontFamily: "var(--font-cinzel)", fontSize: "clamp(52px,7vw,96px)", fontWeight: 900, color: "#e8e8e8", letterSpacing: "8px", textTransform: "uppercase", margin: 0, lineHeight: 0.88 }}>
+                Students
+              </h1>
+            </div>
+
+            <div style={{ display: "flex", border: "1px solid #1a1a1a", borderRadius: "4px", overflow: "hidden", minWidth: "340px" }}>
+              <HeaderStat value={SAMPLE_STUDENTS.length} label="Enrolled" />
+              <HeaderStat value={SAMPLE_STUDENTS.filter(s => s.belt === "Black").length} label="Black Belts" />
+              <div style={{ flex: 1, padding: "16px 24px", background: "#0d0d0d", borderLeft: "1px solid #1a1a1a" }}>
+                <div style={{ fontFamily: "var(--font-cinzel)", fontSize: "32px", fontWeight: 700, color: "#c9a84c", lineHeight: 1, marginBottom: "5px" }}>
+                  {SAMPLE_STUDENTS.filter(s => s.isChampion).length}
+                </div>
+                <div style={{ fontFamily: "var(--font-montserrat)", fontSize: "9px", color: "#444", letterSpacing: "2px", textTransform: "uppercase" }}>Champions</div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* Filters */}
-      <div ref={filterRef} style={{ padding: "24px 40px", maxWidth: "900px", margin: "0 auto", display: "flex", gap: "12px", flexWrap: "wrap", alignItems: "center" }}>
-        <div style={{ position: "relative", flex: "1", minWidth: "220px" }}>
-          <span style={{ position: "absolute", left: "14px", top: "50%", transform: "translateY(-50%)", color: "#444", fontSize: "14px", pointerEvents: "none" }}>⌕</span>
+      {/* Divider */}
+      <div className="divider-bar" style={{ padding: "0 56px" }}>
+        <div style={{ height: "1px", background: "linear-gradient(to right, transparent, #1e1e1e 15%, #1e1e1e 85%, transparent)" }} />
+      </div>
+
+      {/* ── FILTERS ── */}
+      <div ref={filterRef} className="filters-bar" style={{ padding: "20px 56px", display: "flex", gap: "10px", flexWrap: "wrap", alignItems: "center", borderBottom: "1px solid #111" }}>
+        <div style={{ position: "relative", flex: 1, minWidth: "200px" }}>
+          <span style={{ position: "absolute", left: "12px", top: "50%", transform: "translateY(-50%)", color: "#444", fontSize: "15px", pointerEvents: "none" }}>⌕</span>
           <input
             type="text"
             placeholder="Search by name or sensei…"
             value={search}
             onChange={e => setSearch(e.target.value)}
-            style={{ width: "100%", padding: "10px 14px 10px 36px", background: "#0d0d0d", border: "1px solid #222", borderRadius: "3px", color: "#ccc", fontFamily: "var(--font-montserrat)", fontSize: "12px", outline: "none", boxSizing: "border-box" }}
+            style={{ width: "100%", padding: "10px 12px 10px 34px", background: "#0d0d0d", border: "1px solid #222", borderRadius: "3px", color: "#ccc", fontFamily: "var(--font-montserrat)", fontSize: "11px", outline: "none", boxSizing: "border-box" }}
           />
         </div>
 
-        <select value={beltFilter} onChange={e => setBeltFilter(e.target.value as Belt | "All")} style={{ padding: "10px 14px", background: "#0d0d0d", border: "1px solid #222", borderRadius: "3px", color: "#888", fontFamily: "var(--font-montserrat)", fontSize: "11px", letterSpacing: "1px", cursor: "pointer", outline: "none" }}>
+        <select value={beltFilter} onChange={e => setBeltFilter(e.target.value as Belt | "All")}
+          style={{ padding: "10px 14px", background: "#0d0d0d", border: "1px solid #222", borderRadius: "3px", color: "#888", fontFamily: "var(--font-montserrat)", fontSize: "11px", letterSpacing: "1px", cursor: "pointer", outline: "none" }}>
           <option value="All">All Belts</option>
           {BELT_ORDER.map(b => <option key={b} value={b}>{b} Belt</option>)}
         </select>
 
-        <select value={stateFilter} onChange={e => setStateFilter(e.target.value)} style={{ padding: "10px 14px", background: "#0d0d0d", border: "1px solid #222", borderRadius: "3px", color: "#888", fontFamily: "var(--font-montserrat)", fontSize: "11px", letterSpacing: "1px", cursor: "pointer", outline: "none" }}>
+        <select value={stateFilter} onChange={e => setStateFilter(e.target.value)}
+          style={{ padding: "10px 14px", background: "#0d0d0d", border: "1px solid #222", borderRadius: "3px", color: "#888", fontFamily: "var(--font-montserrat)", fontSize: "11px", letterSpacing: "1px", cursor: "pointer", outline: "none" }}>
           <option value="All">All States</option>
           {ALL_STATES.map(s => <option key={s} value={s}>{s}</option>)}
         </select>
 
-        <span style={{ fontFamily: "var(--font-montserrat)", fontSize: "11px", color: "#444", letterSpacing: "1px", whiteSpace: "nowrap" }}>
+        <span style={{ fontFamily: "var(--font-montserrat)", fontSize: "10px", color: "#444", letterSpacing: "1px", whiteSpace: "nowrap", marginLeft: "auto" }}>
           {filtered.length} found · {champions} champion{champions !== 1 ? "s" : ""}
         </span>
       </div>
 
-      {/* Dynamic List Container */}
-      <div ref={listRef} style={{ maxWidth: "900px", margin: "0 auto", padding: "0 40px 80px", display: "flex", flexDirection: "column", gap: "8px" }}>
+      {/* ── 2-COLUMN CARDS GRID — full width ── */}
+      <div
+        className="cards-grid"
+        style={{
+          padding: "28px 56px 100px",
+          display: "grid",
+          gridTemplateColumns: "repeat(2, 1fr)",
+          gap: "12px",
+        }}
+      >
         {filtered.length === 0 ? (
-          <div className="no-results" style={{ padding: "80px 0", textAlign: "center", fontFamily: "var(--font-cormorant)", fontSize: "20px", color: "#333", fontStyle: "italic" }}>
+          <div style={{ gridColumn: "1/-1", padding: "80px 0", textAlign: "center", fontFamily: "var(--font-cormorant)", fontSize: "20px", color: "#333", fontStyle: "italic" }}>
             No students match your search.
           </div>
         ) : (
           filtered.map(s => <StudentCard key={s.id} student={s} />)
         )}
       </div>
-
-      <style jsx global>{`
-        input::placeholder { color: #333; }
-        select option { background: #0d0d0d; }
-      `}</style>
-    </div>
-  );
-}
-
-function HeaderStat({ value, label }: { value: number; label: string }) {
-  return (
-    <div>
-      <div style={{ fontFamily: "var(--font-cinzel)", fontSize: "28px", fontWeight: 700, color: "#e8e8e8", lineHeight: 1 }}>{value}</div>
-      <div style={{ fontFamily: "var(--font-montserrat)", fontSize: "10px", color: "#555", letterSpacing: "2px", textTransform: "uppercase", marginTop: "3px" }}>{label}</div>
     </div>
   );
 }

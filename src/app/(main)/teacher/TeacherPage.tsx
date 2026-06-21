@@ -3,6 +3,7 @@
 import { useState, useMemo, useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useRouter } from "next/navigation";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -500,6 +501,7 @@ function HeaderStat({ value, label, gold }: { value: number; label: string; gold
 // ── Main Page ─────────────────────────────────────────────────────────────────
 export default function TeacherPage() {
   const [search, setSearch] = useState("");
+  const router = useRouter();
   const [stateFilter, setStateFilter] = useState("All");
   const [rankFilter, setRankFilter] = useState("All");
 
@@ -524,7 +526,7 @@ export default function TeacherPage() {
   const totalSeminars = SAMPLE_TEACHERS.reduce((a, t) => a + t.seminarsGiven, 0);
 
   const handleTeacherSelect = (id: number) => {
-    console.log(`Teacher ${id} selected — will navigate to /teacher/${id}`);
+    router.push(`/teacher/${id}`);
     // Iska implementation aage: router.push(`/teacher/${id}`)
   };
 

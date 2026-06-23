@@ -4,6 +4,7 @@ import { useState, useMemo, useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -598,6 +599,12 @@ export default function TeacherPage() {
             <p style={{ fontFamily: "var(--font-cormorant)", fontSize: "16px", color: "#555", fontStyle: "italic", margin: "0 0 24px", maxWidth: "700px" }}>
               The lineage of knowledge — each instructor a guardian of the ancient way. Click any card to explore their dojo and teachings.
             </p>
+            <div>
+              <Link href="/teacher/registration" style={{ display: "inline-block", marginRight: "12px" }}>
+              
+              <button style={{ background: "#c9a84c", border: "none", color: "#000", padding: "12px 32px", borderRadius: "4px", fontSize: "14px", fontWeight: 700, textTransform: "uppercase", cursor: "pointer" }}>Register as an Instructor</button>
+              </Link>
+            </div>
           </div>
 
           {/* Stats panel */}

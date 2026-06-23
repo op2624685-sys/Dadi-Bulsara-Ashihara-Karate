@@ -195,7 +195,7 @@ export default function TeacherRegistrationPage() {
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
-    
+
     if (!formData.firstName.trim()) newErrors.firstName = "First name required";
     if (!formData.lastName.trim()) newErrors.lastName = "Last name required";
     if (!formData.email.includes("@")) newErrors.email = "Valid email required";
@@ -228,7 +228,7 @@ export default function TeacherRegistrationPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!validateForm()) {
       alert("Please fill all required fields correctly.");
       return;
@@ -236,10 +236,10 @@ export default function TeacherRegistrationPage() {
 
     // Simulate form submission
     console.log("Form submitted:", formData);
-    
+
     // Show success state
     setSubmitted(true);
-    
+
     // Reset after 3 seconds
     setTimeout(() => {
       setSubmitted(false);

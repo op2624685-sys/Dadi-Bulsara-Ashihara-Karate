@@ -3,6 +3,7 @@
 import { useState, useMemo, useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Link from "next/link";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -26,39 +27,39 @@ interface Student {
 
 // ── Belt colour system ────────────────────────────────────────────────────────
 const BELT_COLORS: Record<Belt, { bg: string; text: string; border: string; glow: string }> = {
-  White:  { bg: "#f5f5f5", text: "#111", border: "#ccc",    glow: "rgba(255,255,255,0.25)" },
-  Blue:   { bg: "#1a3a6e", text: "#fff", border: "#2255aa", glow: "rgba(34,85,170,0.5)" },
+  White: { bg: "#f5f5f5", text: "#111", border: "#ccc", glow: "rgba(255,255,255,0.25)" },
+  Blue: { bg: "#1a3a6e", text: "#fff", border: "#2255aa", glow: "rgba(34,85,170,0.5)" },
   Yellow: { bg: "#f5c518", text: "#111", border: "#d4a800", glow: "rgba(245,197,24,0.45)" },
-  Green:  { bg: "#2d6a2d", text: "#fff", border: "#3a8c3a", glow: "rgba(58,140,58,0.4)" },
-  Brown:  { bg: "#5c3317", text: "#fff", border: "#7a4520", glow: "rgba(122,69,32,0.4)" },
-  Black:  { bg: "#111",    text: "#fff", border: "#555",    glow: "rgba(201,168,76,0.4)" },
+  Green: { bg: "#2d6a2d", text: "#fff", border: "#3a8c3a", glow: "rgba(58,140,58,0.4)" },
+  Brown: { bg: "#5c3317", text: "#fff", border: "#7a4520", glow: "rgba(122,69,32,0.4)" },
+  Black: { bg: "#111", text: "#fff", border: "#555", glow: "rgba(201,168,76,0.4)" },
 };
 
 const BELT_GRADIENTS: Record<Belt, string> = {
-  White:  "linear-gradient(180deg, #e8e8e8, #aaa, #e8e8e8)",
-  Blue:   "linear-gradient(180deg, #0f2548, #2255aa, #0f2548)",
+  White: "linear-gradient(180deg, #e8e8e8, #aaa, #e8e8e8)",
+  Blue: "linear-gradient(180deg, #0f2548, #2255aa, #0f2548)",
   Yellow: "linear-gradient(180deg, #f5c518, #d4a800, #f5c518)",
-  Green:  "linear-gradient(180deg, #1e4a1e, #3a8c3a, #1e4a1e)",
-  Brown:  "linear-gradient(180deg, #3e2210, #7a4520, #3e2210)",
-  Black:  "linear-gradient(180deg, #111, #555, #c9a84c, #555, #111)",
+  Green: "linear-gradient(180deg, #1e4a1e, #3a8c3a, #1e4a1e)",
+  Brown: "linear-gradient(180deg, #3e2210, #7a4520, #3e2210)",
+  Black: "linear-gradient(180deg, #111, #555, #c9a84c, #555, #111)",
 };
 
 const BELT_ORDER: Belt[] = ["White", "Yellow", "Green", "Blue", "Brown", "Black"];
 
 // ── Sample data ───────────────────────────────────────────────────────────────
 const SAMPLE_STUDENTS: Student[] = [
-  { id: 1,  firstName: "Arjun",  lastName: "Sharma", age: 14, belt: "Black",  state: "Maharashtra", sensei: "Dadi Bulsara", campsCount: 6,  eventsCount: 12, isChampion: true,  championYear: 2023 },
-  { id: 2,  firstName: "Priya",  lastName: "Mehta",  age: 16, belt: "Brown",  state: "Gujarat",     sensei: "Dadi Bulsara", campsCount: 4,  eventsCount: 8,  isChampion: false },
-  { id: 3,  firstName: "Rahul",  lastName: "Verma",  age: 12, belt: "Blue",   state: "Delhi",       sensei: "Raj Nair",     campsCount: 3,  eventsCount: 5,  isChampion: false },
-  { id: 4,  firstName: "Sneha",  lastName: "Patil",  age: 17, belt: "Black",  state: "Maharashtra", sensei: "Dadi Bulsara", campsCount: 8,  eventsCount: 15, isChampion: true,  championYear: 2024 },
-  { id: 5,  firstName: "Vikram", lastName: "Singh",  age: 13, belt: "Green",  state: "Punjab",      sensei: "Raj Nair",     campsCount: 2,  eventsCount: 4,  isChampion: false },
-  { id: 6,  firstName: "Ananya", lastName: "Iyer",   age: 15, belt: "Brown",  state: "Tamil Nadu",  sensei: "Dadi Bulsara", campsCount: 5,  eventsCount: 9,  isChampion: false },
-  { id: 7,  firstName: "Dev",    lastName: "Kapoor", age: 11, belt: "Green",  state: "Delhi",       sensei: "Raj Nair",     campsCount: 1,  eventsCount: 2,  isChampion: false },
-  { id: 8,  firstName: "Meera",  lastName: "Nair",   age: 18, belt: "Black",  state: "Kerala",      sensei: "Dadi Bulsara", campsCount: 9,  eventsCount: 18, isChampion: true,  championYear: 2022 },
-  { id: 9,  firstName: "Karan",  lastName: "Joshi",  age: 14, belt: "Blue",   state: "Rajasthan",   sensei: "Raj Nair",     campsCount: 3,  eventsCount: 6,  isChampion: false },
-  { id: 10, firstName: "Ishaan", lastName: "Reddy",  age: 16, belt: "Brown",  state: "Andhra",      sensei: "Dadi Bulsara", campsCount: 4,  eventsCount: 7,  isChampion: false },
-  { id: 11, firstName: "Tara",   lastName: "Bose",   age: 13, belt: "Yellow", state: "West Bengal", sensei: "Raj Nair",     campsCount: 1,  eventsCount: 3,  isChampion: false },
-  { id: 12, firstName: "Aditya", lastName: "Kumar",  age: 17, belt: "Black",  state: "Karnataka",   sensei: "Dadi Bulsara", campsCount: 7,  eventsCount: 14, isChampion: true,  championYear: 2024 },
+  { id: 1, firstName: "Arjun", lastName: "Sharma", age: 14, belt: "Black", state: "Maharashtra", sensei: "Dadi Bulsara", campsCount: 6, eventsCount: 12, isChampion: true, championYear: 2023 },
+  { id: 2, firstName: "Priya", lastName: "Mehta", age: 16, belt: "Brown", state: "Gujarat", sensei: "Dadi Bulsara", campsCount: 4, eventsCount: 8, isChampion: false },
+  { id: 3, firstName: "Rahul", lastName: "Verma", age: 12, belt: "Blue", state: "Delhi", sensei: "Raj Nair", campsCount: 3, eventsCount: 5, isChampion: false },
+  { id: 4, firstName: "Sneha", lastName: "Patil", age: 17, belt: "Black", state: "Maharashtra", sensei: "Dadi Bulsara", campsCount: 8, eventsCount: 15, isChampion: true, championYear: 2024 },
+  { id: 5, firstName: "Vikram", lastName: "Singh", age: 13, belt: "Green", state: "Punjab", sensei: "Raj Nair", campsCount: 2, eventsCount: 4, isChampion: false },
+  { id: 6, firstName: "Ananya", lastName: "Iyer", age: 15, belt: "Brown", state: "Tamil Nadu", sensei: "Dadi Bulsara", campsCount: 5, eventsCount: 9, isChampion: false },
+  { id: 7, firstName: "Dev", lastName: "Kapoor", age: 11, belt: "Green", state: "Delhi", sensei: "Raj Nair", campsCount: 1, eventsCount: 2, isChampion: false },
+  { id: 8, firstName: "Meera", lastName: "Nair", age: 18, belt: "Black", state: "Kerala", sensei: "Dadi Bulsara", campsCount: 9, eventsCount: 18, isChampion: true, championYear: 2022 },
+  { id: 9, firstName: "Karan", lastName: "Joshi", age: 14, belt: "Blue", state: "Rajasthan", sensei: "Raj Nair", campsCount: 3, eventsCount: 6, isChampion: false },
+  { id: 10, firstName: "Ishaan", lastName: "Reddy", age: 16, belt: "Brown", state: "Andhra", sensei: "Dadi Bulsara", campsCount: 4, eventsCount: 7, isChampion: false },
+  { id: 11, firstName: "Tara", lastName: "Bose", age: 13, belt: "Yellow", state: "West Bengal", sensei: "Raj Nair", campsCount: 1, eventsCount: 3, isChampion: false },
+  { id: 12, firstName: "Aditya", lastName: "Kumar", age: 17, belt: "Black", state: "Karnataka", sensei: "Dadi Bulsara", campsCount: 7, eventsCount: 14, isChampion: true, championYear: 2024 },
 ];
 
 const ALL_STATES = [...new Set(SAMPLE_STUDENTS.map(s => s.state))].sort();
@@ -106,7 +107,7 @@ function AvatarRings({ belt }: { belt: Belt }) {
       }} />
       {[
         { color: "#c9a84c", dur: "2.6s", delay: "0s" },
-        { color: "#fff",    dur: "3.2s", delay: "0.9s" },
+        { color: "#fff", dur: "3.2s", delay: "0.9s" },
         { color: "#c9a84c", dur: "3.8s", delay: "1.8s" },
       ].map((sp, i) => (
         <div key={i} style={{
@@ -208,7 +209,7 @@ function BannerPanel({ belt }: { belt: Belt }) {
 // ── 4-sided legendary border edges ───────────────────────────────────────────
 function LegendaryEdges({ belt, isChampion }: { belt: Belt; isChampion: boolean }) {
   const bc = BELT_COLORS[belt];
-  const op  = isChampion ? "bb" : "44";
+  const op = isChampion ? "bb" : "44";
   const op2 = isChampion ? "88" : "28";
   return (
     <>
@@ -288,7 +289,7 @@ function StudentCard({ student }: { student: Student }) {
 
           {/* Stats + sensei */}
           <div style={{ display: "flex", gap: "20px", alignItems: "flex-end" }}>
-            <MiniStat label="Camps"  value={student.campsCount} />
+            <MiniStat label="Camps" value={student.campsCount} />
             <MiniStat label="Events" value={student.eventsCount} />
             <div style={{ marginLeft: "auto", display: "flex", flexDirection: "column", alignItems: "flex-end", gap: "2px" }}>
               <span style={{ fontFamily: "var(--font-montserrat)", fontSize: "8px", color: "#444", letterSpacing: "1px", textTransform: "uppercase" }}>Sensei</span>
@@ -322,8 +323,8 @@ function HeaderStat({ value, label }: { value: number; label: string }) {
 
 // ── Main Page ─────────────────────────────────────────────────────────────────
 export default function StudentPage() {
-  const [search, setSearch]           = useState("");
-  const [beltFilter, setBeltFilter]   = useState<Belt | "All">("All");
+  const [search, setSearch] = useState("");
+  const [beltFilter, setBeltFilter] = useState<Belt | "All">("All");
   const [stateFilter, setStateFilter] = useState("All");
 
   const headerRef = useRef<HTMLDivElement>(null);
@@ -331,10 +332,10 @@ export default function StudentPage() {
 
   const filtered = useMemo(() => {
     return SAMPLE_STUDENTS.filter(s => {
-      const q          = search.toLowerCase();
+      const q = search.toLowerCase();
       const matchSearch = !q || s.firstName.toLowerCase().includes(q) || s.lastName.toLowerCase().includes(q) || s.sensei.toLowerCase().includes(q);
-      const matchBelt   = beltFilter  === "All" || s.belt  === beltFilter;
-      const matchState  = stateFilter === "All" || s.state === stateFilter;
+      const matchBelt = beltFilter === "All" || s.belt === beltFilter;
+      const matchState = stateFilter === "All" || s.state === stateFilter;
       return matchSearch && matchBelt && matchState;
     });
   }, [search, beltFilter, stateFilter]);
@@ -404,6 +405,43 @@ export default function StudentPage() {
               <h1 style={{ fontFamily: "var(--font-cinzel)", fontSize: "clamp(52px,7vw,96px)", fontWeight: 900, color: "#e8e8e8", letterSpacing: "8px", textTransform: "uppercase", margin: 0, lineHeight: 0.88 }}>
                 Students
               </h1>
+              <Link
+                href="/student/registration"
+                className="
+    group relative inline-flex items-center justify-center
+    overflow-hidden rounded-full
+    border border-white/10
+    bg-zinc-950/90
+    px-12 py-5
+    text-lg font-semibold uppercase
+    tracking-[0.3em] text-white
+    backdrop-blur-xl
+    transition-all duration-500
+    hover:-translate-y-1 hover:border-white/20
+    hover:shadow-[0_20px_60px_rgba(0,0,0,0.45)]
+  "
+              >
+                {/* Gradient border glow */}
+                <div
+                  className="
+      absolute inset-0 opacity-0
+      bg-gradient-to-r
+      from-emerald-500/20 via-white/5 to-emerald-500/20
+      transition-opacity duration-500
+      group-hover:opacity-100
+    "
+                />
+
+                {/* Shine effect */}
+                <div
+                  className="absolute inset-y-0 -left-20 w-20 rotate-12 bg-white/10 blur-xl transition-all duration-700 group-hover:left-[120%]" />
+                <span className="relative z-10 flex items-center gap-4">
+                  JOIN THE DOJO
+                  <span className="text-2xl transition-transform duration-300 group-hover:translate-x-1">
+                    →
+                  </span>
+                </span>
+              </Link>
             </div>
 
             <div style={{ display: "flex", border: "1px solid #1a1a1a", borderRadius: "4px", overflow: "hidden", minWidth: "340px" }}>

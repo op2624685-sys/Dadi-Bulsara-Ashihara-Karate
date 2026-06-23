@@ -54,8 +54,8 @@ function FormField({
 }: {
   label: string;
   type?: string;
-  value: any;
-  onChange: (e: any) => void;
+  value: string | number;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder?: string;
   required?: boolean;
   error?: string;
@@ -111,8 +111,8 @@ function SelectField({
   error = "",
 }: {
   label: string;
-  value: any;
-  onChange: (e: any) => void;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   options: string[];
   required?: boolean;
   error?: string;

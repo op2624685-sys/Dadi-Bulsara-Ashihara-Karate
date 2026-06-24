@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
+import Image from "next/image";
 
 export default function InstructorSection() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -49,7 +50,9 @@ export default function InstructorSection() {
   return (
     <section ref={sectionRef} className="instructor-section">
       <div ref={bgRef} className="instructor-bg" aria-hidden="true">
-        <div className="bg-kanji">道</div>
+        <div className="bg-kanji">
+          <Image src="/img/12.jpg" alt="Kanji" width={800} height={800} />
+        </div>
       </div>
 
       <div className="instructor-inner">
@@ -66,7 +69,7 @@ export default function InstructorSection() {
           </p>
           <p className="body-text">
             Trained under direct lineage from the Ashihara Honbu Dojo, Sensei
-            Bulsara's approach to teaching centres on the complete
+            Bulsara&apos;s approach to teaching centres on the complete
             student — mind, body, and spirit — guided by the principles of
             respect, perseverance, and honest effort.
           </p>

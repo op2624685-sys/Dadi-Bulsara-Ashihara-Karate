@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
+import Image from "next/image";
 
 export default function AboutSection() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -65,11 +66,7 @@ export default function AboutSection() {
         </div>
 
         <div className="about-visual reveal">
-          <div className="kanji-stack">
-            <span style={{ opacity: 0.45, fontSize: "8rem" }}>芦</span>
-            <span style={{ opacity: 0.28, fontSize: "8rem" }}>原</span>
-            <span style={{ opacity: 0.14, fontSize: "8rem" }}>空</span>
-          </div>
+            <Image src="/img/11.jpg" width={530} height={550} alt="Kanji"></Image>
           <div className="visual-border" />
         </div>
       </div>

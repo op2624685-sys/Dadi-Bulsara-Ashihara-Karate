@@ -8,8 +8,8 @@ import NavbarProfileCard from "@/components/navbar/NavbarProfileCard";
 const NAV_LINKS = [
   { label: "Home", href: "/" },
   { label: "About", href: "/about" },
-  { label: "Teacher", href: "/teachers" },
-  { label: "Student", href: "/students" },
+  { label: "Teachers", href: "/teachers" },
+  { label: "Students", href: "/students" },
   { label: "Events", href: "/events" },
   { label: "Camps", href: "/camps" },
   { label: "Contact", href: "/contact" },

@@ -527,8 +527,8 @@ export default function TeacherPage() {
   const totalSeminars = SAMPLE_TEACHERS.reduce((a, t) => a + t.seminarsGiven, 0);
 
   const handleTeacherSelect = (id: number) => {
-    router.push(`/teacher/${id}`);
-    // Iska implementation aage: router.push(`/teacher/${id}`)
+    router.push(`/teachers/${id}`);
+    // Iska implementation aage: router.push(`/teachers/${id}`)
   };
 
   // Initial load animation
@@ -600,7 +600,7 @@ export default function TeacherPage() {
               The lineage of knowledge — each instructor a guardian of the ancient way. Click any card to explore their dojo and teachings.
             </p>
             <div>
-              <Link href="/teacher/registration" style={{ display: "inline-block", marginRight: "12px" }}>
+              <Link href="/teachers/registration" style={{ display: "inline-block", marginRight: "12px" }}>
               
               <button style={{ background: "#c9a84c", border: "none", color: "#000", padding: "12px 32px", borderRadius: "4px", fontSize: "14px", fontWeight: 700, textTransform: "uppercase", cursor: "pointer" }}>Register as an Instructor</button>
               </Link>

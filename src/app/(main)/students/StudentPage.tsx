@@ -406,7 +406,7 @@ export default function StudentPage() {
                 Students
               </h1>
               <Link
-                href="/student/registration"
+                href="/students/registration"
                 className="
     group relative inline-flex items-center justify-center
     overflow-hidden rounded-full
